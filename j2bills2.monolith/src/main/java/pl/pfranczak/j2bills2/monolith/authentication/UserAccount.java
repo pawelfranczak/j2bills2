@@ -1,9 +1,16 @@
 package pl.pfranczak.j2bills2.monolith.authentication;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +26,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "UserAccounts")
-public class UserAccount {
+public class UserAccount implements UserDetails {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -43,4 +50,40 @@ public class UserAccount {
 	
 	@Builder.Default
 	private Boolean enabled = false;
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		final SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(userRole.name());
+		return Collections.singletonList(simpleGrantedAuthority);
+	}
+
+	@Override
+	public String getPassword() {
+		return this.password;
+	}
+
+	@Override
+	public String getUsername() {
+		return this.email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return !locked;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
 }
