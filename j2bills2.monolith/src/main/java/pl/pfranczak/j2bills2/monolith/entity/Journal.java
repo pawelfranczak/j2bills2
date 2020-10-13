@@ -36,13 +36,15 @@ public class Journal {
 	@JoinColumn(nullable = false, name = "user_id")
 	private User user;
 	
-	@OneToOne(targetEntity = UserAccount.class, fetch = FetchType.EAGER)
+	@OneToOne(targetEntity = Account.class, fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false, name = "account_id")
 	private Account account;
 	
 	private String description;
 	
 	private BigDecimal value;
+	
+	private BigDecimal balanceOfAccountBeforeChange;
 	
 	private Timestamp date;
 	
