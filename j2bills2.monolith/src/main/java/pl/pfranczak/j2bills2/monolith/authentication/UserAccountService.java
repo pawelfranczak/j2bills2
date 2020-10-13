@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import pl.pfranczak.j2bills2.monolith.entity.User;
+import pl.pfranczak.j2bills2.monolith.service.UserService;
 
 @Service
 @AllArgsConstructor
@@ -24,6 +26,8 @@ public class UserAccountService implements UserDetailsService {
 	
 	private final EmailService emailService;
 	
+	private final UserService userService;
+	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		final Optional<UserAccount> optionalUser = userRepository.findByEmail(email);
@@ -35,13 +39,15 @@ public class UserAccountService implements UserDetailsService {
 		}
 	}
 	
-	void signUpUser(UserAccount user) {
-		final String encryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
-		user.setPassword(encryptedPassword);
-		userRepository.save(user);
-		final ConfirmationToken confirmationToken = new ConfirmationToken(user);
+	public void signUpUser(UserAccount userAccount) {
+		final String encryptedPassword = bCryptPasswordEncoder.encode(userAccount.getPassword());
+		userAccount.setPassword(encryptedPassword);
+		userRepository.save(userAccount);
+		final ConfirmationToken confirmationToken = new ConfirmationToken(userAccount);
 		confirmationTokenService.saveConfirmationToken(confirmationToken);
-		sendConfirmationMail(user.getEmail(), confirmationToken.getConfirmationToken());
+		sendConfirmationMail(userAccount.getEmail(), confirmationToken.getConfirmationToken());
+		User user = new User(null, userAccount, userAccount.getName(), userAccount.getSurname(), userAccount.getEmail());
+		userService.create(user);
 	}
 	
 	void confirmUser(ConfirmationToken confirmationToken) {
@@ -62,6 +68,5 @@ public class UserAccountService implements UserDetailsService {
 
 		emailService.sendEmail(mailMessage);
 	}
-	
 	
 }
