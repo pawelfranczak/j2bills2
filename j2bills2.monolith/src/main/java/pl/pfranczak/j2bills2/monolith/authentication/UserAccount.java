@@ -3,6 +3,7 @@ package pl.pfranczak.j2bills2.monolith.authentication;
 import java.util.Collection;
 import java.util.Collections;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,6 +39,7 @@ public class UserAccount implements UserDetails {
 
 	private String surname;
 
+	@Column(unique=true)
 	private String email;
 	
 	private String password;
