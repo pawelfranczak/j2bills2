@@ -1,5 +1,7 @@
 package pl.pfranczak.j2bills2.monolith.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -27,7 +29,7 @@ public abstract class CrudServiceImpl<T, ID> implements CrudService<T, ID> {
 		}
 		return null;
 	}
-
+	
 	@Override
 	public void update(T entity) {
 		repository.save(entity);
@@ -41,6 +43,14 @@ public abstract class CrudServiceImpl<T, ID> implements CrudService<T, ID> {
 	@Override
 	public void deleteById(ID id) {
 		repository.deleteById(id);
+	}
+	
+	@Override
+	public List<T> getAll() {
+		Iterable<T> findAll = repository.findAll();
+		List<T> all = new ArrayList<T>();
+		findAll.forEach(all::add);
+		return all;
 	}
 
 }
