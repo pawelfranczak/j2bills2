@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class IndexController {
 
-	@RequestMapping("/")
+	@RequestMapping("${index}")
 	public String index() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth.isAuthenticated())
