@@ -6,11 +6,10 @@
 <title>Spring Boot User Authentication</title>
 </head>
 <body>
-	<h1>Show All Users</h1>
-	<!--  <h3 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h3> -->
+	<h1>Show One User</h1>
 	
-	<table border=1>
-		<th:block th:each="user : ${users}">
+	<table border=1 th:if="${user != null}">
+		<th:block>
 			<tr>
 				<td><p th:text="${user.id}"></p></td>
 				<td><p th:text="${user.owner.id}"></p></td>

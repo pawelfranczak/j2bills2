@@ -5,7 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import pl.pfranczak.j2bills2.monolith.authentication.UserAccount;
 
 @Service
 public abstract class CrudServiceImpl<T, ID> implements CrudService<T, ID> {
@@ -51,6 +55,12 @@ public abstract class CrudServiceImpl<T, ID> implements CrudService<T, ID> {
 		List<T> all = new ArrayList<T>();
 		findAll.forEach(all::add);
 		return all;
+	}
+	
+	public UserAccount getOwner() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserAccount userAccount = (UserAccount) auth.getPrincipal();
+		return(userAccount);
 	}
 
 }

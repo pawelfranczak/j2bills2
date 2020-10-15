@@ -1,13 +1,10 @@
 package pl.pfranczak.j2bills2.monolith.service;
 
-import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import pl.pfranczak.j2bills2.monolith.authentication.UserAccount;
 import pl.pfranczak.j2bills2.monolith.entity.User;
 import pl.pfranczak.j2bills2.monolith.repository.UserRepository;
 
@@ -23,15 +20,19 @@ public class UserService extends CrudServiceImpl<User, Long>{
 	
 	@Override
 	public List<User> getAll() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		// to do magic here, @PreAuthorise? need to retrive only data which belongs to logged user by id
-		UserAccount userAccount = (UserAccount) auth.getPrincipal();
-		List<User> allForLoggedUser = getAllForLoggedUser(userAccount);
-		return allForLoggedUser;
+		return userRepository.findByOwner(getOwner());
 	}
 	
-	private List<User> getAllForLoggedUser(UserAccount owner) {
-		return userRepository.findByOwner(owner);
-	}
+	@Override
+	public User get(Long id) {
+		return userRepository.findByIdAndOwner(id, getOwner());
+	}	
+	
+	public User getTest(Long id) {
+		Optional<User> findById = userRepository.findById(id);
+		if (findById.isPresent())
+			return findById.get();
+		return null;
+	}	
 	
 }
