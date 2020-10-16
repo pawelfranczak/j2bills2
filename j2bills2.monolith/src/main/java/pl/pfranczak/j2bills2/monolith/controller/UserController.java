@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +35,31 @@ public class UserController {
 		User user = userService.get(id);
 		modelAndView.addObject("user", user);
 		return modelAndView;
+	}
+	
+	@GetMapping("${new}")
+	public String newEntity(User user) {
+		return "user/new";
+	}
+
+	@PostMapping("${new}")
+	public String newEntityPost(User user) {
+		userService.create(user);
+		return "redirect:/user/all";
+	}
+	
+	@GetMapping("${delete}")
+	public ModelAndView deleteEntity() {
+		ModelAndView modelAndView = new ModelAndView("user/delete");
+		List<User> users = userService.getAll();
+		modelAndView.addObject("users", users);
+		return modelAndView;
+	}
+
+	@PostMapping("${delete}")
+	public String deletePost(@RequestParam Long id) {
+		userService.deleteById(id);
+		return "redirect:/user/delete";
 	}
 
 }
