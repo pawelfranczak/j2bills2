@@ -1,5 +1,6 @@
 package pl.pfranczak.j2bills2.monolith.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -61,6 +62,10 @@ public abstract class CrudServiceImpl<T, ID> implements CrudService<T, ID> {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserAccount userAccount = (UserAccount) auth.getPrincipal();
 		return(userAccount);
+	}
+	
+	public Timestamp getTimestamp() {
+		return new Timestamp(System.currentTimeMillis());
 	}
 
 }
