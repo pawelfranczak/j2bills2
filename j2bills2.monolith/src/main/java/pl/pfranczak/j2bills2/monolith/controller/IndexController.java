@@ -12,7 +12,7 @@ public class IndexController {
 	public String index() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth.isAuthenticated())
-			return "success";
+			return "home";
 		return "fail";
 	}
 	
