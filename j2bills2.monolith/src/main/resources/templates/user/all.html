@@ -16,6 +16,7 @@
 				<td><p th:text="${user.owner.id}"></p></td>
 				<td><p th:text="${user.fisrtName}"></p></td>
 				<td><p th:text="${user.email}"></p></td>
+				<td><a th:href="@{${user.id}}">Details</a></td>
 			</tr>
 		</th:block>
 	</table>
