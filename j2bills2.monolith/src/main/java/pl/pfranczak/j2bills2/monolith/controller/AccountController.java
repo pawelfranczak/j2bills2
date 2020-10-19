@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import pl.pfranczak.j2bills2.monolith.entity.Account;
 import pl.pfranczak.j2bills2.monolith.entity.User;
 import pl.pfranczak.j2bills2.monolith.service.AccountService;
+import pl.pfranczak.j2bills2.monolith.service.UserService;
 
 @AllArgsConstructor
 @Controller
@@ -21,6 +22,7 @@ import pl.pfranczak.j2bills2.monolith.service.AccountService;
 public class AccountController {
 	
 	private AccountService accountService; 
+	private UserService userService;
 	
 	@GetMapping("${all}")	
 	public ModelAndView showAll() {
@@ -39,13 +41,16 @@ public class AccountController {
 	}
 	
 	@GetMapping("${new}")
-	public String newEntity(Account account) {
-		return "account/new";
+	public ModelAndView newEntity(Account account) {
+		ModelAndView modelAndView = new ModelAndView("account/new");
+		List<User> users = userService.getAll();
+		modelAndView.addObject("users", users);
+		return modelAndView;
 	}
 
 	@PostMapping("${new}")
-	public String newEntityPost(Account account) {
-		accountService.create(account);
+	public String newEntityPost(Account account, User user) {
+		accountService.createWithJournalEntry(account, user);
 		return "redirect:/account/all";
 	}
 	

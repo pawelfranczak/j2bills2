@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pl.pfranczak.j2bills2.monolith.authentication.UserAccount;
 import pl.pfranczak.j2bills2.monolith.entity.Account;
 import pl.pfranczak.j2bills2.monolith.entity.Journal;
+import pl.pfranczak.j2bills2.monolith.entity.User;
 import pl.pfranczak.j2bills2.monolith.repository.AccountRepository;
 import pl.pfranczak.j2bills2.monolith.repository.JournalRepository;
 import pl.pfranczak.j2bills2.monolith.repository.UserRepository;
@@ -41,16 +42,19 @@ public class AccountService extends CrudServiceImpl<Account, Long>{
 		account.setOwner(getOwner());
 		account.setActive(true);
 		super.create(account);
-		
-//		Journal journal = new Journal();
-//		journal.setAccount(account);
-//		journal.setBalanceOfAccountBeforeChange(BigDecimal.ZERO);
-//		journal.setDate(getTimestamp());
-//		journal.setDescription("Open Balance");
-//		journal.setOwner(getOwner());
-//		journal.setValue(account.getBalance());
-////		journal.setUser();
-//		journalRepository.save(journal);
+	}
+	
+	public void createWithJournalEntry(Account account, User user) {
+		this.create(account);
+		Journal journal = new Journal();
+		journal.setAccount(account);
+		journal.setBalanceOfAccountBeforeChange(BigDecimal.ZERO);
+		journal.setDate(getTimestamp());
+		journal.setDescription("Open Balance");
+		journal.setOwner(getOwner());
+		journal.setValue(account.getBalance());
+		journal.setUser(user);
+		journalRepository.save(journal);
 	}
 	
 	public void create(Account account, UserAccount owner) {
