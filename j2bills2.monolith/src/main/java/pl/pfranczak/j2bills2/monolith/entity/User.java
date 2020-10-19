@@ -1,5 +1,6 @@
 package pl.pfranczak.j2bills2.monolith.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,6 +34,7 @@ public class User {
 	
 	private String lastName;
 	
+	@Column(unique=true)
 	private String email;
 	
 }
