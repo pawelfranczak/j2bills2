@@ -54,6 +54,22 @@ public class AccountController {
 		return "redirect:/account/all";
 	}
 	
+	@GetMapping("${modify}/{id}")
+	public ModelAndView modifywEntity(@PathVariable("id") Long id) {
+		ModelAndView modelAndView = new ModelAndView("account/modify");
+		Account account = accountService.get(id);
+		modelAndView.addObject("account", account);
+		List<User> users = userService.getAll();
+		modelAndView.addObject("users", users);
+		return modelAndView;
+	}
+
+	@PostMapping("${modify}")
+	public String modifyEntityPost(Account account) {
+		accountService.update(account);
+		return "redirect:/account/all";
+	}
+	
 	@GetMapping("${delete}")
 	public ModelAndView deleteEntity() {
 		ModelAndView modelAndView = new ModelAndView("account/delete");

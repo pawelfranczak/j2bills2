@@ -44,6 +44,12 @@ public class AccountService extends CrudServiceImpl<Account, Long>{
 		super.create(account);
 	}
 	
+	@Override
+	public void update(Account account) {
+		account.setOwner(getOwner());
+		super.update(account);
+	}
+	
 	public void createWithJournalEntry(Account account, User user) {
 		this.create(account);
 		Journal journal = new Journal();

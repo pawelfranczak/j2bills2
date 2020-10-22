@@ -18,6 +18,7 @@
 				<td><p th:text="${account.balance}"></p></td>
 				<td><p th:text="${account.active}"></p></td>
 				<td><a th:href="@{${account.id}}">Details</a></td>
+				<td><a th:href="'modify/' + @{${account.id}}">Modify</a></td>
 			</tr>
 		</th:block>
 	</table>
