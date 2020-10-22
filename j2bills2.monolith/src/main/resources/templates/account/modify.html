@@ -13,9 +13,6 @@
     <lable>Description</lable>
     <input type="text" id="description" name="description" th:field="*{description}">
 
-    <lable>Balance</lable>
-    <input type="number" id="balance" name="balance" th:field="*{balance}" step="0.01">
-    
     <lable>Active</lable>
     <input type="checkbox" id="active" name="active" th:field="*{active}">
     
@@ -27,7 +24,8 @@
     </select>
 
 	<input type="hidden" name="id" th:value="${account.id}" />
-	<input type="hidden" name="onwer" th:value="${account.owner.id}" />
+	<input type="hidden" name="balance" th:value="${account.balance}" />
+	
 	
     <input type="submit">
 </form>	
