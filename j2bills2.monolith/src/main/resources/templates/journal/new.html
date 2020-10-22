@@ -17,14 +17,14 @@
 		<option value="">Select User</option>
 		<option th:each="user : ${users}"
 				th:value="${user.id}"
-				th:text="${user.fisrtName}+' '+${user.lastName}"></option>
+				th:text="${user.firstName}+' '+${user.lastName}"></option>
     </select>
     
 	<select class="form-control" id="account" name="account">
 		<option value="">Select Account</option>
 		<option th:each="account : ${accounts}"
 				th:value="${account.id}"
-				th:text="${account.name}"></option>
+				th:text="${account.name}+' ('+${account.balance}+')'"></option>
     </select>
 
     <input type="submit">

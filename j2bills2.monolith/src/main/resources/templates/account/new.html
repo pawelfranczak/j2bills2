@@ -20,7 +20,7 @@
 		<option value="">Select User</option>
 		<option th:each="user : ${users}"
 				th:value="${user.id}"
-				th:text="${user.fisrtName}+' '+${user.lastName}"></option>
+				th:text="${user.firstName}+' '+${user.lastName}"></option>
     </select>
 
     <input type="submit">

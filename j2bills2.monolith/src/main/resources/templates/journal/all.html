@@ -26,7 +26,7 @@
 			<tr>
 				<td><p th:text="${journalEntry.id}"></p></td>
 				<td><p th:text="${journalEntry.owner.id}"></p></td>
-				<td><a th:href="'/user/' + @{${journalEntry.user.id}}"><p th:text="${journalEntry.user.fisrtName}"></p></a></td>
+				<td><a th:href="'/user/' + @{${journalEntry.user.id}}"><p th:text="${journalEntry.user.firstName}"></p></a></td>
 				<td><a th:href="'/account/' + @{${journalEntry.account.id}}"><p th:text="${journalEntry.account.name}"></p></a></td>
 				<td><p th:text="${journalEntry.description}"></p></td>
 				<td><p th:text="${journalEntry.value}"></p></td>

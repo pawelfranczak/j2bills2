@@ -30,7 +30,7 @@ public class User {
 	@JoinColumn(nullable = false, name = "owner_id")
 	private UserAccount owner;
 	
-	private String fisrtName;
+	private String firstName;
 	
 	private String lastName;
 	
