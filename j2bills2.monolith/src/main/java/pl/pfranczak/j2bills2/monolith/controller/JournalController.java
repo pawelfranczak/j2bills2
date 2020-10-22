@@ -2,7 +2,10 @@ package pl.pfranczak.j2bills2.monolith.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +47,19 @@ public class JournalController {
 	
 	@GetMapping("${new}")
 	public ModelAndView newEntity(Journal journalEntry) {
+		return getModelAndViewForNewEntityGet(journalEntry);
+	}
+
+	@PostMapping("${new}")
+	public ModelAndView newEntityPost(@Valid Journal journalEntry, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return getModelAndViewForNewEntityGet(journalEntry);
+		}
+		journalService.create(journalEntry);
+		return getModelAndViewForNewEntityPost();
+	}
+	
+	private ModelAndView getModelAndViewForNewEntityGet(Journal journalEntry) {
 		ModelAndView modelAndView = new ModelAndView("journal/new");
 		List<User> users = userService.getAll();
 		modelAndView.addObject("users", users);
@@ -51,11 +67,10 @@ public class JournalController {
 		modelAndView.addObject("accounts", accounts);
 		return modelAndView;
 	}
-
-	@PostMapping("${new}")
-	public String newEntityPost(Journal journalEntry) {
-		journalService.create(journalEntry);
-		return "redirect:/journal/all";
+	
+	private ModelAndView getModelAndViewForNewEntityPost() {
+		ModelAndView modelAndView = new ModelAndView("redirect:/journal/all");
+		return modelAndView;
 	}
 
 }

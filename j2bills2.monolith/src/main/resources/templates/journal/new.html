@@ -9,9 +9,11 @@
 <form role="form" th:action="@{/journal/new}" th:method="post" th:object="${journal}">
     <lable>Description</lable>
     <input type="text" id="description" name="description" th:field="*{description}">
+    <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</p>
 
     <lable>Value</lable>
     <input type="number" id="value" name="value" th:field="*{value}" step="0.01">
+    <p th:if="${#fields.hasErrors('value')}" th:errors="*{value}">Value Error</p>
     
 	<select class="form-control" id="user" name="user">
 		<option value="">Select User</option>
@@ -19,6 +21,7 @@
 				th:value="${user.id}"
 				th:text="${user.firstName}+' '+${user.lastName}"></option>
     </select>
+    <p th:if="${#fields.hasErrors('user')}" th:errors="*{user}">User Error</p>
     
 	<select class="form-control" id="account" name="account">
 		<option value="">Select Account</option>
@@ -26,6 +29,7 @@
 				th:value="${account.id}"
 				th:text="${account.name}+' ('+${account.balance}+')'"></option>
     </select>
+    <p th:if="${#fields.hasErrors('account')}" th:errors="*{account}">Account Error</p>
 
     <input type="submit">
 </form>	
