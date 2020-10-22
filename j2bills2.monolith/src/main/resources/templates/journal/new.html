@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title>Spring Boot User Authentication</title>
+</head>
+<body>
+<form role="form" th:action="@{/journal/new}" th:method="post" th:object="${journal}">
+    <lable>Description</lable>
+    <input type="text" id="description" name="description" th:field="*{description}">
+
+    <lable>Value</lable>
+    <input type="number" id="value" name="value" th:field="*{value}" step="0.01">
+    
+	<select class="form-control" id="user" name="user">
+		<option value="">Select User</option>
+		<option th:each="user : ${users}"
+				th:value="${user.id}"
+				th:text="${user.fisrtName}+' '+${user.lastName}"></option>
+    </select>
+    
+	<select class="form-control" id="account" name="account">
+		<option value="">Select Account</option>
+		<option th:each="account : ${accounts}"
+				th:value="${account.id}"
+				th:text="${account.name}"></option>
+    </select>
+
+    <input type="submit">
+</form>	
+</body>
+</html>

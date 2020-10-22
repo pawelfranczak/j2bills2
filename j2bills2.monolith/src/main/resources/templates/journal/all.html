@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title>Spring Boot User Authentication</title>
+</head>
+<body>
+	<h1>Show All Journal Entries</h1>
+	
+	<table border=1>
+		<th:block>
+			<tr>
+				<td>ID</td>
+				<td>Owner ID</td>
+				<td>User</td>
+				<td>Account</td>
+				<td>Description</td>
+				<td>Value</td>
+				<td>Balance before change</td>
+				<td>Date</td>
+				<td>#</td>
+			</tr>
+		</th:block>
+		<th:block th:each="journalEntry : ${journalEntries}">
+			<tr>
+				<td><p th:text="${journalEntry.id}"></p></td>
+				<td><p th:text="${journalEntry.owner.id}"></p></td>
+				<td><a th:href="'/user/' + @{${journalEntry.user.id}}"><p th:text="${journalEntry.user.fisrtName}"></p></a></td>
+				<td><a th:href="'/account/' + @{${journalEntry.account.id}}"><p th:text="${journalEntry.account.name}"></p></a></td>
+				<td><p th:text="${journalEntry.description}"></p></td>
+				<td><p th:text="${journalEntry.value}"></p></td>
+				<td><p th:text="${journalEntry.balanceOfAccountBeforeChange}"></p></td>
+				<td><p th:text="${journalEntry.date}"></p></td>
+				<td><a th:href="@{${journalEntry.id}}">Details</a></td>
+			</tr>
+		</th:block>
+	</table>
+	
+</body>
+</html>
