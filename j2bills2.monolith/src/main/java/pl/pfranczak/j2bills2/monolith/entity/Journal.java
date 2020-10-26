@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -45,7 +46,7 @@ public class Journal {
 	private Account account;
 	
 	@NotNull
-	@Size(min = 1, max = 255)
+	@NotBlank
 	private String description;
 	
 	@NotNull
