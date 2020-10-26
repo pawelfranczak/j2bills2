@@ -15,19 +15,21 @@
     <input type="number" id="value" name="value" th:field="*{value}" step="0.01">
     <p th:if="${#fields.hasErrors('value')}" th:errors="*{value}">Value Error</p>
     
-	<select class="form-control" id="user" name="user">
+	<select  id="user" name="user">
 		<option value="">Select User</option>
 		<option th:each="user : ${users}"
 				th:value="${user.id}"
-				th:text="${user.firstName}+' '+${user.lastName}"></option>
+				th:text="${user.firstName}+' '+${user.lastName}"
+				th:selected="(${userID} == ${user.id})"></option>
     </select>
     <p th:if="${#fields.hasErrors('user')}" th:errors="*{user}">User Error</p>
     
-	<select class="form-control" id="account" name="account">
+	<select cid="account" name="account">
 		<option value="">Select Account</option>
 		<option th:each="account : ${accounts}"
 				th:value="${account.id}"
-				th:text="${account.name}+' ('+${account.balance}+')'"></option>
+				th:text="${account.name}+' ('+${account.balance}+')'"
+				th:selected="(${accountID} == ${account.id})"></option>
     </select>
     <p th:if="${#fields.hasErrors('account')}" th:errors="*{account}">Account Error</p>
 

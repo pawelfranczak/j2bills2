@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import lombok.AllArgsConstructor;
@@ -47,29 +48,31 @@ public class JournalController {
 	
 	@GetMapping("${new}")
 	public ModelAndView newEntity(Journal journalEntry) {
-		return getModelAndViewForNewEntityGet(journalEntry);
+		return getDefaultModelAndViewForNewEntity();
 	}
 
 	@PostMapping("${new}")
 	public ModelAndView newEntityPost(@Valid Journal journalEntry, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			return getModelAndViewForNewEntityGet(journalEntry);
+			ModelAndView modelAndView = getDefaultModelAndViewForNewEntity();
+			if (journalEntry.getUser() != null) {
+				modelAndView.addObject("userID", journalEntry.getUser().getId());
+			}
+			if (journalEntry.getAccount() != null) {
+				modelAndView.addObject("accountID", journalEntry.getAccount().getId());
+			}
+			return modelAndView;
 		}
 		journalService.create(journalEntry);
-		return getModelAndViewForNewEntityPost();
+		return new ModelAndView("redirect:/journal/new");
 	}
-	
-	private ModelAndView getModelAndViewForNewEntityGet(Journal journalEntry) {
+
+	private ModelAndView getDefaultModelAndViewForNewEntity() {
 		ModelAndView modelAndView = new ModelAndView("journal/new");
 		List<User> users = userService.getAll();
 		modelAndView.addObject("users", users);
 		List<Account> accounts = accountService.getAll();
 		modelAndView.addObject("accounts", accounts);
-		return modelAndView;
-	}
-	
-	private ModelAndView getModelAndViewForNewEntityPost() {
-		ModelAndView modelAndView = new ModelAndView("redirect:/journal/all");
 		return modelAndView;
 	}
 
