@@ -9,9 +9,11 @@
 <form role="form" th:action="@{/account/new}" th:method="post" th:object="${account}">
     <lable>Name</lable>
     <input type="text" id="name" name="name" th:field="*{name}">
+    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>
 
     <lable>Description</lable>
     <input type="text" id="description" name="description" th:field="*{description}">
+    <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</p>
 
     <lable>Balance</lable>
     <input type="number" id="balance" name="balance" th:field="*{balance}" step="0.01">
@@ -20,7 +22,8 @@
 		<option value="">Select User</option>
 		<option th:each="user : ${users}"
 				th:value="${user.id}"
-				th:text="${user.firstName}+' '+${user.lastName}"></option>
+				th:text="${user.firstName}+' '+${user.lastName}"
+				th:selected="(${userID} == ${user.id})"></option>
     </select>
 
     <input type="submit">

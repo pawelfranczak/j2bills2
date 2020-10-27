@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,15 +27,21 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@OneToOne(targetEntity = UserAccount.class, fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false, name = "owner_id")
 	private UserAccount owner;
 	
+	@NotNull
+	@NotBlank
 	private String firstName;
 	
+	@NotNull
+	@NotBlank
 	private String lastName;
 	
+	@NotNull
+	@NotBlank
 	@Column(unique=true)
 	private String email;
 	

@@ -2,7 +2,10 @@ package pl.pfranczak.j2bills2.monolith.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +46,10 @@ public class UserController {
 	}
 
 	@PostMapping("${new}")
-	public String newEntityPost(User user) {
+	public String newEntityPost(@Valid User user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "user/new";
+		}
 		userService.create(user);
 		return "redirect:/user/all";
 	}

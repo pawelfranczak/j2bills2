@@ -9,12 +9,15 @@
 <form role="form" th:action="@{/user/new}" th:method="post" th:object="${user}">
     <lable>First Name</lable>
     <input type="text" id="firstName" name="firstName" th:field="*{firstName}">
+    <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</p>
 
     <lable>Last Name</lable>
     <input type="text" id="lastName" name="lastName" th:field="*{lastName}">
+    <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name Error</p>
 
     <lable>Email</lable>
     <input type="text" id="email" name="email" th:field="*{email}">
+    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>
 
     <input type="submit">
 </form>	

@@ -2,7 +2,10 @@ package pl.pfranczak.j2bills2.monolith.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,9 +52,18 @@ public class AccountController {
 	}
 
 	@PostMapping("${new}")
-	public String newEntityPost(Account account, User user) {
+	public ModelAndView newEntityPost(@Valid Account account, BindingResult bindingResult, User user) {
+		if (bindingResult.hasErrors() || user == null) { // TODO write validator
+			ModelAndView modelAndView = new ModelAndView("account/new");
+			List<User> users = userService.getAll();
+			modelAndView.addObject("users", users);
+			if (user != null) {
+				modelAndView.addObject("userID", user.getId());
+			}
+			return modelAndView;
+		}
 		accountService.createWithJournalEntry(account, user);
-		return "redirect:/account/all";
+		return new ModelAndView("redirect:/account/all");
 	}
 	
 	@GetMapping("${modify}/{id}")
