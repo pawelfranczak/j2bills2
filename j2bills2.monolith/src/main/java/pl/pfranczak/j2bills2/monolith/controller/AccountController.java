@@ -78,6 +78,7 @@ public class AccountController {
 		return modelAndView;
 	}
 
+	// TODO Add validation
 	@PostMapping("${modify}")
 	public String modifyEntityPost(Account account) {
 		accountService.update(account);
