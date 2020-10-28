@@ -25,6 +25,7 @@
 				th:text="${user.firstName}+' '+${user.lastName}"
 				th:selected="(${userID} == ${user.id})"></option>
     </select>
+    <p th:text="${userError}"></p>
 
     <input type="submit">
 </form>	

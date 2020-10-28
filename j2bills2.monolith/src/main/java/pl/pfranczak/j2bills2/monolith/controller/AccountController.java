@@ -53,12 +53,14 @@ public class AccountController {
 
 	@PostMapping("${new}")
 	public ModelAndView newEntityPost(@Valid Account account, BindingResult bindingResult, User user) {
-		if (bindingResult.hasErrors() || user == null) { // TODO write validator
+		if (bindingResult.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView("account/new");
 			List<User> users = userService.getAll();
 			modelAndView.addObject("users", users);
-			if (user != null) {
+			if (user.getId() != null) {
 				modelAndView.addObject("userID", user.getId());
+			} else {
+				modelAndView.addObject("userError", "must not be blank");
 			}
 			return modelAndView;
 		}
