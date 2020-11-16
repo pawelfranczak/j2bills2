@@ -3,6 +3,8 @@ package pl.pfranczak.j2bills2.monolith.service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,11 @@ public class AccountService extends CrudServiceImpl<Account, Long>{
 	@Override
 	public List<Account> getAll() {
 		return accountRepository.findByOwner(getOwner());
+	}
+	
+	public BigDecimal getSumOfAll() {
+		List<Account> findByOwner = accountRepository.findByOwner(getOwner());
+		return (findByOwner.stream().map(Account::getBalance).reduce(BigDecimal.ZERO, BigDecimal::add));
 	}
 	
 	@Override
