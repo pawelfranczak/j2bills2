@@ -23,9 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-//			.antMatchers("/**")
-//			.permitAll();
-			.antMatchers("/h2-console/**", "/login/**", "/register/**", "/static/**")
+			.antMatchers("/h2-console/**", "/login/**", "/register/**")
 			.permitAll()
 			.anyRequest()
 			.authenticated()
@@ -36,12 +34,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.csrf().disable();
 		http.headers().frameOptions().sameOrigin();
-
 	}
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/static/**").anyRequest();
+		web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**", "/vendor/**");
 	}
 
 	@Autowired
