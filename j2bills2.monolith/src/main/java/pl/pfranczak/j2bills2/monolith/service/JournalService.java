@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import pl.pfranczak.j2bills2.monolith.entity.Account;
 import pl.pfranczak.j2bills2.monolith.entity.Journal;
+import pl.pfranczak.j2bills2.monolith.entity.Movement;
 import pl.pfranczak.j2bills2.monolith.entity.User;
 import pl.pfranczak.j2bills2.monolith.repository.JournalRepository;
 
@@ -31,6 +32,22 @@ public class JournalService extends CrudServiceImpl<Journal, Long>{
 		entity.setDate(getTimestamp());
 		repository.save(entity);
 		accountService.update(account);
+	}
+	
+	public void createMovement(Movement movement) {
+		Journal journalSource = new Journal();
+		journalSource.setAccount(movement.getSourceAccount());
+		journalSource.setValue(movement.getValue().negate());
+		journalSource.setDescription(movement.getDescription());
+		journalSource.setUser(movement.getUser());
+		create(journalSource);
+		
+		Journal journalTarget = new Journal();
+		journalTarget.setAccount(movement.getTargetAccount());
+		journalTarget.setValue(movement.getValue());
+		journalTarget.setDescription(movement.getDescription());
+		journalTarget.setUser(movement.getUser());
+		create(journalTarget);
 	}
 	
 	@Override

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="/../general.html :: head"></head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<div th:insert="/../general.html :: sidebar"></div>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<div th:insert="/../general.html :: topbar"></div>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">Nowy wpis</h1>
+					</div>
+
+					<div class="container">
+
+						<form role="form" th:action="@{/journal/movement}" th:method="post"
+							th:object="${movement}">
+							<div class="input-group">
+								<input type="text" id="description" name="description" th:field="*{description}" placeholder="Opis" class="form-control">
+								<p th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</p>
+							</div>
+
+							<BR>
+
+							<div class="input-group">
+								<input type="number" id="value" name="value" th:field="*{value}"
+									step="0.01" placeholder="Wartość" class="form-control">
+								<p th:if="${#fields.hasErrors('value')}" th:errors="*{value}">Value
+									Error</p>
+							</div>
+
+							<BR>
+
+							<div class="input-group">
+								<select id="user" name="user" class="form-control">
+									<option value="">Select User</option>
+									<option th:each="user : ${users}" th:value="${user.id}"
+										th:text="${user.firstName}+' '+${user.lastName}"
+										th:selected="(${userID} == ${user.id})"></option>
+								</select>
+								<p th:if="${#fields.hasErrors('user')}" th:errors="*{user}">User
+									Error</p>
+							</div>
+
+							<BR>
+
+							<div class="input-group">
+								<select id="sourceAccount" name="sourceAccount" class="form-control">
+									<option value="">Wybierz konto źródłowe</option>
+									<option th:each="account : ${accounts}"
+										th:value="${account.id}"
+										th:text="${account.name}+' ('+${account.balance}+')'"
+										th:selected="(${sourceAccountID} == ${account.id})"></option>
+								</select>
+								<p th:if="${#fields.hasErrors('sourceAccount')}" th:errors="*{sourceAccount}">Account Error</p>
+							</div>
+							
+							
+							<BR>
+							
+							<div class="input-group">
+								<select id="targetAccount" name="targetAccount" class="form-control">
+									<option value="">Wybierz konto docelowe</option>
+									<option th:each="account : ${accounts}"
+										th:value="${account.id}"
+										th:text="${account.name}+' ('+${account.balance}+')'"
+										th:selected="(${targetAccountID} == ${account.id})"></option>
+								</select>
+								<p th:if="${#fields.hasErrors('targetAccount')}" th:errors="*{targetAccount}">Account Error</p>
+							</div>
+
+							<BR> <input type="submit" class="btn btn-primary"> <BR>
+							<BR>
+						</form>
+					</div>
+
+					<!-- /.container-fluid -->
+
+				</div>
+				<!-- End of Main Content -->
+
+				<!-- Footer -->
+				<footer th:insert="/../general.html :: footer"> </footer>
+				<!-- End of Footer -->
+
+			</div>
+			<!-- End of Content Wrapper -->
+
+		</div>
+		<!-- End of Page Wrapper -->
+
+	</div>
+
+	<!-- Logout Modal-->
+	<div th:insert="/../general.html :: end-of-body"></div>
+</body>
+
+</html>
