@@ -2,40 +2,88 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="https://www.thymeleaf.org"
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head>
-<title>Spring Boot User Authentication</title>
-</head>
-<body>
-	<h1>Show All Journal Entries</h1>
-	
-	<table border=1>
-		<th:block>
-			<tr>
-				<td>ID</td>
-				<td>Owner ID</td>
-				<td>User</td>
-				<td>Account</td>
-				<td>Description</td>
-				<td>Value</td>
-				<td>Balance before change</td>
-				<td>Date</td>
-				<td>#</td>
-			</tr>
-		</th:block>
-		<th:block th:each="journalEntry : ${journalEntries}">
-			<tr>
-				<td><p th:text="${journalEntry.id}"></p></td>
-				<td><p th:text="${journalEntry.owner.id}"></p></td>
-				<td><a th:href="'/user/' + @{${journalEntry.user.id}}"><p th:text="${journalEntry.user.firstName}"></p></a></td>
-				<td><a th:href="'/account/' + @{${journalEntry.account.id}}"><p th:text="${journalEntry.account.name}"></p></a></td>
-				<td><p th:text="${journalEntry.description}"></p></td>
-				<td><p th:text="${journalEntry.value}"></p></td>
-				<td><p th:text="${journalEntry.balanceOfAccountBeforeChange}"></p></td>
-				<td><p th:text="${journalEntry.date}"></p></td>
-				<td><a th:href="@{${journalEntry.id}}">Details</a></td>
-			</tr>
-		</th:block>
-	</table>
-	
+
+<head th:replace="/../general.html :: head"></head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<div th:insert="/../general.html :: sidebar"></div>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<div th:insert="/../general.html :: topbar"></div>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">Wpisy w
+								dzienniku</h6>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-bordered" id="dataTable" width="100%"
+									cellspacing="0">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>Użytkownik</th>
+											<th>Konto</th>
+											<th>Opis</th>
+											<th>Wartość</th>
+											<th>Balans na koncie przed wpisem</th>
+											<th>Data</th>
+											<th>#</th>
+										</tr>
+									</thead>
+									<tbody>
+										<th:block th:each="journalEntry : ${journalEntries}">
+											<tr>
+												<td><p th:text="${journalEntry.id}"></p></td>
+												<td><a th:href="'/user/' + @{${journalEntry.user.id}}"><p th:text="${journalEntry.user.firstName}"></p></a></td>
+												<td><a th:href="'/account/' + @{${journalEntry.account.id}}"><p th:text="${journalEntry.account.name}"></p></a></td>
+												<td><p th:text="${journalEntry.description}"></p></td>
+												<td><p th:text="${journalEntry.value}"></p></td>
+												<td><p th:text="${journalEntry.balanceOfAccountBeforeChange}"></p></td>
+												<td><p th:text="${journalEntry.date}"></p></td>
+												<td><a th:href="@{${journalEntry.id}}">Details</a></td>
+											</tr>
+										</th:block>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- /.container-fluid -->
+
+			</div>
+			<!-- End of Main Content -->
+
+			<!-- Footer -->
+			<footer th:insert="/../general.html :: footer"> </footer>
+			<!-- End of Footer -->
+
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+
+	<!-- Logout Modal-->
+	<div th:insert="/../general.html :: end-of-body"></div>
+
 </body>
+
 </html>
