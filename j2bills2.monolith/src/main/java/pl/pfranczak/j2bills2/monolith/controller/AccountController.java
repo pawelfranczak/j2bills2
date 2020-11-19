@@ -32,6 +32,7 @@ public class AccountController {
 		ModelAndView modelAndView = new ModelAndView("account/all");
 		List<Account> accounts = accountService.getAll();
 		modelAndView.addObject("accounts", accounts);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 	
@@ -40,6 +41,7 @@ public class AccountController {
 		ModelAndView modelAndView = new ModelAndView("account/one");
 		Account account = accountService.get(id);
 		modelAndView.addObject("account", account);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 	
@@ -48,6 +50,7 @@ public class AccountController {
 		ModelAndView modelAndView = new ModelAndView("account/new");
 		List<User> users = userService.getAll();
 		modelAndView.addObject("users", users);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 
@@ -62,6 +65,7 @@ public class AccountController {
 			} else {
 				modelAndView.addObject("userError", "must not be blank");
 			}
+			userService.addUsernameToModelAndView(modelAndView);
 			return modelAndView;
 		}
 		accountService.createWithJournalEntry(account, user);
@@ -75,6 +79,7 @@ public class AccountController {
 		modelAndView.addObject("account", account);
 		List<User> users = userService.getAll();
 		modelAndView.addObject("users", users);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 
@@ -89,6 +94,7 @@ public class AccountController {
 		ModelAndView modelAndView = new ModelAndView("account/delete");
 		List<Account> accounts = accountService.getAll();
 		modelAndView.addObject("accounts", accounts);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 

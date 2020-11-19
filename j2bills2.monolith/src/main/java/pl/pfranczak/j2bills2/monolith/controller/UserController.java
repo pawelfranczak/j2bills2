@@ -29,6 +29,7 @@ public class UserController {
 		ModelAndView modelAndView = new ModelAndView("user/all");
 		List<User> users = userService.getAll();
 		modelAndView.addObject("users", users);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 	
@@ -37,16 +38,19 @@ public class UserController {
 		ModelAndView modelAndView = new ModelAndView("user/one");
 		User user = userService.get(id);
 		modelAndView.addObject("user", user);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 	
 	@GetMapping("${new}")
 	public String newEntity(User user) {
+		// TODO userService.addUsernameToModelAndView(modelAndView);
 		return "user/new";
 	}
 
 	@PostMapping("${new}")
 	public String newEntityPost(@Valid User user, BindingResult bindingResult) {
+		// TODO userService.addUsernameToModelAndView(modelAndView);
 		if (bindingResult.hasErrors()) {
 			return "user/new";
 		}
@@ -59,6 +63,7 @@ public class UserController {
 		ModelAndView modelAndView = new ModelAndView("user/delete");
 		List<User> users = userService.getAll();
 		modelAndView.addObject("users", users);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 

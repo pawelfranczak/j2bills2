@@ -9,12 +9,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lombok.AllArgsConstructor;
 import pl.pfranczak.j2bills2.monolith.service.AccountService;
+import pl.pfranczak.j2bills2.monolith.service.UserService;
 
 @AllArgsConstructor
 @Controller
 public class IndexController {
 	
 	AccountService accountService;
+	
+	UserService userService;
 
 	@RequestMapping("${index}")
 	public ModelAndView index() {
@@ -23,8 +26,7 @@ public class IndexController {
 		if (auth.isAuthenticated()) {
 			ModelAndView home = new ModelAndView("home");
 			home.addObject("sumOfAllAccounts", accountService.getSumOfAll());
-			UserDetails userDetails = (UserDetails) auth.getPrincipal();
-			home.addObject("userName", userDetails.getUsername());
+			userService.addUsernameToModelAndView(home);
 			return home;
 		}
 		return new ModelAndView("fail");

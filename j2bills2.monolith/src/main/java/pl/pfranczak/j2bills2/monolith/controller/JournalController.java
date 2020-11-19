@@ -35,6 +35,7 @@ public class JournalController {
 		ModelAndView modelAndView = new ModelAndView("journal/all");
 		List<Journal> journalEntries = journalService.getAll();
 		modelAndView.addObject("journalEntries", journalEntries);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 	
@@ -43,6 +44,7 @@ public class JournalController {
 		ModelAndView modelAndView = new ModelAndView("journal/one");
 		Journal journalEntry = journalService.get(id);
 		modelAndView.addObject("journalEntry", journalEntry);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 	
@@ -74,6 +76,7 @@ public class JournalController {
 		modelAndView.addObject("users", users);
 		List<Account> accounts = accountService.getAll();
 		modelAndView.addObject("accounts", accounts);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 
@@ -90,6 +93,7 @@ public class JournalController {
 			if (movement.getTargetAccount() != null) {
 				modelAndView.addObject("targetAccountID", movement.getTargetAccount().getId());
 			}
+			userService.addUsernameToModelAndView(modelAndView);
 			return modelAndView;
 		}
 		journalService.createMovement(movement);
@@ -102,6 +106,7 @@ public class JournalController {
 		modelAndView.addObject("users", users);
 		List<Account> accounts = accountService.getAll();
 		modelAndView.addObject("accounts", accounts);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 
