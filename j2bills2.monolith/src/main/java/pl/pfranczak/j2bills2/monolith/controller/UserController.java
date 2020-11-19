@@ -50,7 +50,6 @@ public class UserController {
 
 	@PostMapping("${new}")
 	public String newEntityPost(@Valid User user, BindingResult bindingResult) {
-		// TODO userService.addUsernameToModelAndView(modelAndView);
 		if (bindingResult.hasErrors()) {
 			return "user/new";
 		}

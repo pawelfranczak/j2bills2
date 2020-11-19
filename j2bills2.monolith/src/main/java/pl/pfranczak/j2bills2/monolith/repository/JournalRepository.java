@@ -12,5 +12,6 @@ import pl.pfranczak.j2bills2.monolith.entity.Journal;
 @Repository
 public interface JournalRepository extends CrudRepository<Journal, Long>{
 	List<Journal> findByOwner(UserAccount owner);
+	List<Journal> findByOwnerAndAccount(UserAccount owner, Account account);
 	Journal findByIdAndOwner(Long id, UserAccount owner);
 }

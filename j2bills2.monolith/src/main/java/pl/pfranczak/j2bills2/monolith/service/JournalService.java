@@ -60,4 +60,8 @@ public class JournalService extends CrudServiceImpl<Journal, Long>{
 		return journalRepository.findByIdAndOwner(id, getOwner());
 	}	
 	
+	public List<Journal> getAllForAccount(Account account) {
+		return journalRepository.findByOwnerAndAccount(getOwner(), account);
+	}	
+	
 }
