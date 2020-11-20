@@ -3,7 +3,10 @@ package pl.pfranczak.j2bills2.monolith.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import pl.pfranczak.j2bills2.monolith.authentication.UserAccount;
 import pl.pfranczak.j2bills2.monolith.entity.User;
@@ -47,5 +50,14 @@ public class UserService extends CrudServiceImpl<User, Long>{
 			return findById.get();
 		return null;
 	}	
+	
+	public String getLoggedUsername() {
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return userDetails.getUsername();
+	}
+	
+	public void addUsernameToModelAndView(ModelAndView modelAndView) {
+		modelAndView.addObject("userName", getLoggedUsername());
+	}
 	
 }

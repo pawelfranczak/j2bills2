@@ -1,43 +1,74 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="https://www.thymeleaf.org"
-	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head>
-<title>Spring Boot User Authentication</title>
-</head>
-<body>
-	<h1>HI! LOGGED!</h1>
-	<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-	<form th:action="@{/logout}" method="post">
-		<input type="submit" value="Sign Out" />
-	</form>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
-	<BR>
-	<b>User</b>
-	<BR>
-	<a href="/user/new">New</a>
-	<BR>
-	<a href="/user/all">All</a>
-	<BR>
-	<a href="/user/delete">Delete</a>
-	<BR>
-	<BR>
-	<b>Account</b>
-	<BR>
-	<a href="/account/new">New</a>
-	<BR>
-	<a href="/account/all">All</a>
-	<BR>
-	<a href="/account/delete">Delete</a>
-	<BR>
-	<BR>
-	<b>Journal</b>
-	<BR>
-	<a href="/journal/new">New</a>
-	<BR>
-	<a href="/journal/all">All</a>
-	<BR>
-	<BR>
+<head th:replace="general.html :: head"></head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <div th:insert="general.html :: sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <div th:insert="general.html :: topbar"></div>
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Strona główna</h1>
+          </div>
+
+          <!-- Content Row -->
+          <div class="row">
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-6 col-md-6 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Suma ze wszystkich kont:</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><span th:text="${sumOfAllAccounts}"></span></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          <!-- Content Row -->
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer th:insert="general.html :: footer"> </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+
+  <!-- Logout Modal-->
+  <div th:insert="general.html :: end-of-body"></div>
 
 </body>
+
 </html>

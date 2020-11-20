@@ -15,8 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lombok.AllArgsConstructor;
 import pl.pfranczak.j2bills2.monolith.entity.Account;
+import pl.pfranczak.j2bills2.monolith.entity.Journal;
 import pl.pfranczak.j2bills2.monolith.entity.User;
 import pl.pfranczak.j2bills2.monolith.service.AccountService;
+import pl.pfranczak.j2bills2.monolith.service.JournalService;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
 
 @AllArgsConstructor
@@ -26,12 +28,14 @@ public class AccountController {
 	
 	private AccountService accountService; 
 	private UserService userService;
+	private JournalService journalService;
 	
 	@GetMapping("${all}")	
 	public ModelAndView showAll() {
 		ModelAndView modelAndView = new ModelAndView("account/all");
 		List<Account> accounts = accountService.getAll();
 		modelAndView.addObject("accounts", accounts);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 	
@@ -40,6 +44,9 @@ public class AccountController {
 		ModelAndView modelAndView = new ModelAndView("account/one");
 		Account account = accountService.get(id);
 		modelAndView.addObject("account", account);
+		List<Journal> journalEntries = journalService.getAllForAccount(account);
+		modelAndView.addObject("journalEntries", journalEntries);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 	
@@ -48,6 +55,7 @@ public class AccountController {
 		ModelAndView modelAndView = new ModelAndView("account/new");
 		List<User> users = userService.getAll();
 		modelAndView.addObject("users", users);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 
@@ -62,6 +70,7 @@ public class AccountController {
 			} else {
 				modelAndView.addObject("userError", "must not be blank");
 			}
+			userService.addUsernameToModelAndView(modelAndView);
 			return modelAndView;
 		}
 		accountService.createWithJournalEntry(account, user);
@@ -75,6 +84,7 @@ public class AccountController {
 		modelAndView.addObject("account", account);
 		List<User> users = userService.getAll();
 		modelAndView.addObject("users", users);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 
@@ -90,6 +100,7 @@ public class AccountController {
 		ModelAndView modelAndView = new ModelAndView("account/delete");
 		List<Account> accounts = accountService.getAll();
 		modelAndView.addObject("accounts", accounts);
+		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 
