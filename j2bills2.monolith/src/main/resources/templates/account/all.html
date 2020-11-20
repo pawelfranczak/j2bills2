@@ -36,6 +36,8 @@
                       <th>Nazwa</th>
                       <th>Opis</th>
                       <th>Balans</th>
+                      <th>Aktywne</th>
+                      <th>#</th>
                       <th>#</th>
                     </tr>
                   </thead>
@@ -46,7 +48,9 @@
 							<td><p th:text="${account.name}"></p></td>
 							<td><p th:text="${account.description}"></p></td>
 							<td><p th:text="${account.balance}"></p></td>
-							<td><a th:href="@{${account.id}}">Details</a></td>
+							<td><p th:text="${account.active}"></p></td>
+							<td><a th:href="@{modify/{id}/(id=${account.id})}">Edytuj</a></td>
+							<td><a th:href="@{${account.id}}">Detale</a></td>
 						</tr>
 					</th:block>
                   </tbody>
