@@ -74,7 +74,7 @@ public class JournalController {
 		ModelAndView modelAndView = new ModelAndView("journal/movement");
 		List<User> users = userService.getAll();
 		modelAndView.addObject("users", users);
-		List<Account> accounts = accountService.getAllActive()
+		List<Account> accounts = accountService.getAllActive();
 		modelAndView.addObject("accounts", accounts);
 		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
