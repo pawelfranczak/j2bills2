@@ -34,6 +34,10 @@ public class AccountService extends CrudServiceImpl<Account, Long>{
 		return accountRepository.findByOwner(getOwner());
 	}
 	
+	public List<Account> getAllActive() {
+		return accountRepository.findByOwnerAndActiveTrue(getOwner());
+	}
+	
 	public BigDecimal getSumOfAll() {
 		List<Account> findByOwner = accountRepository.findByOwner(getOwner());
 		return (findByOwner.stream().map(Account::getBalance).reduce(BigDecimal.ZERO, BigDecimal::add));
