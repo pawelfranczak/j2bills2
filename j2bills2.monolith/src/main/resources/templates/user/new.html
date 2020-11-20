@@ -2,24 +2,82 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="https://www.thymeleaf.org"
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head>
-<title>Spring Boot User Authentication</title>
-</head>
-<body>
-<form role="form" th:action="@{/user/new}" th:method="post" th:object="${user}">
-    <lable>First Name</lable>
-    <input type="text" id="firstName" name="firstName" th:field="*{firstName}">
-    <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</p>
 
-    <lable>Last Name</lable>
-    <input type="text" id="lastName" name="lastName" th:field="*{lastName}">
-    <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name Error</p>
+<head th:replace="/../general.html :: head"></head>
 
-    <lable>Email</lable>
-    <input type="text" id="email" name="email" th:field="*{email}">
-    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>
+<body id="page-top">
 
-    <input type="submit">
-</form>	
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<div th:insert="/../general.html :: sidebar"></div>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<div th:insert="/../general.html :: topbar"></div>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">Nowy użytkownik</h1>
+					</div>
+
+					<div class="container">
+
+						<form role="form" th:action="@{/user/new}" th:method="post" th:object="${user}">
+						
+							<div class="input-group">
+								<input type="text" id="firstName" name="firstName" th:field="*{firstName}" placeholder="Imię" class="form-control">
+								<p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</p>
+							</div>
+							
+							<BR>
+							
+							<div class="input-group">
+								<input type="text" id="lastName" name="lastName" th:field="*{lastName}" placeholder="Nazwisko" class="form-control">
+								<p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name Error</p>
+							</div>
+							
+							<BR>
+							
+							<div class="input-group">
+								<input type="text" id="email" name="email" th:field="*{email}" placeholder="Email" class="form-control">
+							    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</p>
+							</div>
+
+							<BR>
+
+						   <input type="submit" class="btn btn-primary"> <BR>
+						</form>	
+						
+					</div>
+
+					<!-- /.container-fluid -->
+
+				</div>
+				<!-- End of Main Content -->
+
+				<!-- Footer -->
+				<footer th:insert="/../general.html :: footer"> </footer>
+				<!-- End of Footer -->
+
+			</div>
+			<!-- End of Content Wrapper -->
+
+		</div>
+		<!-- End of Page Wrapper -->
+
+	</div>
+
+	<!-- Logout Modal-->
+	<div th:insert="/../general.html :: end-of-body"></div>
 </body>
+
 </html>
