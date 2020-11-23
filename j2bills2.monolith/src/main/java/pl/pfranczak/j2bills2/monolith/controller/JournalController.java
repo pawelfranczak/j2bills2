@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,7 @@ import pl.pfranczak.j2bills2.monolith.entity.User;
 import pl.pfranczak.j2bills2.monolith.service.AccountService;
 import pl.pfranczak.j2bills2.monolith.service.JournalService;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
+import pl.pfranczak.j2bills2.monolith.service.UserSettingsService;
 
 @AllArgsConstructor
 @Controller
@@ -29,12 +32,22 @@ public class JournalController {
 	private JournalService journalService;
 	private UserService userService;
 	private AccountService accountService;
+	private UserSettingsService userSettingsService; 
 	
 	@GetMapping("${all}")	
 	public ModelAndView showAll() {
+		return new ModelAndView("redirect:/journal/all/0");
+	}
+	
+	@GetMapping("${all}/{page}")	
+	public ModelAndView showAll(@PathVariable("page") Long page) {
 		ModelAndView modelAndView = new ModelAndView("journal/all");
-		List<Journal> journalEntries = journalService.getAll();
+		Long entriesOnPage = userSettingsService.getHowManyJournalEntriesOnJournalPage();
+		Pageable pageable = PageRequest.of(page.intValue(), entriesOnPage.intValue());
+		List<Journal> journalEntries = journalService.getAll(pageable);
 		modelAndView.addObject("journalEntries", journalEntries);
+		modelAndView.addObject("countOfEntries", journalService.getCountOfJournalEntries());
+		modelAndView.addObject("entriesOnPage", entriesOnPage);
 		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}

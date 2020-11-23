@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="general.html :: head"></head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <div th:insert="general.html :: sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <div th:insert="general.html :: topbar"></div>
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Ustawienia</h1>
+          </div>
+
+						<form role="form" th:action="@{/account/modify}" th:method="post" th:object="${account}">
+							
+							<div class="input-group">
+								<input type="text" id="name" name="name" th:field="*{name}" placeholder="Nazwa konta" class="form-control">
+								<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>
+							</div>
+							
+							<BR>
+
+							<div class="input-group">
+								<input type="text" id="description" name="description" th:field="*{description}" placeholder="Opis konta" class="form-control">
+								<p th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</p>
+							</div>	
+												
+							<BR>
+							
+						   	<div class="input-group">
+						    Active: <input type="checkbox" id="active" name="active" th:field="*{active}" class="form-control">
+							</div>	
+							
+							<BR>
+			
+							<div class="input-group">
+								<select id="user" name="user" class="form-control">
+									<option value="">Select User</option>
+									<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.firstName}+' '+${user.lastName}" th:selected="(${userID} == ${user.id})"></option>
+								</select>
+								<p th:text="${userError}"></p>
+							</div>
+							
+							<input type="hidden" name="id" th:value="${account.id}" />
+							<input type="hidden" name="balance" th:value="${account.balance}" />
+
+							<BR> <input type="submit" class="btn btn-primary"> <BR>
+							<BR>
+						</form>
+
+          <!-- Content Row -->
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer th:insert="general.html :: footer"> </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+
+  <!-- Logout Modal-->
+  <div th:insert="general.html :: end-of-body"></div>
+
+</body>
+
+</html>

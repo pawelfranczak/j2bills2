@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import pl.pfranczak.j2bills2.monolith.entity.User;
+import pl.pfranczak.j2bills2.monolith.entity.UserSettings;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
+import pl.pfranczak.j2bills2.monolith.service.UserSettingsService;
 
 @Service
 @AllArgsConstructor
@@ -27,6 +29,8 @@ public class UserAccountService implements UserDetailsService {
 	private final EmailService emailService;
 	
 	private final UserService userService;
+	
+	private final UserSettingsService userSettingsService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -48,6 +52,8 @@ public class UserAccountService implements UserDetailsService {
 		sendConfirmationMail(userAccount.getEmail(), confirmationToken.getConfirmationToken());
 		User user = new User(null, userAccount, userAccount.getName(), userAccount.getSurname(), userAccount.getEmail());
 		userService.create(user, userAccount);
+		UserSettings userSettings = new UserSettings(null, userAccount, true, 3L);
+		userSettingsService.create(userSettings);
 	}
 	
 	void confirmUser(ConfirmationToken confirmationToken) {

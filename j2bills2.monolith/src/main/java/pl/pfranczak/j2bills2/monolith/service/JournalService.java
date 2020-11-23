@@ -3,6 +3,7 @@ package pl.pfranczak.j2bills2.monolith.service;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pl.pfranczak.j2bills2.monolith.entity.Account;
@@ -53,6 +54,14 @@ public class JournalService extends CrudServiceImpl<Journal, Long>{
 	@Override
 	public List<Journal> getAll() {
 		return journalRepository.findByOwner(getOwner());
+	}
+	
+	public List<Journal> getAll(Pageable pageable) {
+		return journalRepository.findByOwner(getOwner(), pageable);
+	}
+	
+	public Long getCountOfJournalEntries() {
+		return journalRepository.countByOwner(getOwner());
 	}
 	
 	@Override
