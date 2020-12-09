@@ -6,6 +6,8 @@ import javax.validation.Valid;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.jdbc.config.SortedResourcesFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,14 +44,46 @@ public class JournalController {
 	@GetMapping("${all}/{page}")	
 	public ModelAndView showAll(@PathVariable("page") Long page) {
 		ModelAndView modelAndView = new ModelAndView("journal/all");
+		
 		Long entriesOnPage = userSettingsService.getHowManyJournalEntriesOnJournalPage();
-		Pageable pageable = PageRequest.of(page.intValue(), entriesOnPage.intValue());
+		Pageable pageable = PageRequest.of(page.intValue(), entriesOnPage.intValue(), Sort.by("id").descending());
+		
 		List<Journal> journalEntries = journalService.getAll(pageable);
 		modelAndView.addObject("journalEntries", journalEntries);
-		modelAndView.addObject("countOfEntries", journalService.getCountOfJournalEntries());
+		
+		Long countOfEntries = journalService.getCountOfJournalEntries();
+		modelAndView.addObject("countOfEntries", countOfEntries);
 		modelAndView.addObject("entriesOnPage", entriesOnPage);
+		modelAndView.addObject("countOfPages", calculateCountOfPages(entriesOnPage, countOfEntries));
+		calculateSequenceInformation(modelAndView, page, entriesOnPage, countOfEntries);
 		userService.addUsernameToModelAndView(modelAndView);
+		
 		return modelAndView;
+	}
+	
+	private void calculateSequenceInformation(ModelAndView modelAndView, Long page, Long entriesOnPage, Long countOfEntries) {
+		// sequenceOfFirstEntry
+		// sequenceOfLastEntry
+		
+		Long firstSequenceOnPage = Long.MIN_VALUE;
+		Long lastSequenceOnPage = Long.MAX_VALUE;
+		
+		if (entriesOnPage.compareTo(countOfEntries) >= 0) {
+			firstSequenceOnPage = countOfEntries;
+			lastSequenceOnPage = 1L;
+		} else {
+			firstSequenceOnPage = countOfEntries - (page * entriesOnPage);
+			lastSequenceOnPage = firstSequenceOnPage - entriesOnPage + 1L;
+			if (lastSequenceOnPage.compareTo(1L) < 0) {
+				lastSequenceOnPage = 1L;
+			}
+		}
+		modelAndView.addObject("firstSequenceOnPage", firstSequenceOnPage);
+		modelAndView.addObject("lastSequenceOnPage", lastSequenceOnPage);
+	}
+	
+	private Long calculateCountOfPages(Long entriesOnPage, Long countOfEntries) {
+		return (long)(Math.ceil((double)countOfEntries / entriesOnPage));
 	}
 	
 	@GetMapping("/{id}")	

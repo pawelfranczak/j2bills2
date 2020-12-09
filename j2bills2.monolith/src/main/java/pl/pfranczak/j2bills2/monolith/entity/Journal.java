@@ -56,4 +56,6 @@ public class Journal {
 	
 	private Timestamp date;
 	
+	private Long sequence;
+	
 }

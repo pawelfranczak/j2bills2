@@ -31,6 +31,7 @@ public class JournalService extends CrudServiceImpl<Journal, Long>{
 		entity.setBalanceOfAccountBeforeChange(oldBalance);
 		entity.setOwner(getOwner());
 		entity.setDate(getTimestamp());
+		entity.setSequence(getHighestSequence()+1L);
 		repository.save(entity);
 		accountService.update(account);
 	}
@@ -41,6 +42,7 @@ public class JournalService extends CrudServiceImpl<Journal, Long>{
 		journalSource.setValue(movement.getValue().negate());
 		journalSource.setDescription(movement.getDescription());
 		journalSource.setUser(movement.getUser());
+		journalSource.setSequence(getHighestSequence()+1L);
 		create(journalSource);
 		
 		Journal journalTarget = new Journal();
@@ -48,6 +50,7 @@ public class JournalService extends CrudServiceImpl<Journal, Long>{
 		journalTarget.setValue(movement.getValue());
 		journalTarget.setDescription(movement.getDescription());
 		journalTarget.setUser(movement.getUser());
+		journalTarget.setSequence(getHighestSequence()+1L);
 		create(journalTarget);
 	}
 	
@@ -72,5 +75,13 @@ public class JournalService extends CrudServiceImpl<Journal, Long>{
 	public List<Journal> getAllForAccount(Account account) {
 		return journalRepository.findByOwnerAndAccount(getOwner(), account);
 	}	
+	
+	public Long getHighestSequence() {
+		Journal journal = journalRepository.findTopByOwnerOrderBySequenceDesc(getOwner());
+		if (journal != null) {
+			return journal.getId();
+		}
+		return 0L;
+	}
 	
 }

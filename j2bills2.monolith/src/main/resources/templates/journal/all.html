@@ -35,6 +35,7 @@
 									<thead>
 										<tr>
 											<th>ID</th>
+											<th>L.p.</th>
 											<th>Użytkownik</th>
 											<th>Konto</th>
 											<th>Opis</th>
@@ -48,6 +49,7 @@
 										<th:block th:each="journalEntry : ${journalEntries}">
 											<tr>
 												<td><p th:text="${journalEntry.id}"></p></td>
+												<td><p th:text="${journalEntry.sequence}"></p></td>
 												<td><a th:href="'/user/' + @{${journalEntry.user.id}}"><p th:text="${journalEntry.user.firstName}"></p></a></td>
 												<td><a th:href="'/account/' + @{${journalEntry.account.id}}"><p th:text="${journalEntry.account.name}"></p></a></td>
 												<td><p th:text="${journalEntry.description}"></p></td>
@@ -60,7 +62,12 @@
 									</tbody>
 								</table>
 							</div>
-							Wpisy 21 to 30 z <span th:text="${countOfEntries}">.
+							Wpisy od <span th:text="${firstSequenceOnPage}"/> do <span th:text="${lastSequenceOnPage}"/> z <span th:text="${countOfEntries}"/>.
+							<BR>Strona: 
+							<th:block th:each="i: ${#numbers.sequence(1, countOfPages)}">
+                      			<a th:href="'/journal/all/' + ${i-1}"><span th:text="${i}"/></a>
+							</th:block>
+							
 						</div>
 					</div>
 					
