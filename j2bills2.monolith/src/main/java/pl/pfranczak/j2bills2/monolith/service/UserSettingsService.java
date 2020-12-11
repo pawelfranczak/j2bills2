@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import pl.pfranczak.j2bills2.monolith.entity.Account;
+import pl.pfranczak.j2bills2.monolith.entity.Journal;
 import pl.pfranczak.j2bills2.monolith.entity.UserSettings;
 import pl.pfranczak.j2bills2.monolith.repository.UserSettingsRepository;
 
@@ -16,6 +18,14 @@ public class UserSettingsService extends CrudServiceImpl<UserSettings, Long>{
 		super.setRepository(userSettingsRepository); 
 		this.userSettingsRepository = userSettingsRepository;
 	}
+	
+	public UserSettings get() {
+		List<UserSettings> findByOwner = userSettingsRepository.findByOwner(getOwner());
+		if (findByOwner != null && findByOwner.size() > 0) {
+			return findByOwner.get(0);
+		}
+		return null;
+	}	
 	
 	public boolean showAccountsSumOnHomepage() {
 		List<UserSettings> findByOwner = userSettingsRepository.findByOwner(getOwner());
@@ -33,6 +43,12 @@ public class UserSettingsService extends CrudServiceImpl<UserSettings, Long>{
 			return userSettings.getHowManyJournalEntriesOnJournalPage();
 		}
 		return Long.MAX_VALUE;
+	}
+	
+	@Override
+	public void update(UserSettings userSettings) {
+		userSettings.setOwner(getOwner());
+		super.update(userSettings);
 	}
 
 }

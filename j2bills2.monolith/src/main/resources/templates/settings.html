@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="general.html :: head"></head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <div th:insert="general.html :: sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <div th:insert="general.html :: topbar"></div>
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Ustawienia</h1>
+          </div>
+
+          <!-- Content Row -->
+					<div class="container">
+
+						<form role="form" th:action="@{/settings}" th:method="post" th:object="${userSettings}">
+							
+							Ilość rekordów w dzienniku na jednej stronie
+							<div class="input-group">
+								<input type="number" id="howManyJournalEntriesOnJournalPage" name="howManyJournalEntriesOnJournalPage" th:field="*{howManyJournalEntriesOnJournalPage}" placeholder="Ilość rekordów w dzienniku na jednej stronie" class="form-control">
+							</div>
+							
+							<BR>
+
+							Pokaż sumę na stronie głównej
+						   	<div class="input-group">
+						    	<input type="checkbox" id="showAccountsSumOnHomepage" name="showAccountsSumOnHomepage" th:field="*{showAccountsSumOnHomepage}" class="form-control">
+							</div>
+												
+							<BR>
+							
+							<input type="hidden" name="id" th:value="${userSettings.id}" />
+
+							<BR> <input type="submit" class="btn btn-primary"> <BR>
+							<BR>
+						</form>
+						
+					</div>
+					<!-- Content Row -->
+
+        
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer th:insert="general.html :: footer"> </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+
+  <!-- Logout Modal-->
+  <div th:insert="general.html :: end-of-body"></div>
+
+</body>
+
+</html>
