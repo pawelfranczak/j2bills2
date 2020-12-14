@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="/../general.html :: head"></head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <div th:insert="/../general.html :: sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <div th:insert="/../general.html :: topbar"></div>
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Rachunki</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Nazwa</th>
+                      <th>Opis</th>
+                      <th>Wartość domyślna</th>
+                      <th>Płatne do</th>
+                      <th>#</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+					<th:block th:each="bill : ${bills}">
+						<tr>
+							<td><p th:text="${bill.name}"></p></td>
+							<td><p th:text="${bill.description}"></p></td>
+							<td><p th:text="${bill.defaultAmount}"></p></td>
+							<td><p th:text="${bill.defaultDueDay}"></p></td>
+							<td><a th:href="@{modify/{id}/(id=${bill.id})}">Edytuj</a></td>
+						</tr>
+					</th:block>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer th:insert="/../general.html :: footer"> </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+
+  <!-- Logout Modal-->
+  <div th:insert="/../general.html :: end-of-body"></div>
+
+</body>
+
+</html>
