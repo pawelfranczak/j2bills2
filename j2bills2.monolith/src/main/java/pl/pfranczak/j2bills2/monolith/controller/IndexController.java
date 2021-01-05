@@ -1,5 +1,7 @@
 package pl.pfranczak.j2bills2.monolith.controller;
 
+import java.util.List;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import lombok.AllArgsConstructor;
+import pl.pfranczak.j2bills2.monolith.entity.Account;
 import pl.pfranczak.j2bills2.monolith.service.AccountService;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
 import pl.pfranczak.j2bills2.monolith.service.UserSettingsService;
@@ -26,12 +29,16 @@ public class IndexController {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth.isAuthenticated()) {
-			ModelAndView home = new ModelAndView("home");
+			ModelAndView modelAndView = new ModelAndView("home");
 			if (userSettingsService.showAccountsSumOnHomepage()) {
-				home.addObject("sumOfAllAccounts", accountService.getSumOfAll());
+				modelAndView.addObject("sumOfAllAccounts", accountService.getSumOfAll());
 			}
-			userService.addUsernameToModelAndView(home);
-			return home;
+			userService.addUsernameToModelAndView(modelAndView);
+			
+			List<Account> accounts = accountService.getAll();
+			modelAndView.addObject("accounts", accounts);
+			
+			return modelAndView;
 		}
 		return new ModelAndView("fail");
 	}
