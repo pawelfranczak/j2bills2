@@ -3,6 +3,7 @@ package pl.pfranczak.j2bills2.monolith.controller.bills;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -71,14 +72,10 @@ public class BillController {
 		List<Bill> bills = billService.getAll();
 		
 		List<BigDecimal> defaultAmounts = new ArrayList<BigDecimal>();
-		for (Bill bill : bills) {
-			defaultAmounts.add(bill.getDefaultAmount());
-		}
-		
 		List<Byte> defaultDueDays = new ArrayList<Byte>();
-		for (Bill bill : bills) {
-			defaultDueDays.add(bill.getDefaultDueDay());
-		}
+		
+		defaultAmounts = bills.stream().map(Bill::getDefaultAmount).collect(Collectors.toList());
+		defaultDueDays = bills.stream().map(Bill::getDefaultDueDay).collect(Collectors.toList());
 		
 		modelAndView.addObject("bills", bills);
 		modelAndView.addObject("defaultAmounts", defaultAmounts);
