@@ -80,7 +80,6 @@ public class BillController {
 			defaultDueDays.add(bill.getDefaultDueDay());
 		}
 		
-		
 		modelAndView.addObject("bills", bills);
 		modelAndView.addObject("defaultAmounts", defaultAmounts);
 		modelAndView.addObject("defaultDueDays", defaultDueDays);
