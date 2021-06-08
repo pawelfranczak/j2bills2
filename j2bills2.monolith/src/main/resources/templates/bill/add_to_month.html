@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="/../general.html :: head"></head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<div th:insert="/../general.html :: sidebar"></div>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<div th:insert="/../general.html :: topbar"></div>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">Dodaj rachunek do miesiąca</h1>
+					</div>
+
+					<div class="container">
+
+						<form role="form" th:action="@{/bill/add_to_month}" th:method="post" th:object="${billsOfMonth}">
+							
+							<div class="input-group">
+								<select id="bill" name="bill" class="form-control" th:onchange="updateDependentFields(bill)">
+									<option value="">Nazwa|Domyślna Wartość|Płatne do</option>
+									<option 
+										th:each="bill : ${bills}" 
+										th:value="${bill.id}"
+										th:text="${bill.name}+'|'+${bill.defaultAmount}+'|'+${bill.defaultDueDay}"
+										th:selected="(${billID} == ${bill.id})"></option>
+								</select>
+								
+							</div>
+							
+							<div class="input-group" style="display: none;">
+								<select id="defaultAmounts" name="defaultAmounts" class="form-control">
+									<option value=""></option>
+									<option 
+										th:each="defaultAmount : ${defaultAmounts}" 
+										th:value="${defaultAmount}">
+										</option>
+								</select>
+							</div>
+							<div class="input-group" style="display: none;">
+								<select id="defaultDueDays" name="defaultDueDays" class="form-control">
+									<option value=""></option>
+									<option 
+										th:each="defaultDueDay : ${defaultDueDays}" 
+										th:value="${defaultDueDay}">
+										</option>
+								</select>
+							</div>
+							
+							<BR>
+							
+							<div class="input-group">
+								<select id="month" name="month" class="form-control">
+									<option value="">Miesiąc</option>
+									<option 
+										th:each="month : ${T(java.time.Month).values()}" 
+										th:value="${month}"
+										th:text="${month}"
+										th:selected="(${monthSelected} == ${month})"></option>
+								</select>
+								<p th:if="${#fields.hasErrors('month')}" th:errors="*{month}">Month Error</p>
+							</div>
+							
+							<BR>
+							
+							<div class="input-group">
+								<input 
+									type="number" 
+									id="year" 
+									name="year" 
+									th:field="*{year}"
+									step="1" 
+									placeholder="Rok"
+									class="form-control">
+								<p th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year error</p>
+							</div>
+							
+							<BR>
+							
+							<div class="input-group">
+								<input 
+									type="number" 
+									id="amount" 
+									name="amount" 
+									th:field="*{amount}"
+									step="0.01" 
+									placeholder="Wartość"
+									class="form-control">
+								<p th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Amount error</p>
+							</div>
+							
+							<BR>
+							
+							<div class="input-group">
+								<input 
+									type="number" 
+									id="dueDay" 
+									name="dueDay" 
+									th:field="*{dueDay}"
+									step="1" 
+									placeholder="Płatne do"
+									class="form-control">
+								<p th:if="${#fields.hasErrors('dueDay')}" th:errors="*{dueDay}">Year error</p>
+							</div>
+							
+							<BR>
+
+							<BR> <input type="submit" class="btn btn-primary"> <BR>
+							<BR>
+						</form>
+						
+					</div>
+
+					<!-- /.container-fluid -->
+
+				</div>
+				<!-- End of Main Content -->
+
+				<!-- Footer -->
+				<footer th:insert="/../general.html :: footer"> </footer>
+				<!-- End of Footer -->
+
+			</div>
+			<!-- End of Content Wrapper -->
+
+		</div>
+		<!-- End of Page Wrapper -->
+
+	</div>
+
+	<!-- Logout Modal-->
+	<div th:insert="/../general.html :: end-of-body"></div>
+	
+	<script>
+	function updateDependentFields(val) {
+	  document.getElementById('amount').value= document.getElementById('defaultAmounts').options[val.selectedIndex].value
+	  document.getElementById('dueDay').value= document.getElementById('defaultDueDays').options[val.selectedIndex].value
+	}
+	</script>
+	
+</body>
+
+</html>

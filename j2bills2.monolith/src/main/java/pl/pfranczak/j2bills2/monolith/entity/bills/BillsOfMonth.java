@@ -35,8 +35,10 @@ public class BillsOfMonth {
 	@JoinColumn(nullable = false, name = "owner_id")
 	private UserAccount owner;
 	
+	@NotNull
 	private Month month;
 	
+	@NotNull
 	private Long year;
 	
 	@NotNull
