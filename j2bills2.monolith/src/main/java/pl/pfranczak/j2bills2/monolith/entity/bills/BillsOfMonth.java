@@ -55,4 +55,6 @@ public class BillsOfMonth {
 	@Max(31)
 	private Byte dueDay;
 	
+	private Boolean paid;
+	
 }
