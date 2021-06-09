@@ -33,4 +33,8 @@ public class UserSettings {
 	
 	Long howManyJournalEntriesOnJournalPage;
 	
+	@OneToOne(targetEntity = Account.class, fetch = FetchType.EAGER)
+	@JoinColumn(nullable = true, name = "bills_account_id")
+	private Account billsAccount;
+	
 }
