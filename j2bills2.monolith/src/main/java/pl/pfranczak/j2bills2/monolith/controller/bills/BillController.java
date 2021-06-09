@@ -1,6 +1,7 @@
 package pl.pfranczak.j2bills2.monolith.controller.bills;
 
 import java.math.BigDecimal;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ import pl.pfranczak.j2bills2.monolith.entity.bills.Bill;
 import pl.pfranczak.j2bills2.monolith.entity.bills.BillsOfMonth;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
 import pl.pfranczak.j2bills2.monolith.service.bills.BillService;
+import pl.pfranczak.j2bills2.monolith.service.bills.BillsOfMonthService;
 
 @AllArgsConstructor
 @Controller
@@ -28,6 +30,7 @@ public class BillController {
 	
 	private BillService billService; 
 	private UserService userService; 
+	private BillsOfMonthService billsOfMonthService;
 	
 	@GetMapping("${all}")	
 	public ModelAndView showAll() {
@@ -70,7 +73,6 @@ public class BillController {
 		ModelAndView modelAndView = new ModelAndView("bill/add_to_month");
 		
 		List<Bill> bills = billService.getAll();
-		
 		List<BigDecimal> defaultAmounts = new ArrayList<BigDecimal>();
 		List<Byte> defaultDueDays = new ArrayList<Byte>();
 		
@@ -85,6 +87,44 @@ public class BillController {
 		return modelAndView;
 	}
 
+	@PostMapping("${add_to_month}")
+	public ModelAndView addToMonthPost(@Valid BillsOfMonth billsOfMonth, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			ModelAndView modelAndView = new ModelAndView("bill/add_to_month");
+			
+			List<Bill> bills = billService.getAll();
+			List<BigDecimal> defaultAmounts = new ArrayList<BigDecimal>();
+			List<Byte> defaultDueDays = new ArrayList<Byte>();
+			
+			defaultAmounts = bills.stream().map(Bill::getDefaultAmount).collect(Collectors.toList());
+			defaultDueDays = bills.stream().map(Bill::getDefaultDueDay).collect(Collectors.toList());
+			
+			modelAndView.addObject("bills", bills);
+			modelAndView.addObject("defaultAmounts", defaultAmounts);
+			modelAndView.addObject("defaultDueDays", defaultDueDays);
+			
+			userService.addUsernameToModelAndView(modelAndView);
+			return modelAndView;
+		}
+		billsOfMonthService.create(billsOfMonth);
+		return new ModelAndView("redirect:/bill/add_to_month");
+	}
+	
+	@GetMapping("${show_by_month}")	
+	public ModelAndView showAllByMonth() {
+		return new ModelAndView("redirect:/bill/show_by_month/2021/6");
+	}
+	
+	@GetMapping("${show_by_month}/{year}/{month}")	
+	public ModelAndView showAllByMonth(@PathVariable("year") Long year, @PathVariable("month") Long month) {
+		ModelAndView modelAndView = new ModelAndView("bill/show_by_month");
+		List<BillsOfMonth> billsOfMonths = billsOfMonthService.getByOwnerAndYearAndMonth(year, month);
+		modelAndView.addObject("billsOfMonths", billsOfMonths);
+		userService.addUsernameToModelAndView(modelAndView);
+		return modelAndView;
+	}
+	
+	
 	
 //	@GetMapping("${modify}/{id}")
 //	public ModelAndView modifywEntity(@PathVariable("id") Long id) {
