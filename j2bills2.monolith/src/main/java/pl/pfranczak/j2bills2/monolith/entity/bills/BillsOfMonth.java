@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -34,6 +35,12 @@ public class BillsOfMonth {
 	@OneToOne(targetEntity = UserAccount.class, fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false, name = "owner_id")
 	private UserAccount owner;
+	
+	@NotNull
+	@NotBlank	
+	private String name;
+	
+	private String description;
 	
 	@NotNull
 	private Month month;

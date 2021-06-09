@@ -75,13 +75,19 @@ public class BillController {
 		List<Bill> bills = billService.getAll();
 		List<BigDecimal> defaultAmounts = new ArrayList<BigDecimal>();
 		List<Byte> defaultDueDays = new ArrayList<Byte>();
+		List<String> defaultNames = new ArrayList<String>();
+		List<String> defaultDescriptions = new ArrayList<String>();
 		
 		defaultAmounts = bills.stream().map(Bill::getDefaultAmount).collect(Collectors.toList());
 		defaultDueDays = bills.stream().map(Bill::getDefaultDueDay).collect(Collectors.toList());
+		defaultNames = bills.stream().map(Bill::getName).collect(Collectors.toList());
+		defaultDescriptions = bills.stream().map(Bill::getDescription).collect(Collectors.toList());
 		
 		modelAndView.addObject("bills", bills);
 		modelAndView.addObject("defaultAmounts", defaultAmounts);
 		modelAndView.addObject("defaultDueDays", defaultDueDays);
+		modelAndView.addObject("defaultNames", defaultNames);
+		modelAndView.addObject("defaultDescriptions", defaultDescriptions);
 		
 		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
@@ -95,13 +101,19 @@ public class BillController {
 			List<Bill> bills = billService.getAll();
 			List<BigDecimal> defaultAmounts = new ArrayList<BigDecimal>();
 			List<Byte> defaultDueDays = new ArrayList<Byte>();
+			List<String> defaultNames = new ArrayList<String>();
+			List<String> defaultDescriptions = new ArrayList<String>();
 			
 			defaultAmounts = bills.stream().map(Bill::getDefaultAmount).collect(Collectors.toList());
 			defaultDueDays = bills.stream().map(Bill::getDefaultDueDay).collect(Collectors.toList());
+			defaultNames = bills.stream().map(Bill::getName).collect(Collectors.toList());
+			defaultDescriptions = bills.stream().map(Bill::getDescription).collect(Collectors.toList());
 			
 			modelAndView.addObject("bills", bills);
 			modelAndView.addObject("defaultAmounts", defaultAmounts);
 			modelAndView.addObject("defaultDueDays", defaultDueDays);
+			modelAndView.addObject("defaultNames", defaultNames);
+			modelAndView.addObject("defaultDescriptions", defaultDescriptions);
 			
 			userService.addUsernameToModelAndView(modelAndView);
 			return modelAndView;

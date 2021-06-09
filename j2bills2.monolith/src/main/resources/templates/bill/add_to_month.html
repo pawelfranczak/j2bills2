@@ -63,6 +63,24 @@
 										</option>
 								</select>
 							</div>
+							<div class="input-group" style="display: none;">
+								<select id="defaultNames" name="defaultNames" class="form-control">
+									<option value=""></option>
+									<option 
+										th:each="defaultName : ${defaultNames}" 
+										th:value="${defaultName}">
+										</option>
+								</select>
+							</div>
+							<div class="input-group" style="display: none;">
+								<select id="defaultDescriptions" name="defaultDescriptions" class="form-control">
+									<option value=""></option>
+									<option 
+										th:each="defaultDescription : ${defaultDescriptions}" 
+										th:value="${defaultDescription}">
+										</option>
+								</select>
+							</div>
 							
 							<BR>
 							
@@ -90,6 +108,34 @@
 									placeholder="Rok"
 									class="form-control">
 								<p th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year error</p>
+							</div>
+							
+							<BR>
+							
+							<div class="input-group">
+								<input 
+									type="text" 
+									id="name" 
+									name="name" 
+									th:field="*{name}"
+									step="1" 
+									placeholder="Nazwa"
+									class="form-control">
+								<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</p>
+							</div>
+							
+							<BR>
+							
+							<div class="input-group">
+								<input 
+									type="text" 
+									id="description" 
+									name="description" 
+									th:field="*{description}"
+									step="1" 
+									placeholder="Opis"
+									class="form-control">
+								<p th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description error</p>
 							</div>
 							
 							<BR>
@@ -152,6 +198,8 @@
 	function updateDependentFields(val) {
 	  document.getElementById('amount').value= document.getElementById('defaultAmounts').options[val.selectedIndex].value
 	  document.getElementById('dueDay').value= document.getElementById('defaultDueDays').options[val.selectedIndex].value
+	  document.getElementById('name').value= document.getElementById('defaultNames').options[val.selectedIndex].value
+	  document.getElementById('description').value= document.getElementById('defaultDescriptions').options[val.selectedIndex].value
 	}
 	</script>
 	

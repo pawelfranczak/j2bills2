@@ -32,6 +32,8 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
+                 	  <th>Nazwa</th>
+                      <th>Opis</th>
                       <th>Miesiąc</th>
                       <th>Rok</th>
                       <th>Wartość</th>
@@ -42,6 +44,8 @@
                   <tbody>
 					<th:block th:each="billsOfMonth : ${billsOfMonths}">
 						<tr>
+							<td><p th:text="${billsOfMonth.name}"></p></td>
+							<td><p th:text="${billsOfMonth.description}"></p></td>
 							<td><p th:text="${billsOfMonth.month}"></p></td>
 							<td><p th:text="${billsOfMonth.year}"></p></td>
 							<td><p th:text="${billsOfMonth.amount}"></p></td>
