@@ -39,6 +39,7 @@
                       <th>Wartość</th>
                       <th>Płatne do</th>
                       <th>Zapłacone</th>
+                      <th>Zapłać</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -50,7 +51,9 @@
 							<td><p th:text="${billsOfMonth.year}"></p></td>
 							<td><p th:text="${billsOfMonth.amount}"></p></td>
 							<td><p th:text="${billsOfMonth.dueDay}"></p></td>
-							<td><p th:checkbox="${billsOfMonth.paid}"></p></td>
+							<td><input type="checkbox" th:checked="${billsOfMonth.paid}" disabled></input></td>
+							<td th:if="${billsOfMonth.paid == false}" ><a th:href="@{/bill/pay/{id}/(id=${billsOfMonth.id})}">Zapłać</a></td>
+							<td th:if="${billsOfMonth.paid == true}" >Zapłacone</td>
 						</tr>
 					</th:block>
                   </tbody>
