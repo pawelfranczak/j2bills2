@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import pl.pfranczak.j2bills2.monolith.entity.Account;
 import pl.pfranczak.j2bills2.monolith.entity.bills.Bill;
 import pl.pfranczak.j2bills2.monolith.repository.bills.BillRepository;
 import pl.pfranczak.j2bills2.monolith.service.CrudServiceImpl;
@@ -34,4 +33,5 @@ public class BillService extends CrudServiceImpl<Bill, Long>{
 		bill.setOwner(getOwner());
 		super.create(bill);
 	}
+	
 }

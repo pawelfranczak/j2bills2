@@ -136,7 +136,23 @@ public class BillController {
 		return modelAndView;
 	}
 	
-	
+	@GetMapping("${pay}/{id}")
+	public ModelAndView pay(@PathVariable("id") Long id) {
+		BillsOfMonth billsOfMonth = billsOfMonthService.get(id);
+		Long year = billsOfMonth.getYear();
+		int month = billsOfMonth.getMonth().getValue();
+
+		ModelAndView modelAndView = new ModelAndView("redirect:/bill/show_by_month/" + year + "/" + month);
+		
+		if (billsOfMonth.getPaid()) {
+			return modelAndView;
+		}
+		
+		billsOfMonthService.payBill(billsOfMonth);		
+		
+		return modelAndView;
+	}
+		
 	
 //	@GetMapping("${modify}/{id}")
 //	public ModelAndView modifywEntity(@PathVariable("id") Long id) {

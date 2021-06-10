@@ -45,6 +45,15 @@ public class UserSettingsService extends CrudServiceImpl<UserSettings, Long>{
 		return Long.MAX_VALUE;
 	}
 	
+	public Account getBillsAccount() {
+		List<UserSettings> findByOwner = userSettingsRepository.findByOwner(getOwner());
+		if (findByOwner != null && findByOwner.size() > 0) {
+			UserSettings userSettings = findByOwner.get(0);
+			return userSettings.getBillsAccount();
+		}
+		return null;
+	}
+	
 	@Override
 	public void update(UserSettings userSettings) {
 		userSettings.setOwner(getOwner());
