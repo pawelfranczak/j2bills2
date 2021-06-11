@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import lombok.AllArgsConstructor;
+import pl.pfranczak.j2bills2.monolith.entity.Account;
+import pl.pfranczak.j2bills2.monolith.entity.UserSettings;
 import pl.pfranczak.j2bills2.monolith.entity.bills.Bill;
 import pl.pfranczak.j2bills2.monolith.entity.bills.BillsOfMonth;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
+import pl.pfranczak.j2bills2.monolith.service.UserSettingsService;
 import pl.pfranczak.j2bills2.monolith.service.bills.BillService;
 import pl.pfranczak.j2bills2.monolith.service.bills.BillsOfMonthService;
 
@@ -31,6 +34,7 @@ public class BillController {
 	private BillService billService; 
 	private UserService userService; 
 	private BillsOfMonthService billsOfMonthService;
+	private UserSettingsService userSettingsService;
 	
 	@GetMapping("${all}")	
 	public ModelAndView showAll() {
@@ -132,27 +136,121 @@ public class BillController {
 		ModelAndView modelAndView = new ModelAndView("bill/show_by_month");
 		List<BillsOfMonth> billsOfMonths = billsOfMonthService.getByOwnerAndYearAndMonth(year, month);
 		modelAndView.addObject("billsOfMonths", billsOfMonths);
+		modelAndView.addObject("nextMonth", generateNextMonthLink(month, year));
+		modelAndView.addObject("previousMonth", generatePreviousMonthLink(month, year));
+		modelAndView.addObject("sumOfMonth", calculateBillsSumOfMonth(billsOfMonths));
+		modelAndView.addObject("sumOfMonthToPay", calculateBillsSumOfMonthToPay(billsOfMonths));
+		modelAndView.addObject("sumOfMonthPaid", calculateBillsSumOfMonthPaid(billsOfMonths));
+		
 		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
 	}
 	
+	private BigDecimal calculateBillsSumOfMonth(List<BillsOfMonth> billsOfMonths) {
+		BigDecimal sumOfMonth = BigDecimal.ZERO;
+		for (BillsOfMonth billsOfMonth : billsOfMonths) {
+			sumOfMonth = sumOfMonth.add(billsOfMonth.getAmount());
+		}
+		return sumOfMonth;
+	}
+	
+	private BigDecimal calculateBillsSumOfMonthToPay(List<BillsOfMonth> billsOfMonths) {
+		BigDecimal sumOfMonth = BigDecimal.ZERO;
+		for (BillsOfMonth billsOfMonth : billsOfMonths) {
+			if (!billsOfMonth.getPaid())
+				sumOfMonth = sumOfMonth.add(billsOfMonth.getAmount());
+		}
+		return sumOfMonth;
+	}
+	
+	private BigDecimal calculateBillsSumOfMonthPaid(List<BillsOfMonth> billsOfMonths) {
+		BigDecimal sumOfMonth = BigDecimal.ZERO;
+		for (BillsOfMonth billsOfMonth : billsOfMonths) {
+			if (billsOfMonth.getPaid())
+				sumOfMonth = sumOfMonth.add(billsOfMonth.getAmount());
+		}
+		return sumOfMonth;
+	}
+
 	@GetMapping("${pay}/{id}")
 	public ModelAndView pay(@PathVariable("id") Long id) {
 		BillsOfMonth billsOfMonth = billsOfMonthService.get(id);
 		Long year = billsOfMonth.getYear();
 		int month = billsOfMonth.getMonth().getValue();
-
 		ModelAndView modelAndView = new ModelAndView("redirect:/bill/show_by_month/" + year + "/" + month);
-		
 		if (billsOfMonth.getPaid()) {
 			return modelAndView;
 		}
-		
 		billsOfMonthService.payBill(billsOfMonth);		
+		return modelAndView;
+	}
+	
+	@GetMapping("${edit_and_pay}/{id}")
+	public ModelAndView editAndPayGet(@PathVariable("id") Long id) {
+		BillsOfMonth billsOfMonth = billsOfMonthService.get(id);
+		Long year = billsOfMonth.getYear();
+		int month = billsOfMonth.getMonth().getValue();
+		if (billsOfMonth.getPaid()) {
+			return new ModelAndView("redirect:/bill/show_by_month/" + year + "/" + month);
+		}
+		
+		Account billsAccount = userSettingsService.getBillsAccount();
+		if (billsAccount == null) {
+			return new ModelAndView("redirect:/bill/show_by_month/" + year + "/" + month);
+		}
+		
+		ModelAndView modelAndView = new ModelAndView("bill/edit_and_pay");
+		modelAndView.addObject("billsOfMonth", billsOfMonth);
+		modelAndView.addObject("accountID", billsAccount.getId());
+		modelAndView.addObject("monthSelected", billsOfMonth.getMonth());
 		
 		return modelAndView;
 	}
+	
+	@PostMapping("${edit_and_pay}")
+	public ModelAndView editAndPayPost(@Valid BillsOfMonth billsOfMonth, BindingResult bindingResult) {
+		Long year = billsOfMonth.getYear();
+		int month = billsOfMonth.getMonth().getValue();
+		ModelAndView modelAndView = new ModelAndView("redirect:/bill/show_by_month/" + year + "/" + month);
+		billsOfMonthService.update(billsOfMonth);
+		billsOfMonthService.payBill(billsOfMonth);		
+		return modelAndView;
+	}
+	
+	private String generateNextMonthLink(Long month, Long year) {
 		
+		Long nextMonth;
+		Long nextYear;
+		
+		if (month == 12) {
+			nextMonth = 1L;
+			nextYear = year + 1L;
+		} else {
+			nextMonth = month + 1L;
+			nextYear = year;
+		}
+		
+		return "/" + nextYear + "/" + nextMonth;
+		
+	}
+	
+	private String generatePreviousMonthLink(Long month, Long year) {
+		
+		Long previousMonth;
+		Long previousYear;
+		
+		if (month == 1) {
+			previousMonth = 12L;
+			previousYear = year - 1L;
+		} else {
+			previousMonth = month - 1L;
+			previousYear = year;
+		}
+		
+		return "/" + previousYear + "/" + previousMonth;
+		
+	}
+	
 	
 //	@GetMapping("${modify}/{id}")
 //	public ModelAndView modifywEntity(@PathVariable("id") Long id) {

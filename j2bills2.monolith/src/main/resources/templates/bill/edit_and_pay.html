@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="/../general.html :: head"></head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<div th:insert="/../general.html :: sidebar"></div>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<div th:insert="/../general.html :: topbar"></div>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">Edytuj i zapłać</h1>
+					</div>
+
+					<div class="container">
+
+						<form role="form" th:action="@{/bill/edit_and_pay}" th:method="post" th:object="${billsOfMonth}">
+							
+							<div class="input-group">
+								<input type="text" id="name" name="name" th:field="*{name}" placeholder="Nazwa" class="form-control">
+								<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</p>
+							</div>
+							
+							<BR>
+
+							<div class="input-group">
+								<input type="text" id="description" name="description" th:field="*{description}" placeholder="Opis" class="form-control">
+								<p th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</p>
+							</div>	
+												
+							<BR>
+							
+							<div class="input-group">
+								<input type="number" id="amount" name="amount" th:field="*{amount}" step="0.01" placeholder="Wartość" class="form-control">
+								<p th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Default Amount Error</p> 
+							</div>
+							
+							<BR>
+							
+							<div class="input-group">
+								<input type="number" id="dueDay" name="dueDay" th:field="*{dueDay}" step="1" min="1" max="31" placeholder="Płatne do dnia" class="form-control"> 
+							</div>
+							
+							<BR>
+							
+							<div class="input-group">
+								<select id="month" name="month" class="form-control">
+									<option value="">Miesiąc</option>
+									<option 
+										th:each="month : ${T(java.time.Month).values()}" 
+										th:value="${month}"
+										th:text="${month}"
+										th:selected="(${monthSelected} == ${month})"></option>
+								</select>
+								<p th:if="${#fields.hasErrors('month')}" th:errors="*{month}">Month Error</p>
+							</div>
+							
+							<BR>
+							
+							<div class="input-group">
+								<input 
+									type="number" 
+									id="year" 
+									name="year" 
+									th:field="*{year}"
+									step="1" 
+									placeholder="Rok"
+									class="form-control">
+								<p th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year error</p>
+							</div>
+							
+							<input type="checkbox" th:checked="${billsOfMonth.paid}" disabled>
+							<input type="hidden" name="id" th:value="${billsOfMonth.id}" />
+
+							<BR> <input type="submit" class="btn btn-primary"> <BR>
+							<BR>
+						</form>
+						
+					</div>
+
+					<!-- /.container-fluid -->
+
+				</div>
+				<!-- End of Main Content -->
+
+				<!-- Footer -->
+				<footer th:insert="/../general.html :: footer"> </footer>
+				<!-- End of Footer -->
+
+			</div>
+			<!-- End of Content Wrapper -->
+
+		</div>
+		<!-- End of Page Wrapper -->
+
+	</div>
+
+	<!-- Logout Modal-->
+	<div th:insert="/../general.html :: end-of-body"></div>
+</body>
+
+</html>

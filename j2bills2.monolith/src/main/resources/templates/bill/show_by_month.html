@@ -28,6 +28,10 @@
               <h6 class="m-0 font-weight-bold text-primary">Rachunki</h6>
             </div>
             <div class="card-body">
+              <a th:href="@{/bill/show_by_month{previousMonthLink}/(previousMonthLink=${previousMonth})}">Poprzedni miesiąc</a>
+              -
+              <a th:href="@{/bill/show_by_month{nextMonthLink}/(nextMonthLink=${nextMonth})}">Następny miesiąc</a>
+              <BR><BR>
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
@@ -52,13 +56,49 @@
 							<td><p th:text="${billsOfMonth.amount}"></p></td>
 							<td><p th:text="${billsOfMonth.dueDay}"></p></td>
 							<td><input type="checkbox" th:checked="${billsOfMonth.paid}" disabled></input></td>
-							<td th:if="${billsOfMonth.paid == false}" ><a th:href="@{/bill/pay/{id}/(id=${billsOfMonth.id})}">Zapłać</a></td>
+							<td th:if="${billsOfMonth.paid == false}" >
+							<a th:href="@{/bill/pay/{id}/(id=${billsOfMonth.id})}">Zapłać</a><br>
+							<a th:href="@{/bill/edit_and_pay/{id}/(id=${billsOfMonth.id})}">Edytuj i zapłać</a></td>
 							<td th:if="${billsOfMonth.paid == true}" >Zapłacone</td>
 						</tr>
 					</th:block>
+					<tr>
+                 	  <th></th>
+                      <th></th>
+                      <th></th>
+                      <th><B>SUMA</B></th>
+                      <th><p th:text="${sumOfMonth}"></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+					<tr>
+                 	  <th></th>
+                      <th></th>
+                      <th></th>
+                      <th><B>DO ZAPŁACENIA</B></th>
+                      <th><p th:text="${sumOfMonthToPay}"></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+					<tr>
+                 	  <th></th>
+                      <th></th>
+                      <th></th>
+                      <th><B>ZAPŁACONE</B></th> 
+                      <th><p th:text="${sumOfMonthPaid}"></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </tr>
                   </tbody>
                 </table>
               </div>
+              <a th:href="@{/bill/show_by_month{previousMonthLink}/(previousMonthLink=${previousMonth})}">Poprzedni miesiąc</a>
+              -
+              <a th:href="@{/bill/show_by_month{nextMonthLink}/(nextMonthLink=${nextMonth})}">Następny miesiąc</a>
+             
             </div>
           </div>
 

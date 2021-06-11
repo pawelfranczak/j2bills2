@@ -71,4 +71,10 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 		return true;
 	}
 	
+	@Override
+	public void update(BillsOfMonth entity) {
+		entity.setOwner(getOwner());
+		super.update(entity);
+	}
+	
 }
