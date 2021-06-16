@@ -59,6 +59,19 @@
 									th:errors="*{account}">Account Error</p>
 							</div>
 							
+							Konto do różnić w rachunkach:
+							<div class="input-group">
+								<select id="billsDifferenceAccount" name="billsDifferenceAccount" class="form-control">
+									<option value="">Select Account</option>
+									<option th:each="account : ${accounts}"
+										th:value="${account.id}"
+										th:text="${account.name}"
+										th:selected="(${accountDifferenceID} == ${account.id})"></option>
+								</select>
+								<p th:if="${#fields.hasErrors('billsDifferenceAccount')}"
+									th:errors="*{account}">Account Error</p>
+							</div>
+							
 							<input type="hidden" name="id" th:value="${userSettings.id}" />
 
 							<BR> <input type="submit" class="btn btn-primary"> <BR>

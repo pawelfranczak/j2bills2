@@ -54,6 +54,15 @@ public class UserSettingsService extends CrudServiceImpl<UserSettings, Long>{
 		return null;
 	}
 	
+	public Account getBillsDifferenceAccount() {
+		List<UserSettings> findByOwner = userSettingsRepository.findByOwner(getOwner());
+		if (findByOwner != null && findByOwner.size() > 0) {
+			UserSettings userSettings = findByOwner.get(0);
+			return userSettings.getBillsDifferenceAccount();
+		}
+		return null;
+	}
+	
 	@Override
 	public void update(UserSettings userSettings) {
 		userSettings.setOwner(getOwner());

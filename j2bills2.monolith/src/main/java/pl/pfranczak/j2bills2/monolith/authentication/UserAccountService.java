@@ -52,7 +52,7 @@ public class UserAccountService implements UserDetailsService {
 		sendConfirmationMail(userAccount.getEmail(), confirmationToken.getConfirmationToken());
 		User user = new User(null, userAccount, userAccount.getName(), userAccount.getSurname(), userAccount.getEmail());
 		userService.create(user, userAccount);
-		UserSettings userSettings = new UserSettings(null, userAccount, true, 3L, null);
+		UserSettings userSettings = new UserSettings(null, userAccount, true, 3L, null, null);
 		userSettingsService.create(userSettings);
 	}
 	

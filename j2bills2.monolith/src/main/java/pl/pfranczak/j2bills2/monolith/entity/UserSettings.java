@@ -37,4 +37,10 @@ public class UserSettings {
 	@JoinColumn(nullable = true, name = "bills_account_id")
 	private Account billsAccount;
 	
+	@OneToOne(targetEntity = Account.class, fetch = FetchType.EAGER)
+	@JoinColumn(nullable = true, name = "bills_difference_account_id")
+	private Account billsDifferenceAccount;
+	
+	
+	
 }

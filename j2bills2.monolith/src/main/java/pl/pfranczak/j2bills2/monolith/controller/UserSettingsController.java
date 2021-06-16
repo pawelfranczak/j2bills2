@@ -28,10 +28,14 @@ public class UserSettingsController {
 		ModelAndView modelAndView = new ModelAndView("settings");
 		UserSettings userSettings = userSettingsService.get();
 		Account billsAccount = userSettings.getBillsAccount();
+		Account billsDifferenceAccount = userSettings.getBillsDifferenceAccount();
 		modelAndView.addObject("userSettings", userSettings);
 		modelAndView.addObject("accounts", accountService.getAll());
 		if (billsAccount != null) {
 			modelAndView.addObject("accountID", billsAccount.getId());
+		}
+		if (billsDifferenceAccount != null) {
+			modelAndView.addObject("accountDifferenceID", billsDifferenceAccount.getId());
 		}
 		userService.addUsernameToModelAndView(modelAndView);
 		return modelAndView;
