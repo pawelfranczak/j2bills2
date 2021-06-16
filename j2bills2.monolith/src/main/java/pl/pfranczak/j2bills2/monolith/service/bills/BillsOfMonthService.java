@@ -1,5 +1,6 @@
 package pl.pfranczak.j2bills2.monolith.service.bills;
 
+import java.math.BigDecimal;
 import java.time.Month;
 import java.util.List;
 
@@ -52,21 +53,43 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 		super.create(bill);
 	}
 	
-	public boolean payBill(BillsOfMonth billsOfMonth) {
+	public boolean payBill(BillsOfMonth billsOfMonth, BigDecimal originalBillValue) {
 		Account billsAccount = userSettingsService.getBillsAccount();
 		if (billsAccount == null) {
 			return false;
 		}
 		
-		Journal journal = new Journal();
-		journal.setAccount(billsAccount);
-		journal.setDescription(billsOfMonth.getDescription());
-		journal.setValue(billsOfMonth.getAmount().negate());
-		journal.setUser(userService.getAll().get(0));
-		journalService.create(journal);
+		Account billsDifferenceAccount = userSettingsService.getBillsDifferenceAccount();
+		if (billsDifferenceAccount != null && originalBillValue != null) {
+			Journal journal = new Journal();
+			journal.setAccount(billsAccount);
+			journal.setDescription(billsOfMonth.getDescription());
+			journal.setValue(originalBillValue.negate());
+			journal.setUser(userService.getAll().get(0));
+			journalService.create(journal);
+			
+			BigDecimal difference = billsOfMonth.getAmount().subtract(originalBillValue);
+			if (difference.compareTo(BigDecimal.ZERO) != 0) {
+				Journal journalDifference = new Journal();
+				journalDifference.setAccount(billsDifferenceAccount);
+				journalDifference.setDescription(billsOfMonth.getDescription());
+				journalDifference.setValue(difference.negate());
+				journalDifference.setUser(userService.getAll().get(0));
+				journalService.create(journalDifference);
+			}
+		} else {
+			Journal journal = new Journal();
+			journal.setAccount(billsAccount);
+			journal.setDescription(billsOfMonth.getDescription());
+			journal.setValue(billsOfMonth.getAmount().negate());
+			journal.setUser(userService.getAll().get(0));
+			journalService.create(journal);
+		}
 		
 		billsOfMonth.setPaid(true);
 		billRepository.save(billsOfMonth);
+		
+
 		
 		return true;
 	}

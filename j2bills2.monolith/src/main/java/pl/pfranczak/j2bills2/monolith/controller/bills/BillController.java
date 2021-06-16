@@ -181,7 +181,7 @@ public class BillController {
 		if (billsOfMonth.getPaid()) {
 			return modelAndView;
 		}
-		billsOfMonthService.payBill(billsOfMonth);		
+		billsOfMonthService.payBill(billsOfMonth, null);		
 		return modelAndView;
 	}
 	
@@ -208,12 +208,13 @@ public class BillController {
 	}
 	
 	@PostMapping("${edit_and_pay}")
-	public ModelAndView editAndPayPost(@Valid BillsOfMonth billsOfMonth, BindingResult bindingResult) {
-		Long year = billsOfMonth.getYear();
-		int month = billsOfMonth.getMonth().getValue();
+	public ModelAndView editAndPayPost(@Valid BillsOfMonth billOfMonth, BindingResult bindingResult) {
+		Long year = billOfMonth.getYear();
+		int month = billOfMonth.getMonth().getValue();
 		ModelAndView modelAndView = new ModelAndView("redirect:/bill/show_by_month/" + year + "/" + month);
-		billsOfMonthService.update(billsOfMonth);
-		billsOfMonthService.payBill(billsOfMonth);		
+		BigDecimal originalBillValue = billsOfMonthService.get(billOfMonth.getId()).getAmount();
+		billsOfMonthService.update(billOfMonth);
+		billsOfMonthService.payBill(billOfMonth, originalBillValue);		
 		return modelAndView;
 	}
 	
