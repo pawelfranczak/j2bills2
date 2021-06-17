@@ -51,6 +51,8 @@ public class BillsOfMonth {
 	@NotNull
 	private BigDecimal amount;
 	
+	private BigDecimal amountPaid;
+	
 	@Min(1)
 	@Max(31)
 	private Byte dueDay;

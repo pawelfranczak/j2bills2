@@ -40,10 +40,11 @@
                       <th>Opis</th>
                       <th>Miesiąc</th>
                       <th>Rok</th>
-                      <th>Wartość</th>
+                      <th>Do zapłaty</th>
+                      <th>Kwota zapłacone</th>
                       <th>Płatne do</th>
                       <th>Zapłacone</th>
-                      <th>Zapłać</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -54,6 +55,7 @@
 							<td><p th:text="${billsOfMonth.month}"></p></td>
 							<td><p th:text="${billsOfMonth.year}"></p></td>
 							<td><p th:text="${billsOfMonth.amount}"></p></td>
+							<td><p th:text="${billsOfMonth.amountPaid}"></p></td>
 							<td><p th:text="${billsOfMonth.dueDay}"></p></td>
 							<td><input type="checkbox" th:checked="${billsOfMonth.paid}" disabled></input></td>
 							<td th:if="${billsOfMonth.paid == false}" >

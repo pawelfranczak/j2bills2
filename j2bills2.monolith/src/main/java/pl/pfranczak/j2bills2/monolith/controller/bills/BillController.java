@@ -174,14 +174,16 @@ public class BillController {
 
 	@GetMapping("${pay}/{id}")
 	public ModelAndView pay(@PathVariable("id") Long id) {
-		BillsOfMonth billsOfMonth = billsOfMonthService.get(id);
-		Long year = billsOfMonth.getYear();
-		int month = billsOfMonth.getMonth().getValue();
+		BillsOfMonth billOfMonth = billsOfMonthService.get(id);
+		Long year = billOfMonth.getYear();
+		int month = billOfMonth.getMonth().getValue();
 		ModelAndView modelAndView = new ModelAndView("redirect:/bill/show_by_month/" + year + "/" + month);
-		if (billsOfMonth.getPaid()) {
+		if (billOfMonth.getPaid()) {
 			return modelAndView;
 		}
-		billsOfMonthService.payBill(billsOfMonth, null);		
+		billOfMonth.setAmountPaid(billOfMonth.getAmount());
+		billsOfMonthService.update(billOfMonth);
+		billsOfMonthService.payBill(billOfMonth, null, null);		
 		return modelAndView;
 	}
 	
@@ -213,8 +215,11 @@ public class BillController {
 		int month = billOfMonth.getMonth().getValue();
 		ModelAndView modelAndView = new ModelAndView("redirect:/bill/show_by_month/" + year + "/" + month);
 		BigDecimal originalBillValue = billsOfMonthService.get(billOfMonth.getId()).getAmount();
+		BigDecimal newBillValue = billOfMonth.getAmount();
+		billOfMonth.setAmountPaid(newBillValue);
+		billOfMonth.setAmount(originalBillValue);
 		billsOfMonthService.update(billOfMonth);
-		billsOfMonthService.payBill(billOfMonth, originalBillValue);		
+		billsOfMonthService.payBill(billOfMonth, originalBillValue, newBillValue);		
 		return modelAndView;
 	}
 	
