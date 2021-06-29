@@ -30,7 +30,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Suma ze wszystkich kont:</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><span th:text="${sumOfAllAccounts}"></span></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="sumOfAllAccounts" th:text="${sumOfAllAccounts}"></span></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -39,7 +39,6 @@
                 </div>
               </div>
             </div>
-
 
         </div>
         
@@ -62,6 +61,39 @@
             </div>
 
         </div>
+        
+        <div class="row">
+            <div class="col-xl-4 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">STAN KONTA BANKOWEGO</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800" oninput="calculate()"><input type="number" step=0.01 class="form-control form-control-user" id="bankAccount" name="bankAccount"></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"><a id="linkToCreateDifference" href="journal/new/">Różnica</a></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="diff">0</span></div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
 
       </div>
 
@@ -78,6 +110,18 @@
 
   <!-- Logout Modal-->
   <div th:insert="general.html :: end-of-body"></div>
+  
+  <script>
+	  function calculate() {
+			var result = document.getElementById('diff');
+			var linkToCreateDifference = document.getElementById('linkToCreateDifference');
+			var bankAccount = document.getElementById('bankAccount').value;	
+		    var sumOfAllAccounts = document.getElementById('sumOfAllAccounts').innerText;
+			var myResult = bankAccount - sumOfAllAccounts;
+			result.innerText = myResult;
+			linkToCreateDifference.href = "journal/new/?difference=" + myResult;
+	}
+  </script>
 
 </body>
 
