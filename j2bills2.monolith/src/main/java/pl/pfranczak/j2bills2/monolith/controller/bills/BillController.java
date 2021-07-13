@@ -1,6 +1,7 @@
 package pl.pfranczak.j2bills2.monolith.controller.bills;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lombok.AllArgsConstructor;
 import pl.pfranczak.j2bills2.monolith.entity.Account;
-import pl.pfranczak.j2bills2.monolith.entity.UserSettings;
 import pl.pfranczak.j2bills2.monolith.entity.bills.Bill;
 import pl.pfranczak.j2bills2.monolith.entity.bills.BillsOfMonth;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
@@ -128,7 +128,10 @@ public class BillController {
 	
 	@GetMapping("${show_by_month}")	
 	public ModelAndView showAllByMonth() {
-		return new ModelAndView("redirect:/bill/show_by_month/2021/6");
+		LocalDate currentdate = LocalDate.now();
+		Month currentMonth = currentdate.getMonth();
+		int currentYear = currentdate.getYear();
+		return new ModelAndView("redirect:/bill/show_by_month/" + currentYear + "/" + currentMonth.getValue());
 	}
 	
 	@GetMapping("${show_by_month}/{year}/{month}")	
