@@ -85,6 +85,9 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 			journal.setUser(userService.getAll().get(0));
 			journalService.create(journal);
 		}
+		
+		billsOfMonth.setPaid(true);
+		billRepository.save(billsOfMonth);
 	
 		return true;
 	}

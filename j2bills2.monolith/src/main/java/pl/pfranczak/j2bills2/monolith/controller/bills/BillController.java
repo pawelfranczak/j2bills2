@@ -221,7 +221,6 @@ public class BillController {
 		BigDecimal newBillValue = billOfMonth.getAmount();
 		billOfMonth.setAmountPaid(newBillValue);
 		billOfMonth.setAmount(originalBillValue);
-		billOfMonth.setPaid(true);
 		billsOfMonthService.update(billOfMonth);
 		billsOfMonthService.payBill(billOfMonth, originalBillValue, newBillValue);		
 		return modelAndView;
