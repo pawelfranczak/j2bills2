@@ -63,7 +63,7 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 		if (billsDifferenceAccount != null && originalBillValue != null && newBillValue != null) {
 			Journal journal = new Journal();
 			journal.setAccount(billsAccount);
-			journal.setDescription(billsOfMonth.getDescription());
+			journal.setDescription(billsOfMonth.getName());
 			journal.setValue(originalBillValue.negate());
 			journal.setUser(userService.getAll().get(0));
 			journalService.create(journal);
@@ -72,7 +72,7 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 			if (difference.compareTo(BigDecimal.ZERO) != 0) {
 				Journal journalDifference = new Journal();
 				journalDifference.setAccount(billsDifferenceAccount);
-				journalDifference.setDescription(billsOfMonth.getDescription());
+				journalDifference.setDescription(billsOfMonth.getName());
 				journalDifference.setValue(difference.negate());
 				journalDifference.setUser(userService.getAll().get(0));
 				journalService.create(journalDifference);
@@ -80,15 +80,12 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 		} else {
 			Journal journal = new Journal();
 			journal.setAccount(billsAccount);
-			journal.setDescription(billsOfMonth.getDescription());
+			journal.setDescription(billsOfMonth.getName());
 			journal.setValue(billsOfMonth.getAmount().negate());
 			journal.setUser(userService.getAll().get(0));
 			journalService.create(journal);
 		}
-		
-		billsOfMonth.setPaid(true);
-		billRepository.save(billsOfMonth);
-		
+	
 		return true;
 	}
 	
