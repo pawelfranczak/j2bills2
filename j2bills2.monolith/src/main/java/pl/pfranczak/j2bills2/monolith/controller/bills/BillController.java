@@ -228,18 +228,26 @@ public class BillController {
 	}
 	
 	@GetMapping("${copy_month}")
-	public ModelAndView copyMonth() {
+	public ModelAndView copyMonthGet() {
 		ModelAndView modelAndView = new ModelAndView("redirect:/bill/copy_month/0/0/0/0");
 		return modelAndView;
 	}
 	
 	@GetMapping("${copy_month}/{sourceYear}/{sourceMonth}/{targerYear}/{targetMonth}")
-	public ModelAndView copyMonthWithAtributes(@PathVariable("sourceYear") Long sourceYear, @PathVariable("sourceMonth") Long sourceMonth, @PathVariable("targerYear") Long targerYear, @PathVariable("targetMonth") Long targetMonth) {
+	public ModelAndView copyMonthWithAtributesGet(@PathVariable("sourceYear") Long sourceYear, @PathVariable("sourceMonth") Long sourceMonth, @PathVariable("targerYear") Long targerYear, @PathVariable("targetMonth") Long targetMonth) {
 		ModelAndView modelAndView = new ModelAndView("bill/copy_month");
 		CopyMonth copyMonth = new CopyMonth(sourceYear, sourceMonth, targerYear, targetMonth);
 		modelAndView.addObject("copyMonth", copyMonth);
 		return modelAndView;
 	}
+	
+	@PostMapping("${copy_month}")
+	public ModelAndView copyMonthPost(@Valid CopyMonth copyMonth, BindingResult bindingResult) {
+		ModelAndView modelAndView = new ModelAndView("redirect:/bill/show_by_month/" + copyMonth.getTargerYear() + "/" + copyMonth.getTargetMonth());
+		billsOfMonthService.copyMonth(copyMonth);
+		return modelAndView;
+	}
+	
 	
 	private String generateNextMonthLink(Long month, Long year) {
 		

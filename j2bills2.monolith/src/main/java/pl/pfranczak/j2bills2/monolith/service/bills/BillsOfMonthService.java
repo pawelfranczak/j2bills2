@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pl.pfranczak.j2bills2.monolith.entity.Account;
 import pl.pfranczak.j2bills2.monolith.entity.Journal;
 import pl.pfranczak.j2bills2.monolith.entity.bills.BillsOfMonth;
+import pl.pfranczak.j2bills2.monolith.entity.bills.CopyMonth;
 import pl.pfranczak.j2bills2.monolith.repository.bills.BillsOfMonthRepository;
 import pl.pfranczak.j2bills2.monolith.service.CrudServiceImpl;
 import pl.pfranczak.j2bills2.monolith.service.JournalService;
@@ -90,6 +91,25 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 		billRepository.save(billsOfMonth);
 	
 		return true;
+	}
+	
+	public void copyMonth(CopyMonth copyMonth) {
+		
+		List<BillsOfMonth> billsOfMonths = getByOwnerAndYearAndMonth(copyMonth.getSourceYear(), copyMonth.getSourceMonth());
+		for (BillsOfMonth oldBillsOfMonth : billsOfMonths) {
+			BillsOfMonth newBillsOfMonth = new BillsOfMonth();
+			newBillsOfMonth.setOwner(getOwner());
+			newBillsOfMonth.setName(oldBillsOfMonth.getName());
+			newBillsOfMonth.setDescription(oldBillsOfMonth.getDescription());
+			newBillsOfMonth.setMonth(Month.of(copyMonth.getTargetMonth().intValue()));
+			newBillsOfMonth.setYear(copyMonth.getTargerYear());
+			newBillsOfMonth.setAmount(oldBillsOfMonth.getAmount());
+			newBillsOfMonth.setAmountPaid(BigDecimal.ZERO);
+			newBillsOfMonth.setDueDay(oldBillsOfMonth.getDueDay());
+			newBillsOfMonth.setPaid(Boolean.FALSE);
+			create(newBillsOfMonth);
+		}
+		
 	}
 	
 	@Override
