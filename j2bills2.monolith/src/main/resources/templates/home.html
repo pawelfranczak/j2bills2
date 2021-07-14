@@ -118,6 +118,7 @@
 			var bankAccount = document.getElementById('bankAccount').value;	
 		    var sumOfAllAccounts = document.getElementById('sumOfAllAccounts').innerText;
 			var myResult = bankAccount - sumOfAllAccounts;
+			myResult = myResult.toFixed(2) 
 			result.innerText = myResult;
 			linkToCreateDifference.href = "journal/new/?difference=" + myResult;
 	}
