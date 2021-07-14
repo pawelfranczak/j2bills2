@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import pl.pfranczak.j2bills2.monolith.entity.Account;
 import pl.pfranczak.j2bills2.monolith.entity.bills.Bill;
 import pl.pfranczak.j2bills2.monolith.entity.bills.BillsOfMonth;
+import pl.pfranczak.j2bills2.monolith.entity.bills.CopyMonth;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
 import pl.pfranczak.j2bills2.monolith.service.UserSettingsService;
 import pl.pfranczak.j2bills2.monolith.service.bills.BillService;
@@ -223,6 +224,20 @@ public class BillController {
 		billOfMonth.setAmount(originalBillValue);
 		billsOfMonthService.update(billOfMonth);
 		billsOfMonthService.payBill(billOfMonth, originalBillValue, newBillValue);		
+		return modelAndView;
+	}
+	
+	@GetMapping("${copy_month}")
+	public ModelAndView copyMonth() {
+		ModelAndView modelAndView = new ModelAndView("redirect:/bill/copy_month/0/0/0/0");
+		return modelAndView;
+	}
+	
+	@GetMapping("${copy_month}/{sourceYear}/{sourceMonth}/{targerYear}/{targetMonth}")
+	public ModelAndView copyMonthWithAtributes(@PathVariable("sourceYear") Long sourceYear, @PathVariable("sourceMonth") Long sourceMonth, @PathVariable("targerYear") Long targerYear, @PathVariable("targetMonth") Long targetMonth) {
+		ModelAndView modelAndView = new ModelAndView("bill/copy_month");
+		CopyMonth copyMonth = new CopyMonth(sourceYear, sourceMonth, targerYear, targetMonth);
+		modelAndView.addObject("copyMonth", copyMonth);
 		return modelAndView;
 	}
 	

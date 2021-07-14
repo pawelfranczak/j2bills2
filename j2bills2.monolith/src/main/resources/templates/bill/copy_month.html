@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="/../general.html :: head"></head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<div th:insert="/../general.html :: sidebar"></div>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<div th:insert="/../general.html :: topbar"></div>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">Kopiuj rachunki</h1>
+					</div>
+
+					<div class="container">
+
+						<form role="form" th:action="@{/bill/copy_month}" th:method="post" th:object="${copyMonth}">
+						
+							<table>
+							<tbody>
+							<tr>
+							<td></td>
+							<td>Rok</td>
+							<td>Miesiąc</td>
+							</tr>
+							<tr>
+							<td>Źródło</td>
+							<td>								
+									<input 
+									type="number" 
+									id="sourceYear" 
+									name="sourceYear" 
+									th:field="*{sourceYear}"
+									step="1" 
+									placeholder="Rok źródłowy"
+									class="form-control">
+								<p th:if="${#fields.hasErrors('sourceYear')}" th:errors="*{sourceYear}">Year error</p>
+							</td>
+							<td>
+								<input 
+									type="number" 
+									id="sourceMonth" 
+									name="sourceMonth" 
+									th:field="*{sourceMonth}"
+									step="1" 
+									placeholder="Miesiąc źródłowy"
+									class="form-control">
+								<p th:if="${#fields.hasErrors('sourceMonth')}" th:errors="*{sourceMonth}">Year error</p>
+							</td>
+							</tr>
+							<tr>
+							<td>Cel</td>
+							<td>
+								<input 
+									type="number" 
+									id="targerYear" 
+									name="targerYear" 
+									th:field="*{targerYear}"
+									step="1" 
+									placeholder="Rok docelowy"
+									class="form-control">
+								<p th:if="${#fields.hasErrors('targerYear')}" th:errors="*{targerYear}">Year error</p>
+							</td>
+							<td>
+								<input 
+									type="number" 
+									id="targetMonth" 
+									name="targetMonth" 
+									th:field="*{targetMonth}"
+									step="1" 
+									placeholder="Miesiąc docelowy "
+									class="form-control">
+								<p th:if="${#fields.hasErrors('targetMonth')}" th:errors="*{targetMonth}">Year error</p>
+							</td>
+							</tr>
+							</tbody>
+							</table>
+													
+							<BR> <input type="submit" class="btn btn-primary"> <BR>
+							<BR>
+						</form>
+						
+					</div>
+
+					<!-- /.container-fluid -->
+
+				</div>
+				<!-- End of Main Content -->
+
+				<!-- Footer -->
+				<footer th:insert="/../general.html :: footer"> </footer>
+				<!-- End of Footer -->
+
+			</div>
+			<!-- End of Content Wrapper -->
+
+		</div>
+		<!-- End of Page Wrapper -->
+
+	</div>
+
+	<!-- Logout Modal-->
+	<div th:insert="/../general.html :: end-of-body"></div>
+	
+	<script>
+	function updateDependentFields(val) {
+	  document.getElementById('amount').value= document.getElementById('defaultAmounts').options[val.selectedIndex].value
+	  document.getElementById('dueDay').value= document.getElementById('defaultDueDays').options[val.selectedIndex].value
+	  document.getElementById('name').value= document.getElementById('defaultNames').options[val.selectedIndex].value
+	  document.getElementById('description').value= document.getElementById('defaultDescriptions').options[val.selectedIndex].value
+	}
+	</script>
+	
+</body>
+
+</html>
