@@ -229,7 +229,11 @@ public class BillController {
 	
 	@GetMapping("${copy_month}")
 	public ModelAndView copyMonthGet() {
-		ModelAndView modelAndView = new ModelAndView("redirect:/bill/copy_month/0/0/0/0");
+		LocalDate currentdate = LocalDate.now();
+		Month currentMonthEnum = currentdate.getMonth();
+		int currentMonth = currentMonthEnum.getValue();
+		int currentYear = currentdate.getYear();
+		ModelAndView modelAndView = new ModelAndView("redirect:/bill/copy_month/" + currentYear + "/" + currentMonth + "/" + currentYear + "/" + currentMonth);
 		return modelAndView;
 	}
 	
