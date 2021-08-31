@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="general.html :: head"></head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<div th:insert="general.html :: sidebar"></div>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<div th:insert="general.html :: topbar"></div>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+				
+					<th:block th:each="alert : ${alerts}">
+						<div class="card shadow mb-4">
+	                            <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary"><p th:text="${alert.name}"></p></h6>
+                                </div>
+                                <div class="card-body">
+                                	<p th:text="${#dates.format(alert.date, 'dd-MM-yyyy')}"></p>
+                                    <p th:text="${alert.description}"></p>
+                                </div>
+                        </div>
+					</th:block>
+
+				</div>
+				<!-- /.container-fluid -->
+
+			</div>
+			<!-- End of Main Content -->
+
+			<!-- Footer -->
+			<footer th:insert="general.html :: footer"> </footer>
+			<!-- End of Footer -->
+
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+
+	<!-- Logout Modal-->
+	<div th:insert="general.html :: end-of-body"></div>
+
+</body>
+
+</html>
