@@ -261,6 +261,13 @@ public class BillController {
 		return modelAndView;
 	}
 	
+	@GetMapping("${delete}/{year}/{month}/{id}")
+	public ModelAndView deleteGet(@PathVariable("year") Long year, @PathVariable("month") Long month, @PathVariable("id") Long id) {
+		ModelAndView modelAndView = new ModelAndView("redirect:/bill/show_by_month/" + year + "/" + month);
+		billsOfMonthService.deleteById(id);
+		return modelAndView;
+	}
+	
 	@GetMapping("${copy_month}")
 	public ModelAndView copyMonthGet() {
 		LocalDate currentdate = LocalDate.now();

@@ -61,7 +61,8 @@
 							<td th:if="${billsOfMonth.paid == false}" >
 							<a th:href="@{/bill/pay/{id}/(id=${billsOfMonth.id})}">Zapłać</a><br>
 							<a th:href="@{/bill/edit_and_pay/{id}/(id=${billsOfMonth.id})}">Edytuj i zapłać</a><br>
-							<a th:href="@{/bill/modify/{id}/(id=${billsOfMonth.id})}">Edytuj</a></td>
+							<a th:href="@{/bill/modify/{id}/(id=${billsOfMonth.id})}">Edytuj</a><br>
+							<a th:href="@{/bill/delete/{year}/{month}/{id}/(year=${billsOfMonth.year}, month=${billsOfMonth.month.value} ,id=${billsOfMonth.id})}">Usun</a></td>
 							<td th:if="${billsOfMonth.paid == true}" >Zapłacone</td>
 						</tr>
 					</th:block>
