@@ -227,6 +227,40 @@ public class BillController {
 		return modelAndView;
 	}
 	
+	@GetMapping("${modify}/{id}")
+	public ModelAndView modifyGet(@PathVariable("id") Long id) {
+		BillsOfMonth billsOfMonth = billsOfMonthService.get(id);
+		Long year = billsOfMonth.getYear();
+		int month = billsOfMonth.getMonth().getValue();
+		if (billsOfMonth.getPaid()) {
+			return new ModelAndView("redirect:/bill/show_by_month/" + year + "/" + month);
+		}
+		
+		Account billsAccount = userSettingsService.getBillsAccount();
+		if (billsAccount == null) {
+			return new ModelAndView("redirect:/bill/show_by_month/" + year + "/" + month);
+		}
+		
+		ModelAndView modelAndView = new ModelAndView("bill/modify");
+		modelAndView.addObject("billsOfMonth", billsOfMonth);
+		modelAndView.addObject("accountID", billsAccount.getId());
+		modelAndView.addObject("monthSelected", billsOfMonth.getMonth());
+		
+		
+		return modelAndView;
+	}
+	
+	@PostMapping("${modify}")
+	public ModelAndView modifyPost(@Valid BillsOfMonth billOfMonth, BindingResult bindingResult) {
+		Long year = billOfMonth.getYear();
+		int month = billOfMonth.getMonth().getValue();
+		ModelAndView modelAndView = new ModelAndView("redirect:/bill/show_by_month/" + year + "/" + month);
+		billOfMonth.setPaid(false);
+		billOfMonth.setAmountPaid(BigDecimal.ZERO);
+		billsOfMonthService.update(billOfMonth);
+		return modelAndView;
+	}
+	
 	@GetMapping("${copy_month}")
 	public ModelAndView copyMonthGet() {
 		LocalDate currentdate = LocalDate.now();

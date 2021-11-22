@@ -60,7 +60,8 @@
 							<td><input type="checkbox" th:checked="${billsOfMonth.paid}" disabled></input></td>
 							<td th:if="${billsOfMonth.paid == false}" >
 							<a th:href="@{/bill/pay/{id}/(id=${billsOfMonth.id})}">Zapłać</a><br>
-							<a th:href="@{/bill/edit_and_pay/{id}/(id=${billsOfMonth.id})}">Edytuj i zapłać</a></td>
+							<a th:href="@{/bill/edit_and_pay/{id}/(id=${billsOfMonth.id})}">Edytuj i zapłać</a><br>
+							<a th:href="@{/bill/modify/{id}/(id=${billsOfMonth.id})}">Edytuj</a></td>
 							<td th:if="${billsOfMonth.paid == true}" >Zapłacone</td>
 						</tr>
 					</th:block>
