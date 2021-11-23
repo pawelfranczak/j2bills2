@@ -30,7 +30,7 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 	
 	@Override
 	public List<Notification> getAll() {
-		return notificationRepository.findByOwner(getOwner());
+		return notificationRepository.findByOwnerOrderByDateDesc(getOwner());
 	}
 	
 	@Override
