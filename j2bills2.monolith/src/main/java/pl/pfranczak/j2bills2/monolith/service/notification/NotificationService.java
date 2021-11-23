@@ -1,30 +1,31 @@
 package pl.pfranczak.j2bills2.monolith.service.notification;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import pl.pfranczak.j2bills2.monolith.entity.bills.BillsOfMonth;
 import pl.pfranczak.j2bills2.monolith.entity.notification.Notification;
 import pl.pfranczak.j2bills2.monolith.entity.notification.Notified;
-import pl.pfranczak.j2bills2.monolith.repository.bills.BillsOfMonthRepository;
 import pl.pfranczak.j2bills2.monolith.repository.notifications.NotificationRepositiry;
-import pl.pfranczak.j2bills2.monolith.repository.notifications.NotifiedRepositiry;
 import pl.pfranczak.j2bills2.monolith.service.CrudServiceImpl;
+import pl.pfranczak.j2bills2.monolith.service.bills.BillsOfMonthService;
 
 @Service
 public class NotificationService extends CrudServiceImpl<Notification, Long>{
 
 	NotificationRepositiry notificationRepository;
-	BillsOfMonthRepository billsOfMonthRepository;
-	NotifiedRepositiry notifiedRepositiry;
+	BillsOfMonthService billsOfMonthService;
+	NotifiedService notifiedService;
 	
-	public NotificationService(NotificationRepositiry notificationRepository, BillsOfMonthRepository billsOfMonthRepository, NotifiedRepositiry notifiedRepositiry) {
+	public NotificationService(NotificationRepositiry notificationRepository,BillsOfMonthService billsOfMonthService, NotifiedService notifiedService) {
 		super.setRepository(notificationRepository);
 		this.notificationRepository = notificationRepository;
-		this.billsOfMonthRepository = billsOfMonthRepository;
-		this.notifiedRepositiry = notifiedRepositiry;
+		this.billsOfMonthService = billsOfMonthService;
+		this.notifiedService = notifiedService;
 	}
 	
 	@Override
@@ -50,15 +51,100 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 	}
 	
 	public void generateNotification() {
-		List<BillsOfMonth> billsOfMonth = billsOfMonthRepository.findByOwnerAndPaidFalse(getOwner());
+		List<BillsOfMonth> billsOfMonth = billsOfMonthService.getByOwnerAndAndPaid(false);
 		for (BillsOfMonth billOfMonth : billsOfMonth) {
-			Optional<Notified> notified = notifiedRepositiry.findById(billOfMonth.getId());
-			if (notified.isEmpty()) {
+			Notified notified = notifiedService.get(billOfMonth.getId());
+			if (notified == null) {
 				// generate 1st notification about outstanding bill
 				// Rachunek Y na kwotę X ma termin płatności Z 
-				// TODO
+				if (billIsToPayInFuture(billOfMonth)) {
+					createNotificationToPayInFuture(billOfMonth);
+				} else if (billIsToPayToday(billOfMonth)) {
+					createNotificationToPayToday(billOfMonth);
+				}
 			}
 		}
+	}
+	
+	private void createNotificationToPayToday(BillsOfMonth billOfMonth) {
+		Notification notification = new Notification();
+		
+		String notificationString = "Dzisiaj ma termin płatności rachunek \"" + billOfMonth.getName() + "\" na kwotę " + billOfMonth.getAmount();
+		
+		notification.setActive(true);
+		notification.setDate(getTimestamp());
+		notification.setNotification(notificationString);
+		
+		this.create(notification);
+		
+		Notified notified = new Notified(billOfMonth.getId(), getTimestamp());
+		notifiedService.create(notified);
+	}
+
+	private void createNotificationToPayInFuture(BillsOfMonth billOfMonth) {
+		
+		Notification notification = new Notification();
+		
+		int daysToDueDate = daysToDueDate(billOfMonth);
+		String dueDate = billOfMonth.getYear() + "." + billOfMonth.getMonth().getValue() + "." + billOfMonth.getDueDay();
+		String notificationString = "Rachunek \"" + billOfMonth.getName() + "\" na kwotę " + billOfMonth.getAmount() + " ma termin płatności " + dueDate + ". Pozostało " + "Pozostało " + daysToDueDate + " dni.";
+		
+		notification.setActive(true);
+		notification.setDate(getTimestamp());
+		notification.setNotification(notificationString);
+		
+		this.create(notification);
+		
+		Notified notified = new Notified(billOfMonth.getId(), getTimestamp());
+		notifiedService.create(notified);
+	}
+	
+	private int daysToDueDate(BillsOfMonth billOfMonth) {
+		if (billIsToPayToday(billOfMonth)) {
+			return 0;	
+		} else {
+			return calcDaysBetween(billOfMonth);
+		}
+	}
+
+	private int calcDaysBetween(BillsOfMonth billOfMonth) {
+		LocalDate currentdate = LocalDate.now();
+		LocalDate billDueDate = LocalDate.of(billOfMonth.getYear().intValue(), billOfMonth.getMonth(), billOfMonth.getDueDay().intValue());
+		return (int)currentdate.until(billDueDate, ChronoUnit.DAYS);
+	}
+
+	private boolean billIsToPayInFuture(BillsOfMonth billOfMonth) {
+		LocalDate currentdate = LocalDate.now();
+		Month currentMonth = currentdate.getMonth();
+		int currentYear = currentdate.getYear();
+		int currentDay = currentdate.getDayOfMonth();
+		
+		if (billOfMonth.getYear().intValue() > currentYear) {
+			return true;
+		} else if (billOfMonth.getYear().intValue() == currentYear ) {
+			if (billOfMonth.getMonth().getValue() > currentMonth.getValue()) {
+				return true;
+			} else if (billOfMonth.getMonth().getValue() == currentMonth.getValue()) {
+				if (billOfMonth.getDueDay() > currentDay) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	private boolean billIsToPayToday(BillsOfMonth billOfMonth) {
+		LocalDate currentdate = LocalDate.now();
+		Month currentMonth = currentdate.getMonth();
+		int currentYear = currentdate.getYear();
+		int currentDay = currentdate.getDayOfMonth();
+		
+		if (currentYear == billOfMonth.getYear() && currentMonth.getValue() == billOfMonth.getMonth().getValue() && currentDay == billOfMonth.getDueDay()) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 }
