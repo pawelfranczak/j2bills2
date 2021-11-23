@@ -27,4 +27,13 @@ public class NotificationController {
 		return modelAndView;
 	}
 	
+	@GetMapping("${history}")
+	public ModelAndView showAllHistoricalGet() {
+		ModelAndView modelAndView = new ModelAndView("notification/history");
+		notificationService.generateNotification();
+		List<Notification> notifications = notificationService.getAllNotActive();
+		modelAndView.addObject("notifications", notifications);
+		return modelAndView;
+	}
+	
 }

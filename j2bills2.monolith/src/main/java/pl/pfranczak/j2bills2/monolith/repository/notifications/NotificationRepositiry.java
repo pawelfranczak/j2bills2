@@ -11,6 +11,7 @@ import pl.pfranczak.j2bills2.monolith.entity.notification.Notification;
 @Repository
 public interface NotificationRepositiry extends CrudRepository<Notification, Long> {
 	List<Notification> findByOwner(UserAccount owner);
-	List<Notification> findByOwnerOrderByDateDesc(UserAccount owner);
+	List<Notification> findByOwnerAndActiveTrueOrderByDateDesc(UserAccount owner);
+	List<Notification> findByOwnerAndActiveFalseOrderByDateDesc(UserAccount owner);
 	Notification findByIdAndOwner(Long id, UserAccount owner);
 }
