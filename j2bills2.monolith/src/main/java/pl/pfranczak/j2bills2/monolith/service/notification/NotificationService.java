@@ -58,9 +58,8 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 		List<BillsOfMonth> billsOfMonth = billsOfMonthService.getByOwnerAndAndPaid(false);
 		for (BillsOfMonth billOfMonth : billsOfMonth) {
 			Notified notified = notifiedService.get(billOfMonth.getId());
-			if (notified == null) {
-				// generate 1st notification about outstanding bill
-				// Rachunek Y na kwotę X ma termin płatności Z 
+			int daysToDueDate = daysToDueDate(billOfMonth);
+			if (notificationShouldBeGenerated(notified, daysToDueDate)) {
 				if (billIsToPayInFuture(billOfMonth)) {
 					createNotificationToPayInFuture(billOfMonth);
 				} else if (billIsToPayToday(billOfMonth)) {
@@ -70,6 +69,22 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 		}
 	}
 	
+	private boolean notificationShouldBeGenerated(Notified notified, int daysToDueDate) {
+		// 7 3 1 0, magic numbers -> todo move to DB
+		int daysBetweenLastGenerationAndNow = Integer.MAX_VALUE;
+		if (notified != null) {
+			daysBetweenLastGenerationAndNow = calcDaysBetween(notified.getTimestamp().toLocalDateTime().toLocalDate());
+		}
+		if ((daysToDueDate == 7 && (notified == null || daysBetweenLastGenerationAndNow > 7)) ||
+			(daysToDueDate == 3 && (notified == null || daysBetweenLastGenerationAndNow > 3)) ||
+			(daysToDueDate == 1 && (notified == null || daysBetweenLastGenerationAndNow > 1)) ||
+			(daysToDueDate == 0 && (notified == null || daysBetweenLastGenerationAndNow > 0))) {
+			return true;
+		}
+		
+		return false;
+	}
+
 	private void createNotificationToPayToday(BillsOfMonth billOfMonth) {
 		Notification notification = new Notification();
 		
@@ -107,13 +122,17 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 		if (billIsToPayToday(billOfMonth)) {
 			return 0;	
 		} else {
-			return calcDaysBetween(billOfMonth);
+			return calcDaysBetweenBillDueDateAndNow(billOfMonth);
 		}
 	}
 
-	private int calcDaysBetween(BillsOfMonth billOfMonth) {
-		LocalDate currentdate = LocalDate.now();
+	private int calcDaysBetweenBillDueDateAndNow(BillsOfMonth billOfMonth) {
 		LocalDate billDueDate = LocalDate.of(billOfMonth.getYear().intValue(), billOfMonth.getMonth(), billOfMonth.getDueDay().intValue());
+		return (int)calcDaysBetween(billDueDate);
+	}
+	
+	private int calcDaysBetween(LocalDate billDueDate) {
+		LocalDate currentdate = LocalDate.now();
 		return (int)currentdate.until(billDueDate, ChronoUnit.DAYS);
 	}
 
