@@ -91,7 +91,7 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 		
 		int daysToDueDate = daysToDueDate(billOfMonth);
 		String dueDate = billOfMonth.getYear() + "." + billOfMonth.getMonth().getValue() + "." + billOfMonth.getDueDay();
-		String notificationString = "Rachunek \"" + billOfMonth.getName() + "\" na kwotę " + billOfMonth.getAmount() + " ma termin płatności " + dueDate + ". Pozostało " + "Pozostało " + daysToDueDate + " dni.";
+		String notificationString = "Rachunek \"" + billOfMonth.getName() + "\" na kwotę " + billOfMonth.getAmount() + " ma termin płatności " + dueDate + ". Pozostało " + daysToDueDate + " dni.";
 		
 		notification.setActive(true);
 		notification.setDate(getTimestamp());
