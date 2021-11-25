@@ -74,11 +74,9 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 	}
 	
 	private boolean notificationShouldBeGenerated(Notified notified, int daysToDueDate) {
-		// 7 3 1 0, magic numbers -> todo move to DB
 		int daysBetweenLastGenerationAndNow = Integer.MAX_VALUE;
 		if (notified != null) {
 			daysBetweenLastGenerationAndNow = calcDaysBetween(notified.getTimestamp().toLocalDateTime().toLocalDate());
-			// value is less than zero (it is past)
 			daysBetweenLastGenerationAndNow = daysBetweenLastGenerationAndNow * -1;
 		}
 		
