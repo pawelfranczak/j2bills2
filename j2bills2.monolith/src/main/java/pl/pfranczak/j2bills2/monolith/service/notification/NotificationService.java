@@ -74,6 +74,8 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 		int daysBetweenLastGenerationAndNow = Integer.MAX_VALUE;
 		if (notified != null) {
 			daysBetweenLastGenerationAndNow = calcDaysBetween(notified.getTimestamp().toLocalDateTime().toLocalDate());
+			// value is less than zero (it is past)
+			daysBetweenLastGenerationAndNow = daysBetweenLastGenerationAndNow * -1;
 		}
 		if ((daysToDueDate == 7 && (notified == null || daysBetweenLastGenerationAndNow > 7)) ||
 			(daysToDueDate == 3 && (notified == null || daysBetweenLastGenerationAndNow > 3)) ||
