@@ -12,6 +12,8 @@ import pl.pfranczak.j2bills2.monolith.entity.notification.Notification;
 import pl.pfranczak.j2bills2.monolith.entity.notification.Notified;
 import pl.pfranczak.j2bills2.monolith.repository.notifications.NotificationRepositiry;
 import pl.pfranczak.j2bills2.monolith.service.CrudServiceImpl;
+import pl.pfranczak.j2bills2.monolith.service.UserService;
+import pl.pfranczak.j2bills2.monolith.service.UserSettingsService;
 import pl.pfranczak.j2bills2.monolith.service.bills.BillsOfMonthService;
 
 @Service
@@ -20,12 +22,14 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 	NotificationRepositiry notificationRepository;
 	BillsOfMonthService billsOfMonthService;
 	NotifiedService notifiedService;
+	UserSettingsService userSettingsService;
 	
-	public NotificationService(NotificationRepositiry notificationRepository,BillsOfMonthService billsOfMonthService, NotifiedService notifiedService) {
+	public NotificationService(NotificationRepositiry notificationRepository,BillsOfMonthService billsOfMonthService, NotifiedService notifiedService, UserSettingsService userSettingsService) {
 		super.setRepository(notificationRepository);
 		this.notificationRepository = notificationRepository;
 		this.billsOfMonthService = billsOfMonthService;
 		this.notifiedService = notifiedService;
+		this.userSettingsService = userSettingsService;
 	}
 	
 	@Override
@@ -77,9 +81,14 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 			// value is less than zero (it is past)
 			daysBetweenLastGenerationAndNow = daysBetweenLastGenerationAndNow * -1;
 		}
-		if ((daysToDueDate == 7 && (notified == null || daysBetweenLastGenerationAndNow > 7)) ||
-			(daysToDueDate == 3 && (notified == null || daysBetweenLastGenerationAndNow > 3)) ||
-			(daysToDueDate == 1 && (notified == null || daysBetweenLastGenerationAndNow > 1)) ||
+		
+		int generateNotificationBeforeDueDate1 = userSettingsService.getGenerateNotificationBeforeDueDate1();
+		int generateNotificationBeforeDueDate2 = userSettingsService.getGenerateNotificationBeforeDueDate2();
+		int generateNotificationBeforeDueDate3 = userSettingsService.getGenerateNotificationBeforeDueDate3();
+		
+		if ((daysToDueDate == generateNotificationBeforeDueDate1 && (notified == null || daysBetweenLastGenerationAndNow > generateNotificationBeforeDueDate1)) ||
+			(daysToDueDate == generateNotificationBeforeDueDate2 && (notified == null || daysBetweenLastGenerationAndNow > generateNotificationBeforeDueDate2)) ||
+			(daysToDueDate == generateNotificationBeforeDueDate3 && (notified == null || daysBetweenLastGenerationAndNow > generateNotificationBeforeDueDate3)) ||
 			(daysToDueDate == 0 && (notified == null || daysBetweenLastGenerationAndNow > 0))) {
 			return true;
 		}

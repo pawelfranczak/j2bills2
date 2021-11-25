@@ -1,5 +1,6 @@
 package pl.pfranczak.j2bills2.monolith.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -41,6 +42,11 @@ public class UserSettings {
 	@JoinColumn(nullable = true, name = "bills_difference_account_id")
 	private Account billsDifferenceAccount;
 	
-	
+	@Column(nullable=false, columnDefinition = "int DEFAULT 7")
+	private int generateNotificationBeforeDueDate1;
+	@Column(nullable=false, columnDefinition = "int DEFAULT 3")
+	private int generateNotificationBeforeDueDate2;
+	@Column(nullable=false, columnDefinition = "int DEFAULT 1")
+	private int generateNotificationBeforeDueDate3;
 	
 }
