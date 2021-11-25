@@ -68,6 +68,8 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 					createNotificationToPayInFuture(billOfMonth);
 				} else if (billIsToPayToday(billOfMonth)) {
 					createNotificationToPayToday(billOfMonth);
+				} else {
+					createNotificationToPayInPast(billOfMonth);
 				}
 			}
 		}
@@ -84,10 +86,11 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 		int generateNotificationBeforeDueDate2 = userSettingsService.getGenerateNotificationBeforeDueDate2();
 		int generateNotificationBeforeDueDate3 = userSettingsService.getGenerateNotificationBeforeDueDate3();
 		
-		if ((daysToDueDate == generateNotificationBeforeDueDate1 && (notified == null || daysBetweenLastGenerationAndNow > generateNotificationBeforeDueDate1)) ||
+		if (((daysToDueDate == generateNotificationBeforeDueDate1 && (notified == null || daysBetweenLastGenerationAndNow > generateNotificationBeforeDueDate1)) ||
 			(daysToDueDate == generateNotificationBeforeDueDate2 && (notified == null || daysBetweenLastGenerationAndNow > generateNotificationBeforeDueDate2)) ||
 			(daysToDueDate == generateNotificationBeforeDueDate3 && (notified == null || daysBetweenLastGenerationAndNow > generateNotificationBeforeDueDate3)) ||
-			(daysToDueDate == 0 && (notified == null || daysBetweenLastGenerationAndNow > 0))) {
+			(daysToDueDate == 0 && (notified == null || daysBetweenLastGenerationAndNow > 0))) || 
+			(daysToDueDate < 0 && (notified == null || daysBetweenLastGenerationAndNow > 0) )) {
 			return true;
 		}
 		
@@ -109,6 +112,23 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 		notifiedService.create(notified);
 	}
 
+	private void createNotificationToPayInPast(BillsOfMonth billOfMonth) {
+		
+		Notification notification = new Notification();
+		
+		int daysToDueDate = daysToDueDate(billOfMonth);
+		String notificationString  = "Upłynął termin płatności rachunku \"" + billOfMonth.getName() + "\" na kwotę " + billOfMonth.getAmount() + ", " + daysToDueDate + " dni temu";
+		
+		notification.setActive(true);
+		notification.setDate(getTimestamp());
+		notification.setNotification(notificationString);
+		
+		this.create(notification);
+		
+		Notified notified = new Notified(billOfMonth.getId(), getTimestamp());
+		notifiedService.create(notified);
+	}
+	
 	private void createNotificationToPayInFuture(BillsOfMonth billOfMonth) {
 		
 		Notification notification = new Notification();
