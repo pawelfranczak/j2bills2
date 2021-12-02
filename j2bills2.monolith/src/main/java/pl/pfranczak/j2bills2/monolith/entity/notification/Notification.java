@@ -1,6 +1,5 @@
-package pl.pfranczak.j2bills2.monolith.entity;
+package pl.pfranczak.j2bills2.monolith.entity.notification;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -25,8 +24,8 @@ import pl.pfranczak.j2bills2.monolith.authentication.UserAccount;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Alerts {
-	
+public class Notification {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -37,12 +36,10 @@ public class Alerts {
 	
 	@NotNull
 	@NotBlank
-	private String name;
+	@Column(unique=true)
+	private String notification;
 	
-	@NotNull
-	@NotBlank
-	private String description;
-
-	private Timestamp date;
+	private boolean active;
 	
+	private Timestamp date;	
 }

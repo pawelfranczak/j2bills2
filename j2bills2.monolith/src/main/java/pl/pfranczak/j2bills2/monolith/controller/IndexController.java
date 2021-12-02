@@ -13,16 +13,16 @@ import pl.pfranczak.j2bills2.monolith.entity.Account;
 import pl.pfranczak.j2bills2.monolith.service.AccountService;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
 import pl.pfranczak.j2bills2.monolith.service.UserSettingsService;
+import pl.pfranczak.j2bills2.monolith.service.notification.NotificationService;
 
 @AllArgsConstructor
 @Controller
 public class IndexController {
 	
 	AccountService accountService;
-	
 	UserService userService;
-	
 	UserSettingsService userSettingsService;
+	NotificationService notificationService;
 
 	@RequestMapping("${index}")
 	public ModelAndView index() {
@@ -35,9 +35,14 @@ public class IndexController {
 			}
 			userService.addUsernameToModelAndView(modelAndView);
 			
+			notificationService.generateNotification();
+			
+			
 			List<Account> accounts = accountService.getAll();
 			modelAndView.addObject("accounts", accounts);
 			
+			long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+			modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 			return modelAndView;
 		}
 		return new ModelAndView("fail");

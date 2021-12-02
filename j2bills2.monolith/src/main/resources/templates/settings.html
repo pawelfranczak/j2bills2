@@ -72,6 +72,14 @@
 									th:errors="*{account}">Account Error</p>
 							</div>
 							
+							Powiadomienie o zbliżającym się terminie płatności przed:
+							<div class="input-group">
+								<input type="number" id="generateNotificationBeforeDueDate1" name="generateNotificationBeforeDueDate1" th:field="*{generateNotificationBeforeDueDate1}" placeholder="Powiadomienie 1" class="form-control">
+								<input type="number" id="generateNotificationBeforeDueDate2" name="generateNotificationBeforeDueDate2" th:field="*{generateNotificationBeforeDueDate2}" placeholder="Powiadomienie 2" class="form-control">
+								<input type="number" id="generateNotificationBeforeDueDate3" name="generateNotificationBeforeDueDate3" th:field="*{generateNotificationBeforeDueDate3}" placeholder="Powiadomienie 3" class="form-control">
+							
+							</div>
+							
 							<input type="hidden" name="id" th:value="${userSettings.id}" />
 
 							<BR> <input type="submit" class="btn btn-primary"> <BR>

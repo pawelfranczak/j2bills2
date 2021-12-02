@@ -14,6 +14,7 @@ import pl.pfranczak.j2bills2.monolith.entity.UserSettings;
 import pl.pfranczak.j2bills2.monolith.service.AccountService;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
 import pl.pfranczak.j2bills2.monolith.service.UserSettingsService;
+import pl.pfranczak.j2bills2.monolith.service.notification.NotificationService;
 
 @AllArgsConstructor
 @Controller
@@ -22,6 +23,7 @@ public class UserSettingsController {
 	private UserSettingsService userSettingsService; 
 	private UserService userService;
 	private AccountService accountService;
+	private NotificationService notificationService;
 	
 	@GetMapping("${userSettings}")	
 	public ModelAndView showSettings() {
@@ -38,6 +40,9 @@ public class UserSettingsController {
 			modelAndView.addObject("accountDifferenceID", billsDifferenceAccount.getId());
 		}
 		userService.addUsernameToModelAndView(modelAndView);
+		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	

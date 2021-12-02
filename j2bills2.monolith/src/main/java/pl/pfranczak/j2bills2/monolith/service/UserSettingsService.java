@@ -63,6 +63,33 @@ public class UserSettingsService extends CrudServiceImpl<UserSettings, Long>{
 		return null;
 	}
 	
+	public int getGenerateNotificationBeforeDueDate1() {
+		List<UserSettings> findByOwner = userSettingsRepository.findByOwner(getOwner());
+		if (findByOwner != null && findByOwner.size() > 0) {
+			UserSettings userSettings = findByOwner.get(0);
+			return userSettings.getGenerateNotificationBeforeDueDate1();
+		}
+		return 0;
+	}
+	
+	public int getGenerateNotificationBeforeDueDate2() {
+		List<UserSettings> findByOwner = userSettingsRepository.findByOwner(getOwner());
+		if (findByOwner != null && findByOwner.size() > 0) {
+			UserSettings userSettings = findByOwner.get(0);
+			return userSettings.getGenerateNotificationBeforeDueDate2();
+		}
+		return 0;
+	}
+	
+	public int getGenerateNotificationBeforeDueDate3() {
+		List<UserSettings> findByOwner = userSettingsRepository.findByOwner(getOwner());
+		if (findByOwner != null && findByOwner.size() > 0) {
+			UserSettings userSettings = findByOwner.get(0);
+			return userSettings.getGenerateNotificationBeforeDueDate3();
+		}
+		return 0;
+	}
+	
 	@Override
 	public void update(UserSettings userSettings) {
 		userSettings.setOwner(getOwner());

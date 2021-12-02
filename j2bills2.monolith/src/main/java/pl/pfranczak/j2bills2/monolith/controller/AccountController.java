@@ -20,6 +20,7 @@ import pl.pfranczak.j2bills2.monolith.entity.User;
 import pl.pfranczak.j2bills2.monolith.service.AccountService;
 import pl.pfranczak.j2bills2.monolith.service.JournalService;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
+import pl.pfranczak.j2bills2.monolith.service.notification.NotificationService;
 
 @AllArgsConstructor
 @Controller
@@ -29,6 +30,7 @@ public class AccountController {
 	private AccountService accountService; 
 	private UserService userService;
 	private JournalService journalService;
+	private NotificationService notificationService;
 	
 	@GetMapping("${all}")	
 	public ModelAndView showAll() {
@@ -36,6 +38,9 @@ public class AccountController {
 		List<Account> accounts = accountService.getAll();
 		modelAndView.addObject("accounts", accounts);
 		userService.addUsernameToModelAndView(modelAndView);
+		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	
@@ -47,6 +52,9 @@ public class AccountController {
 		List<Journal> journalEntries = journalService.getAllForAccount(account);
 		modelAndView.addObject("journalEntries", journalEntries);
 		userService.addUsernameToModelAndView(modelAndView);
+		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	
@@ -56,6 +64,9 @@ public class AccountController {
 		List<User> users = userService.getAll();
 		modelAndView.addObject("users", users);
 		userService.addUsernameToModelAndView(modelAndView);
+		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 
@@ -85,6 +96,9 @@ public class AccountController {
 		List<User> users = userService.getAll();
 		modelAndView.addObject("users", users);
 		userService.addUsernameToModelAndView(modelAndView);
+		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 
@@ -101,6 +115,9 @@ public class AccountController {
 		List<Account> accounts = accountService.getAll();
 		modelAndView.addObject("accounts", accounts);
 		userService.addUsernameToModelAndView(modelAndView);
+		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 

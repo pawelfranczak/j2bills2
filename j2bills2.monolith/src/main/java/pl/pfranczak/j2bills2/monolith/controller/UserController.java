@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import lombok.AllArgsConstructor;
 import pl.pfranczak.j2bills2.monolith.entity.User;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
+import pl.pfranczak.j2bills2.monolith.service.notification.NotificationService;
 
 @AllArgsConstructor
 @Controller
@@ -23,6 +24,7 @@ import pl.pfranczak.j2bills2.monolith.service.UserService;
 public class UserController {
 	
 	private UserService userService; 
+	private NotificationService notificationService;
 	
 	@GetMapping("${all}")	
 	public ModelAndView showAll() {
@@ -30,6 +32,9 @@ public class UserController {
 		List<User> users = userService.getAll();
 		modelAndView.addObject("users", users);
 		userService.addUsernameToModelAndView(modelAndView);
+		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	
@@ -39,13 +44,19 @@ public class UserController {
 		User user = userService.get(id);
 		modelAndView.addObject("user", user);
 		userService.addUsernameToModelAndView(modelAndView);
+		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	
 	@GetMapping("${new}")
-	public String newEntity(User user) {
-		// TODO userService.addUsernameToModelAndView(modelAndView);
-		return "user/new";
+	public ModelAndView newEntity(User user) {
+		ModelAndView modelAndView = new ModelAndView("user/new");
+		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
+		return modelAndView;
 	}
 
 	@PostMapping("${new}")
@@ -63,6 +74,9 @@ public class UserController {
 		List<User> users = userService.getAll();
 		modelAndView.addObject("users", users);
 		userService.addUsernameToModelAndView(modelAndView);
+		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 

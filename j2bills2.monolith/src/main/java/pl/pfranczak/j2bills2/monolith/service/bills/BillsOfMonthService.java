@@ -47,6 +47,15 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 		return billRepository.findByOwnerAndYearAndMonth(getOwner(), year, Month.of(month.intValue()));
 	}
 	
+	public List<BillsOfMonth> getByOwnerAndAndPaid(boolean paid) {
+		if (paid) {
+			return billRepository.findByOwnerAndPaidTrue(getOwner());
+		} else {
+			return billRepository.findByOwnerAndPaidFalse(getOwner());
+		}
+
+	}
+	
 	@Override
 	public void create(BillsOfMonth bill) {
 		bill.setOwner(getOwner());
