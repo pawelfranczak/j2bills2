@@ -58,6 +58,10 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 		super.update(notification);
 	}
 	
+	public long getCountOfActiveNotification() {
+		return notificationRepository.countByActiveTrue();
+	}
+	
 	public void generateNotification() {
 		List<BillsOfMonth> billsOfMonth = billsOfMonthService.getByOwnerAndAndPaid(false);
 		for (BillsOfMonth billOfMonth : billsOfMonth) {

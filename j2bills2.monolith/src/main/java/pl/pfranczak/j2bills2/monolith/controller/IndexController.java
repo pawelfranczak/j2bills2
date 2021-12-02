@@ -20,11 +20,8 @@ import pl.pfranczak.j2bills2.monolith.service.notification.NotificationService;
 public class IndexController {
 	
 	AccountService accountService;
-	
 	UserService userService;
-	
 	UserSettingsService userSettingsService;
-	
 	NotificationService notificationService;
 
 	@RequestMapping("${index}")
@@ -40,9 +37,12 @@ public class IndexController {
 			
 			notificationService.generateNotification();
 			
+			
 			List<Account> accounts = accountService.getAll();
 			modelAndView.addObject("accounts", accounts);
 			
+			long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+			modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 			return modelAndView;
 		}
 		return new ModelAndView("fail");

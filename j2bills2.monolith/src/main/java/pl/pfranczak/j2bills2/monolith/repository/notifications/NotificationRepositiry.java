@@ -14,4 +14,5 @@ public interface NotificationRepositiry extends CrudRepository<Notification, Lon
 	List<Notification> findByOwnerAndActiveTrueOrderByDateDesc(UserAccount owner);
 	List<Notification> findByOwnerAndActiveFalseOrderByDateDesc(UserAccount owner);
 	Notification findByIdAndOwner(Long id, UserAccount owner);
+	long countByActiveTrue();
 }

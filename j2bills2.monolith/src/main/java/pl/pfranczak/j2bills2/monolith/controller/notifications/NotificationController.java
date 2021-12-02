@@ -25,6 +25,8 @@ public class NotificationController {
 		notificationService.generateNotification();
 		List<Notification> notifications = notificationService.getAll();
 		modelAndView.addObject("notifications", notifications);
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	
@@ -34,6 +36,8 @@ public class NotificationController {
 		notificationService.generateNotification();
 		List<Notification> notifications = notificationService.getAllNotActive();
 		modelAndView.addObject("notifications", notifications);
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	

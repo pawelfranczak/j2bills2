@@ -26,6 +26,7 @@ import pl.pfranczak.j2bills2.monolith.service.UserService;
 import pl.pfranczak.j2bills2.monolith.service.UserSettingsService;
 import pl.pfranczak.j2bills2.monolith.service.bills.BillService;
 import pl.pfranczak.j2bills2.monolith.service.bills.BillsOfMonthService;
+import pl.pfranczak.j2bills2.monolith.service.notification.NotificationService;
 
 @AllArgsConstructor
 @Controller
@@ -36,6 +37,7 @@ public class BillController {
 	private UserService userService; 
 	private BillsOfMonthService billsOfMonthService;
 	private UserSettingsService userSettingsService;
+	private NotificationService notificationService;
 	
 	@GetMapping("${all}")	
 	public ModelAndView showAll() {
@@ -43,6 +45,8 @@ public class BillController {
 		List<Bill> bills = billService.getAll();
 		modelAndView.addObject("bills", bills);
 		userService.addUsernameToModelAndView(modelAndView);
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	
@@ -52,6 +56,8 @@ public class BillController {
 		Bill bill = billService.get(id);
 		modelAndView.addObject("bill", bill);
 		userService.addUsernameToModelAndView(modelAndView);
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	
@@ -59,6 +65,8 @@ public class BillController {
 	public ModelAndView newEntity(Bill bill) {
 		ModelAndView modelAndView = new ModelAndView("bill/new");
 		userService.addUsernameToModelAndView(modelAndView);
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 
@@ -67,6 +75,8 @@ public class BillController {
 		if (bindingResult.hasErrors()) {
 			ModelAndView modelAndView = new ModelAndView("bill/new");
 			userService.addUsernameToModelAndView(modelAndView);
+			long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+			modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 			return modelAndView;
 		}
 		billService.create(bill);
@@ -95,6 +105,8 @@ public class BillController {
 		modelAndView.addObject("defaultDescriptions", defaultDescriptions);
 		
 		userService.addUsernameToModelAndView(modelAndView);
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 
@@ -147,6 +159,8 @@ public class BillController {
 		modelAndView.addObject("sumOfMonthPaid", calculateBillsSumOfMonthPaid(billsOfMonths));
 		
 		userService.addUsernameToModelAndView(modelAndView);
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	
@@ -188,6 +202,8 @@ public class BillController {
 		billOfMonth.setAmountPaid(billOfMonth.getAmount());
 		billsOfMonthService.update(billOfMonth);
 		billsOfMonthService.payBill(billOfMonth, null, null);		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	
@@ -210,6 +226,8 @@ public class BillController {
 		modelAndView.addObject("accountID", billsAccount.getId());
 		modelAndView.addObject("monthSelected", billsOfMonth.getMonth());
 		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	
@@ -223,7 +241,10 @@ public class BillController {
 		billOfMonth.setAmountPaid(newBillValue);
 		billOfMonth.setAmount(originalBillValue);
 		billsOfMonthService.update(billOfMonth);
-		billsOfMonthService.payBill(billOfMonth, originalBillValue, newBillValue);		
+		billsOfMonthService.payBill(billOfMonth, originalBillValue, newBillValue);	
+		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	
@@ -246,7 +267,8 @@ public class BillController {
 		modelAndView.addObject("accountID", billsAccount.getId());
 		modelAndView.addObject("monthSelected", billsOfMonth.getMonth());
 		
-		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	
@@ -283,6 +305,9 @@ public class BillController {
 		ModelAndView modelAndView = new ModelAndView("bill/copy_month");
 		CopyMonth copyMonth = new CopyMonth(sourceYear, sourceMonth, targerYear, targetMonth);
 		modelAndView.addObject("copyMonth", copyMonth);
+		
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
 		return modelAndView;
 	}
 	
@@ -327,24 +352,5 @@ public class BillController {
 		return "/" + previousYear + "/" + previousMonth;
 		
 	}
-	
-	
-//	@GetMapping("${modify}/{id}")
-//	public ModelAndView modifywEntity(@PathVariable("id") Long id) {
-//		ModelAndView modelAndView = new ModelAndView("account/modify");
-//		Account account = accountService.get(id);
-//		modelAndView.addObject("account", account);
-//		List<User> users = userService.getAll();
-//		modelAndView.addObject("users", users);
-//		userService.addUsernameToModelAndView(modelAndView);
-//		return modelAndView;
-//	}
-//
-//	// TODO Add validation
-//	@PostMapping("${modify}")
-//	public String modifyEntityPost(Account account) {
-//		accountService.update(account);
-//		return "redirect:/account/all";
-//	}
 
 }
