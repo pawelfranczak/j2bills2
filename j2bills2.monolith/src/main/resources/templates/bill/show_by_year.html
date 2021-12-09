@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="/../general.html :: head"></head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <div th:insert="/../general.html :: sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <div th:insert="/../general.html :: topbar"></div>
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Rachunki</h6>
+            </div>
+            <div class="card-body">
+              <a th:href="@{/bill/show_by_year{previousYearLink}/(previousYearLink=${previousYear})}">Poprzedni rok</a>
+              -
+              <a th:href="@{/bill/show_by_year{nextYearLink}/(nextYearLink=${nextYear})}">Następny rok</a>
+              <BR><BR>
+              
+			  	<div th:each="billsOfMonths : ${billsOfYear}">
+			  	
+					<b><p th:text="${billsOfMonths[0].month}"></p></b>
+					
+					<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" >
+						<thead>
+		                    <tr>
+		                      <th>Nazwa</th>
+		                 	  <th th:each="billsOfMonth : ${billsOfMonths}"><p th:text="${billsOfMonth.name}"></p></th>
+		                    </tr>
+		                    <tr>
+		                      <th>Do zapłaty</th>
+		                 	  <th th:each="billsOfMonth : ${billsOfMonths}"><p th:text="${billsOfMonth.amount}"></p></th>
+		                    </tr>
+		                    <tr>
+		                      <th>Kwota zapłacona</th>
+		                 	  <th th:each="billsOfMonth : ${billsOfMonths}"><p th:text="${billsOfMonth.amountPaid}"></p></th>
+		                    </tr>
+						</thead>
+					</table>
+			  	
+				</div>
+	              
+              <a th:href="@{/bill/show_by_year{previousYearLink}/(previousYearLink=${previousYear})}">Poprzedni rok</a>
+              -
+              <a th:href="@{/bill/show_by_year{nextYearLink}/(nextYearLink=${nextYear})}">Następny rok</a>
+             
+            </div>
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer th:insert="/../general.html :: footer"> </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+
+  <!-- Logout Modal-->
+  <div th:insert="/../general.html :: end-of-body"></div>
+
+</body>
+
+</html>

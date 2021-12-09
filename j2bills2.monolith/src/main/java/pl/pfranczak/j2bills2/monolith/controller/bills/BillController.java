@@ -147,6 +147,40 @@ public class BillController {
 		return new ModelAndView("redirect:/bill/show_by_month/" + currentYear + "/" + currentMonth.getValue());
 	}
 	
+	@GetMapping("${show_by_year}")	
+	public ModelAndView showAllYear() {
+		LocalDate currentdate = LocalDate.now();
+		int currentYear = currentdate.getYear();
+		return new ModelAndView("redirect:/bill/show_by_year/" + currentYear);
+	}
+	
+	@GetMapping("${show_by_year}/{year}")	
+	public ModelAndView showAllByYear(@PathVariable("year") Long year) {
+		ModelAndView modelAndView = new ModelAndView("bill/show_by_year");
+		
+		List<List<BillsOfMonth>> billsOfYear = new ArrayList<>();
+		
+		for (Month month : Month.values()) {
+			List<BillsOfMonth> billsOfMonths = billsOfMonthService.getByOwnerAndYearAndMonth(year, (long)month.getValue());
+			if (billsOfMonths.size() > 0) {
+				billsOfYear.add(billsOfMonths);
+			}
+		}
+		
+		
+		modelAndView.addObject("billsOfYear", billsOfYear);
+		modelAndView.addObject("nextYear", "/" + (year+1));
+		modelAndView.addObject("previousYear", "/" + (year-1));
+//		modelAndView.addObject("sumOfMonth", calculateBillsSumOfMonth(billsOfMonths));
+//		modelAndView.addObject("sumOfMonthToPay", calculateBillsSumOfMonthToPay(billsOfMonths));
+//		modelAndView.addObject("sumOfMonthPaid", calculateBillsSumOfMonthPaid(billsOfMonths));
+		
+		userService.addUsernameToModelAndView(modelAndView);
+		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
+		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
+		return modelAndView;
+	}
+	
 	@GetMapping("${show_by_month}/{year}/{month}")	
 	public ModelAndView showAllByMonth(@PathVariable("year") Long year, @PathVariable("month") Long month) {
 		ModelAndView modelAndView = new ModelAndView("bill/show_by_month");
