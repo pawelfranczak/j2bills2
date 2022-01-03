@@ -55,6 +55,25 @@
 					</table>
 			  	
 				</div>
+				
+				<div>
+			  	
+					<b>Podsumowanie</b>
+					
+					<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" >
+						<thead>
+		                    <tr>
+		                      <th>Do zapłaty</th>
+		                 	  <th><p th:text="${toPayYear}"></p></th>
+		                    </tr>
+		                    <tr>
+		                      <th>Kwota zapłacona</th>
+		                 	  <th><p th:text="${paidYear}"></p></th>
+		                    </tr>
+						</thead>
+					</table>
+			  	
+				</div>
 	              
               <a th:href="@{/bill/show_by_year{previousYearLink}/(previousYearLink=${previousYear})}">Poprzedni rok</a>
               -

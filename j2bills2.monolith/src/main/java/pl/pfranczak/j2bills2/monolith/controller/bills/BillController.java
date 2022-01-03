@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -159,21 +160,30 @@ public class BillController {
 		ModelAndView modelAndView = new ModelAndView("bill/show_by_year");
 		
 		List<List<BillsOfMonth>> billsOfYear = new ArrayList<>();
-		
+		BigDecimal toPayYear = BigDecimal.ZERO;
+		BigDecimal paidYear = BigDecimal.ZERO;
+
 		for (Month month : Month.values()) {
 			List<BillsOfMonth> billsOfMonths = billsOfMonthService.getByOwnerAndYearAndMonth(year, (long)month.getValue());
 			if (billsOfMonths.size() > 0) {
 				billsOfYear.add(billsOfMonths);
+				paidYear = billsOfMonths.stream()	
+						.map(BillsOfMonth::getAmountPaid)
+						.filter(Objects::nonNull)
+						.reduce(paidYear, BigDecimal::add);
+				toPayYear = billsOfMonths.stream()	
+						.map(BillsOfMonth::getAmount)
+						.filter(Objects::nonNull)
+						.reduce(toPayYear, BigDecimal::add);
 			}
 		}
 		
 		
+		modelAndView.addObject("toPayYear", toPayYear);
+		modelAndView.addObject("paidYear", paidYear);
 		modelAndView.addObject("billsOfYear", billsOfYear);
 		modelAndView.addObject("nextYear", "/" + (year+1));
 		modelAndView.addObject("previousYear", "/" + (year-1));
-//		modelAndView.addObject("sumOfMonth", calculateBillsSumOfMonth(billsOfMonths));
-//		modelAndView.addObject("sumOfMonthToPay", calculateBillsSumOfMonthToPay(billsOfMonths));
-//		modelAndView.addObject("sumOfMonthPaid", calculateBillsSumOfMonthPaid(billsOfMonths));
 		
 		userService.addUsernameToModelAndView(modelAndView);
 		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
