@@ -37,8 +37,8 @@ public class IndexController {
 			}
 			userService.addUsernameToModelAndView(modelAndView);
 			
-			notificationService.generateNotification();
 			billsOfMonthService.payOutstandingAutomaticRepaymentBills();
+			notificationService.generateNotification();
 			
 			
 			List<Account> accounts = accountService.getAll();
