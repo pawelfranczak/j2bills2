@@ -1,6 +1,7 @@
 package pl.pfranczak.j2bills2.monolith.service.bills;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
@@ -121,6 +122,35 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 	public void update(BillsOfMonth entity) {
 		entity.setOwner(getOwner());
 		super.update(entity);
+	}
+
+	public void payOutstandingAutomaticRepaymentBills() {
+		// system should pay for every automatic repayments bills in the past
+		List<BillsOfMonth> billsOfMonth = billRepository.findByOwnerAndPaidAndAutomaticRepayment(getOwner(), false, true);
+		for (BillsOfMonth billOfMonth : billsOfMonth) {
+			if (canBeAutomaticRepayed(billOfMonth)) {
+				payBill(billOfMonth, null, null);
+			}
+		}
+	}
+
+	private boolean canBeAutomaticRepayed(BillsOfMonth billOfMonth) {
+		LocalDate currentdate = LocalDate.now();
+		int currentYear = currentdate.getYear();
+		int currentMonth = currentdate.getMonth().getValue();
+		int currentDay = currentdate.getDayOfMonth();
+		
+		int billYear = billOfMonth.getYear().intValue();
+		int billMonth = billOfMonth.getMonth().getValue();
+		int billDay = billOfMonth.getDueDay();
+		
+		boolean billInPast = false;
+		
+		if (currentYear > billYear) billInPast = true;
+		if (currentYear == billYear && currentMonth > billMonth) billInPast = true;
+		if (currentYear == billYear && currentMonth == billMonth && currentDay > billDay) billInPast = true;
+		
+		return billInPast;
 	}
 	
 }

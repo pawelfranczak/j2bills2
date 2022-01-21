@@ -193,6 +193,9 @@ public class BillController {
 	
 	@GetMapping("${show_by_month}/{year}/{month}")	
 	public ModelAndView showAllByMonth(@PathVariable("year") Long year, @PathVariable("month") Long month) {
+		
+		billsOfMonthService.payOutstandingAutomaticRepaymentBills();
+		
 		ModelAndView modelAndView = new ModelAndView("bill/show_by_month");
 		List<BillsOfMonth> billsOfMonths = billsOfMonthService.getByOwnerAndYearAndMonth(year, month);
 		modelAndView.addObject("billsOfMonths", billsOfMonths);

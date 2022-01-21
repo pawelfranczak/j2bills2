@@ -13,6 +13,7 @@ import pl.pfranczak.j2bills2.monolith.entity.Account;
 import pl.pfranczak.j2bills2.monolith.service.AccountService;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
 import pl.pfranczak.j2bills2.monolith.service.UserSettingsService;
+import pl.pfranczak.j2bills2.monolith.service.bills.BillsOfMonthService;
 import pl.pfranczak.j2bills2.monolith.service.notification.NotificationService;
 
 @AllArgsConstructor
@@ -23,6 +24,7 @@ public class IndexController {
 	UserService userService;
 	UserSettingsService userSettingsService;
 	NotificationService notificationService;
+	BillsOfMonthService billsOfMonthService;
 
 	@RequestMapping("${index}")
 	public ModelAndView index() {
@@ -36,6 +38,7 @@ public class IndexController {
 			userService.addUsernameToModelAndView(modelAndView);
 			
 			notificationService.generateNotification();
+			billsOfMonthService.payOutstandingAutomaticRepaymentBills();
 			
 			
 			List<Account> accounts = accountService.getAll();
