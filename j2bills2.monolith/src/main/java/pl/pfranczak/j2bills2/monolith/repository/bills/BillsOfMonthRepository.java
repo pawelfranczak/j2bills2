@@ -15,4 +15,5 @@ public interface BillsOfMonthRepository extends CrudRepository<BillsOfMonth, Lon
 	List<BillsOfMonth> findByOwnerAndYearAndMonth(UserAccount owner, Long year, Month month);
 	List<BillsOfMonth> findByOwnerAndPaidFalse(UserAccount owner);
 	List<BillsOfMonth> findByOwnerAndPaidTrue(UserAccount owner);
+	List<BillsOfMonth> findByOwnerAndPaidAndAutomaticRepayment(UserAccount owner, Boolean paid, Boolean automaticRepayment);
 }

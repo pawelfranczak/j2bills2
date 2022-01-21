@@ -47,13 +47,8 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 		return billRepository.findByOwnerAndYearAndMonth(getOwner(), year, Month.of(month.intValue()));
 	}
 	
-	public List<BillsOfMonth> getByOwnerAndAndPaid(boolean paid) {
-		if (paid) {
-			return billRepository.findByOwnerAndPaidTrue(getOwner());
-		} else {
-			return billRepository.findByOwnerAndPaidFalse(getOwner());
-		}
-
+	public List<BillsOfMonth> getByOwnerAndPaidAndAutomaticRepayment(boolean paid, boolean automaticRepeyment) {
+			return billRepository.findByOwnerAndPaidAndAutomaticRepayment(getOwner(), paid, automaticRepeyment);
 	}
 	
 	@Override
@@ -116,6 +111,7 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 			newBillsOfMonth.setAmountPaid(BigDecimal.ZERO);
 			newBillsOfMonth.setDueDay(oldBillsOfMonth.getDueDay());
 			newBillsOfMonth.setPaid(Boolean.FALSE);
+			newBillsOfMonth.setAutomaticRepayment(oldBillsOfMonth.getAutomaticRepayment());
 			create(newBillsOfMonth);
 		}
 		

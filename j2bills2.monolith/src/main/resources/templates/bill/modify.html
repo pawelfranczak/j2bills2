@@ -86,6 +86,11 @@
 								<p th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year error</p>
 							</div>
 							
+							Automatyczna spłata
+							<div class="input-group">
+								<input type="checkbox" id="automaticRepayment" name="automaticRepayment" th:field="*{automaticRepayment}" class="form-control"> 
+							</div>
+							
 							<input type="checkbox" th:checked="${billsOfMonth.paid}" disabled>
 							<input type="hidden" name="id" th:value="${billsOfMonth.id}" />
 

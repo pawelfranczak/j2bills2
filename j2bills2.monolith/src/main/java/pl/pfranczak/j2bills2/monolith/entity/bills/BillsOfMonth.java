@@ -3,6 +3,7 @@ package pl.pfranczak.j2bills2.monolith.entity.bills;
 import java.math.BigDecimal;
 import java.time.Month;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -58,5 +59,8 @@ public class BillsOfMonth {
 	private Byte dueDay;
 	
 	private Boolean paid;
+	
+	@Column(nullable=false, columnDefinition = "bool DEFAULT false")
+	private Boolean automaticRepayment;
 	
 }

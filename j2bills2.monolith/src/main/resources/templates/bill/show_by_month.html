@@ -44,6 +44,7 @@
                       <th>Kwota zapłacone</th>
                       <th>Płatne do</th>
                       <th>Zapłacone</th>
+                      <th>Automatyczna spłata</th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -58,6 +59,7 @@
 							<td><p th:text="${billsOfMonth.amountPaid}"></p></td>
 							<td><p th:text="${billsOfMonth.dueDay}"></p></td>
 							<td><input type="checkbox" th:checked="${billsOfMonth.paid}" disabled></input></td>
+							<td><input type="checkbox" th:checked="${billsOfMonth.automaticRepayment}" disabled></input></td>
 							<td th:if="${billsOfMonth.paid == false}" >
 							<a th:href="@{/bill/pay/{id}/(id=${billsOfMonth.id})}">Zapłać</a><br>
 							<a th:href="@{/bill/edit_and_pay/{id}/(id=${billsOfMonth.id})}">Edytuj i zapłać</a><br>
@@ -76,6 +78,7 @@
                       <th></th>
                       <th></th>
                       <th></th>
+                      <th></th>
                     </tr>
 					<tr>
                  	  <th></th>
@@ -87,6 +90,7 @@
                       <th></th>
                       <th></th>
                       <th></th>
+                      <th></th>
                     </tr>
 					<tr>
                  	  <th></th>
@@ -94,6 +98,7 @@
                       <th></th>
                       <th><B>ZAPŁACONE</B></th> 
                       <th><p th:text="${sumOfMonthPaid}"></th>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
