@@ -73,7 +73,7 @@ public class JournalService extends CrudServiceImpl<Journal, Long>{
 	}	
 	
 	public List<Journal> getAllForAccount(Account account) {
-		return journalRepository.findByOwnerAndAccount(getOwner(), account);
+		return journalRepository.findByOwnerAndAccountOrderByIdDesc(getOwner(), account);
 	}	
 	
 	public Long getHighestSequence() {

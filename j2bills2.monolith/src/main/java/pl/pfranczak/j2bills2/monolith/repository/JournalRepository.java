@@ -15,6 +15,7 @@ public interface JournalRepository extends CrudRepository<Journal, Long>{
 	List<Journal> findByOwner(UserAccount owner);
 	List<Journal> findByOwner(UserAccount owner, Pageable pageable);
 	List<Journal> findByOwnerAndAccount(UserAccount owner, Account account);
+	List<Journal> findByOwnerAndAccountOrderByIdDesc(UserAccount owner, Account account);
 	Journal findByIdAndOwner(Long id, UserAccount owner);
 	Long countByOwner(UserAccount owner);
 	Journal findTopByOwnerOrderBySequenceDesc(UserAccount owner);
