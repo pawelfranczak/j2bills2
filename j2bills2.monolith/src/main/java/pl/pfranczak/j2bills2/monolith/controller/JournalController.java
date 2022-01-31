@@ -21,6 +21,7 @@ import pl.pfranczak.j2bills2.monolith.entity.Account;
 import pl.pfranczak.j2bills2.monolith.entity.Journal;
 import pl.pfranczak.j2bills2.monolith.entity.Movement;
 import pl.pfranczak.j2bills2.monolith.entity.User;
+import pl.pfranczak.j2bills2.monolith.entity.UserSettings;
 import pl.pfranczak.j2bills2.monolith.service.AccountService;
 import pl.pfranczak.j2bills2.monolith.service.JournalService;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
@@ -121,6 +122,10 @@ public class JournalController {
 		ModelAndView modelAndView = new ModelAndView("journal/movement");
 		List<User> users = userService.getAll();
 		modelAndView.addObject("users", users);
+		User defaultUser = userSettingsService.getDefaultUser();
+		if (defaultUser != null) {
+			modelAndView.addObject("userID", defaultUser.getId());
+		}
 		List<Account> accounts = accountService.getAllActive();
 		modelAndView.addObject("accounts", accounts);
 		userService.addUsernameToModelAndView(modelAndView);
@@ -141,6 +146,7 @@ public class JournalController {
 				modelAndView.addObject("targetAccountID", movement.getTargetAccount().getId());
 			}
 			userService.addUsernameToModelAndView(modelAndView);
+			modelAndView.addObject("defaultUserID", userSettingsService.getDefaultUser());
 			return modelAndView;
 		}
 		journalService.createMovement(movement);
@@ -154,6 +160,10 @@ public class JournalController {
 		List<Account> accounts = accountService.getAllActive();
 		modelAndView.addObject("accounts", accounts);
 		userService.addUsernameToModelAndView(modelAndView);
+		User defaultUser = userSettingsService.getDefaultUser();
+		if (defaultUser != null) {
+			modelAndView.addObject("userID", defaultUser.getId());
+		}
 		return modelAndView;
 	}
 

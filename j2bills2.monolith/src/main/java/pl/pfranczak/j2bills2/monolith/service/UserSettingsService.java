@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import pl.pfranczak.j2bills2.monolith.entity.Account;
 import pl.pfranczak.j2bills2.monolith.entity.Journal;
+import pl.pfranczak.j2bills2.monolith.entity.User;
 import pl.pfranczak.j2bills2.monolith.entity.UserSettings;
 import pl.pfranczak.j2bills2.monolith.repository.UserSettingsRepository;
 
@@ -43,6 +44,15 @@ public class UserSettingsService extends CrudServiceImpl<UserSettings, Long>{
 			return userSettings.getHowManyJournalEntriesOnJournalPage();
 		}
 		return Long.MAX_VALUE;
+	}
+	
+	public User getDefaultUser() {
+		List<UserSettings> findByOwner = userSettingsRepository.findByOwner(getOwner());
+		if (findByOwner != null && findByOwner.size() > 0) {
+			UserSettings userSettings = findByOwner.get(0);
+			return userSettings.getDefaultUser();
+		}
+		return null;
 	}
 	
 	public Account getBillsAccount() {

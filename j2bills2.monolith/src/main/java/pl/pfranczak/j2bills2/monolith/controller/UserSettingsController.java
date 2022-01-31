@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lombok.AllArgsConstructor;
 import pl.pfranczak.j2bills2.monolith.entity.Account;
+import pl.pfranczak.j2bills2.monolith.entity.User;
 import pl.pfranczak.j2bills2.monolith.entity.UserSettings;
 import pl.pfranczak.j2bills2.monolith.service.AccountService;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
@@ -31,14 +32,20 @@ public class UserSettingsController {
 		UserSettings userSettings = userSettingsService.get();
 		Account billsAccount = userSettings.getBillsAccount();
 		Account billsDifferenceAccount = userSettings.getBillsDifferenceAccount();
+		User defaultUser = userSettings.getDefaultUser();
 		modelAndView.addObject("userSettings", userSettings);
 		modelAndView.addObject("accounts", accountService.getAll());
+		modelAndView.addObject("users", userService.getAll());
 		if (billsAccount != null) {
 			modelAndView.addObject("accountID", billsAccount.getId());
 		}
 		if (billsDifferenceAccount != null) {
 			modelAndView.addObject("accountDifferenceID", billsDifferenceAccount.getId());
 		}
+		if (defaultUser != null) {
+			modelAndView.addObject("defaultUserID", defaultUser.getId());
+		}
+		
 		userService.addUsernameToModelAndView(modelAndView);
 		
 		long countOfActiveNotification = notificationService.getCountOfActiveNotification();

@@ -49,4 +49,8 @@ public class UserSettings {
 	@Column(nullable=false, columnDefinition = "int DEFAULT 1")
 	private int generateNotificationBeforeDueDate3;
 	
+	@OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+	@JoinColumn(nullable = true, name = "default_user_id")
+	private User defaultUser;
+	
 }

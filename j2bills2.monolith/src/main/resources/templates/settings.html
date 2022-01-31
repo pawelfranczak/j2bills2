@@ -80,6 +80,19 @@
 							
 							</div>
 							
+							Domyślny użytkownik do nowych wpisów:
+							<div class="input-group">
+								<select id="defaultUser" name="defaultUser" class="form-control">
+									<option value="">Select Account</option>
+									<option th:each="user : ${users}"
+										th:value="${user.id}"
+										th:text="${user.firstName}"
+										th:selected="(${defaultUserID} == ${user.id})"></option>
+								</select>
+								<p th:if="${#fields.hasErrors('defaultUser')}"
+									th:errors="*{user}">User Error</p>
+							</div>
+							
 							<input type="hidden" name="id" th:value="${userSettings.id}" />
 
 							<BR> <input type="submit" class="btn btn-primary"> <BR>
