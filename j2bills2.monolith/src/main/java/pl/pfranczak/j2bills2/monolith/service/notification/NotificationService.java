@@ -121,7 +121,8 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 		Notification notification = new Notification();
 		
 		int daysToDueDate = daysToDueDate(billOfMonth);
-		String notificationString  = "Upłynął termin płatności rachunku \"" + billOfMonth.getName() + "\" na kwotę " + billOfMonth.getAmount() + ", " + daysToDueDate + " dni temu";
+		String dueDate = billOfMonth.getYear() + "." + billOfMonth.getMonth().getValue() + "." + billOfMonth.getDueDay();
+		String notificationString  = "Upłynął termin płatności rachunku \"" + billOfMonth.getName() + "\" na kwotę " + billOfMonth.getAmount() + ", " + daysToDueDate + " dni temu, termin płatności " + dueDate;
 		
 		notification.setActive(true);
 		notification.setDate(getTimestamp());
