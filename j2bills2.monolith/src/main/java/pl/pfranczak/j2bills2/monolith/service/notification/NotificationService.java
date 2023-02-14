@@ -63,20 +63,20 @@ public class NotificationService extends CrudServiceImpl<Notification, Long>{
 	}
 	
 	public void generateNotification() {
-		List<BillsOfMonth> billsOfMonth = billsOfMonthService.getByOwnerAndPaidAndAutomaticRepayment(false, false);
-		for (BillsOfMonth billOfMonth : billsOfMonth) {
-			Notified notified = notifiedService.get(billOfMonth.getId());
-			int daysToDueDate = daysToDueDate(billOfMonth);
-			if (notificationShouldBeGenerated(notified, daysToDueDate)) {
-				if (billIsToPayInFuture(billOfMonth)) {
-					createNotificationToPayInFuture(billOfMonth);
-				} else if (billIsToPayToday(billOfMonth)) {
-					createNotificationToPayToday(billOfMonth);
-				} else {
-					createNotificationToPayInPast(billOfMonth);
-				}
-			}
-		}
+//		List<BillsOfMonth> billsOfMonth = billsOfMonthService.getByOwnerAndPaidAndAutomaticRepayment(false, false);
+//		for (BillsOfMonth billOfMonth : billsOfMonth) {
+//			Notified notified = notifiedService.get(billOfMonth.getId());
+//			int daysToDueDate = daysToDueDate(billOfMonth);
+//			if (notificationShouldBeGenerated(notified, daysToDueDate)) {
+//				if (billIsToPayInFuture(billOfMonth)) {
+//					createNotificationToPayInFuture(billOfMonth);
+//				} else if (billIsToPayToday(billOfMonth)) {
+//					createNotificationToPayToday(billOfMonth);
+//				} else {
+//					createNotificationToPayInPast(billOfMonth);
+//				}
+//			}
+//		}
 	}
 	
 	private boolean notificationShouldBeGenerated(Notified notified, int daysToDueDate) {
