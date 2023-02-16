@@ -12,5 +12,6 @@ import pl.pfranczak.j2bills2.monolith.entity.Account;
 public interface AccountRepository extends CrudRepository<Account, Long>{
 	List<Account> findByOwner(UserAccount owner);
 	List<Account> findByOwnerAndActiveTrue(UserAccount owner);
+	List<Account> findByOwnerAndActiveTrueAndTakeIntoTotalSumTrue(UserAccount owner);
 	Account findByIdAndOwner(Long id, UserAccount owner);
 }

@@ -38,9 +38,18 @@ public class AccountService extends CrudServiceImpl<Account, Long>{
 		return accountRepository.findByOwnerAndActiveTrue(getOwner());
 	}
 	
+	public List<Account> getAllActiveAndRelevantForTotal() {
+		return accountRepository.findByOwnerAndActiveTrueAndTakeIntoTotalSumTrue(getOwner());
+	}
+	
 	public BigDecimal getSumOfAll() {
 		List<Account> findByOwner = accountRepository.findByOwner(getOwner());
 		return (findByOwner.stream().map(Account::getBalance).reduce(BigDecimal.ZERO, BigDecimal::add));
+	}
+	
+	public BigDecimal getSumOfAllRelevantForTotalSum() {
+		List<Account> findByOwner = accountRepository.findByOwner(getOwner());
+		return (findByOwner.stream().filter(Account::isTakeIntoTotalSum).map(Account::getBalance).reduce(BigDecimal.ZERO, BigDecimal::add));
 	}
 	
 	@Override
@@ -58,6 +67,9 @@ public class AccountService extends CrudServiceImpl<Account, Long>{
 	@Override
 	public void update(Account account) {
 		account.setOwner(getOwner());
+		if (!account.isActive()) {
+			account.setTakeIntoTotalSum(false);
+		}
 		super.update(account);
 	}
 	

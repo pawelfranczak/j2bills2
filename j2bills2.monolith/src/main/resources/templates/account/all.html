@@ -37,6 +37,7 @@
                       <th>Opis</th>
                       <th>Balans</th>
                       <th>Aktywne</th>
+                      <th>Dodaj do sumy</th>
                       <th>#</th>
                       <th>#</th>
                     </tr>
@@ -49,6 +50,7 @@
 							<td><p th:text="${account.description}"></p></td>
 							<td><p th:text="${account.balance}"></p></td>
 							<td><p th:text="${account.active}"></p></td>
+							<td><p th:text="${account.takeIntoTotalSum}"></p></td>
 							<td><a th:href="@{modify/{id}/(id=${account.id})}">Edytuj</a></td>
 							<td><a th:href="@{${account.id}}">Detale</a></td>
 						</tr>

@@ -33,7 +33,7 @@ public class IndexController {
 		if (auth.isAuthenticated()) {
 			ModelAndView modelAndView = new ModelAndView("home");
 			if (userSettingsService.showAccountsSumOnHomepage()) {
-				modelAndView.addObject("sumOfAllAccounts", accountService.getSumOfAll());
+				modelAndView.addObject("sumOfAllAccounts", accountService.getSumOfAllRelevantForTotalSum());
 			}
 			userService.addUsernameToModelAndView(modelAndView);
 			
@@ -41,7 +41,7 @@ public class IndexController {
 			notificationService.generateNotification();
 			
 			
-			List<Account> accounts = accountService.getAll();
+			List<Account> accounts = accountService.getAllActive();
 			modelAndView.addObject("accounts", accounts);
 			
 			long countOfActiveNotification = notificationService.getCountOfActiveNotification();

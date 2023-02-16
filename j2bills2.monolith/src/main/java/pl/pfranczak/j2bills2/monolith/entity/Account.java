@@ -46,5 +46,8 @@ public class Account {
 	private BigDecimal balance;
 	
 	private boolean active;
+	
+	@Column(nullable=false, columnDefinition = "bool DEFAULT false")
+	private boolean takeIntoTotalSum;
 
 }
