@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="/../general.html :: head"></head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<div th:insert="/../general.html :: sidebar"></div>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<div th:insert="/../general.html :: topbar"></div>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">Nowa Podkategoria</h1>
+					</div>
+
+					<div class="container">
+
+						<form role="form" th:action="@{/sub_category/new}" th:method="post" th:object="${subCategory}">
+							
+							<div class="input-group">
+								<select id="category" name="category" class="form-control">
+									<option value="">Select Category</option>
+									<option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}" th:selected="(${categoryID} == ${category.id})"></option>
+								</select>
+								<p th:if="${#fields.hasErrors('category')}"
+									th:errors="*{category}">Category Error</p>
+							</div>
+							
+							<div class="input-group">
+								<input type="text" id="name" name="name" th:field="*{name}" placeholder="Nazwa" class="form-control"> 
+								<p th:if="${#fields.hasErrors('name')}"	th:errors="*{name}">Name Error</p>
+							</div>
+
+							<BR> <input type="submit" class="btn btn-primary"> <BR>
+							<BR>
+						</form>
+						
+					</div>
+
+					<!-- /.container-fluid -->
+
+				</div>
+				<!-- End of Main Content -->
+
+				<!-- Footer -->
+				<footer th:insert="/../general.html :: footer"> </footer>
+				<!-- End of Footer -->
+
+			</div>
+			<!-- End of Content Wrapper -->
+
+		</div>
+		<!-- End of Page Wrapper -->
+
+	</div>
+
+	<!-- Logout Modal-->
+	<div th:insert="/../general.html :: end-of-body"></div>
+</body>
+
+</html>

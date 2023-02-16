@@ -61,7 +61,7 @@
 							<BR>
 							
 							<div class="input-group">
-								<select id="month" name="month" class="form-control">
+								<select id="month" name="month" class="form-control" readonly>
 									<option value="">Miesiąc</option>
 									<option 
 										th:each="month : ${T(java.time.Month).values()}" 
@@ -75,14 +75,7 @@
 							<BR>
 							
 							<div class="input-group">
-								<input 
-									type="number" 
-									id="year" 
-									name="year" 
-									th:field="*{year}"
-									step="1" 
-									placeholder="Rok"
-									class="form-control">
+								<input type="number" id="year" name="year" th:field="*{year}" step="1" placeholder="Rok" class="form-control" readonly>
 								<p th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year error</p>
 							</div>
 							
@@ -91,7 +84,7 @@
 								<input type="checkbox" id="automaticRepayment" name="automaticRepayment" th:field="*{automaticRepayment}" class="form-control"> 
 							</div>
 							
-							<input type="checkbox" th:checked="${billsOfMonth.paid}" disabled>
+							<input type="hidden" id="paid" name="paid" th:field="*{paid}" class="form-control" onclick='return false;'/> 
 							<input type="hidden" name="id" th:value="${billsOfMonth.id}" />
 
 							<BR> <input type="submit" class="btn btn-primary"> <BR>
