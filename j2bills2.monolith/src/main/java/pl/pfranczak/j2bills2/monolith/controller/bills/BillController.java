@@ -287,6 +287,8 @@ public class BillController {
 		BigDecimal newBillValue = billOfMonth.getAmount();
 		billOfMonth.setAmountPaid(newBillValue);
 		billOfMonth.setAmount(originalBillValue);
+		billOfMonth.setPaid(false);
+		billOfMonth.setAutomaticRepayment(billsOfMonthService.get(billOfMonth.getId()).getAutomaticRepayment());
 		billsOfMonthService.update(billOfMonth);
 		billsOfMonthService.payBill(billOfMonth, originalBillValue, newBillValue);	
 		
