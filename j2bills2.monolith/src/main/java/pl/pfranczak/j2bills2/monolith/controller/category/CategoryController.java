@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import lombok.AllArgsConstructor;
 import pl.pfranczak.j2bills2.monolith.entity.User;
 import pl.pfranczak.j2bills2.monolith.entity.category.Category;
+import pl.pfranczak.j2bills2.monolith.entity.category.SubCategory;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
 import pl.pfranczak.j2bills2.monolith.service.category.CategoryService;
 import pl.pfranczak.j2bills2.monolith.service.notification.NotificationService;
@@ -64,6 +66,14 @@ public class CategoryController {
 		}
 		categoryService.create(category);
 		return new ModelAndView("redirect:/category/new");
+	}
+	
+	@GetMapping("${change_active_state}/{id}")	
+	public ModelAndView changeActiveState(@PathVariable("id") Long id) {
+		Category category = categoryService.get(id);
+		category.setActive(!category.isActive());
+		categoryService.update(category);
+		return new ModelAndView("redirect:/category/all");
 	}
 //	
 //	@GetMapping("${modify}/{id}")

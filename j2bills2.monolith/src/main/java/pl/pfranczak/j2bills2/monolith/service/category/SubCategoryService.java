@@ -1,6 +1,8 @@
 package pl.pfranczak.j2bills2.monolith.service.category;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,12 @@ public class SubCategoryService extends CrudServiceImpl<SubCategory, Long>{
 	@Override
 	public List<SubCategory> getAll() {
 		return subCategoryRepository.findByOwnerOrderByCategory(getOwner());
+	}
+	
+	public List<SubCategory> getAllWithActiveCategory() {
+		List<SubCategory> subCategories = subCategoryRepository.findByOwnerOrderByCategory(getOwner());
+		List<SubCategory> subCategoriesWithActiveCategory = subCategories.stream().filter(subCategory -> subCategory.getCategory().isActive()).collect(Collectors.toList());
+		return subCategoriesWithActiveCategory;
 	}
 	
 	public List<SubCategory> getAllByCategory(Category category) {
