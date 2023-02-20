@@ -25,6 +25,10 @@ public class CategoryService extends CrudServiceImpl<Category, Long>{
 		return categoryRepository.findByOwner(getOwner());
 	}
 	
+	public List<Category> getAllActive() {
+		return categoryRepository.findByOwnerAndActiveTrue(getOwner());
+	}
+	
 	@Override
 	public Category get(Long id) {
 		return categoryRepository.findByIdAndOwner(id, getOwner());

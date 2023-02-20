@@ -11,5 +11,6 @@ import pl.pfranczak.j2bills2.monolith.entity.category.Category;
 @Repository
 public interface CategoryRepository extends CrudRepository<Category, Long>{
 	List<Category> findByOwner(UserAccount owner);
+	List<Category> findByOwnerAndActiveTrue(UserAccount owner);
 	Category findByIdAndOwner(Long id, UserAccount owner);
 }
