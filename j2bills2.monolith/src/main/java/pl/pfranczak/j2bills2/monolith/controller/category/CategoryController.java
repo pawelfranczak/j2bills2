@@ -75,44 +75,4 @@ public class CategoryController {
 		categoryService.update(category);
 		return new ModelAndView("redirect:/category/all");
 	}
-//	
-//	@GetMapping("${modify}/{id}")
-//	public ModelAndView modifywEntity(@PathVariable("id") Long id) {
-//		ModelAndView modelAndView = new ModelAndView("account/modify");
-//		Account account = accountService.get(id);
-//		modelAndView.addObject("account", account);
-//		List<User> users = userService.getAll();
-//		modelAndView.addObject("users", users);
-//		userService.addUsernameToModelAndView(modelAndView);
-//		
-//		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
-//		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
-//		return modelAndView;
-//	}
-//
-//	// TODO Add validation
-//	@PostMapping("${modify}")
-//	public String modifyEntityPost(Account account) {
-//		accountService.update(account);
-//		return "redirect:/account/all";
-//	}
-//	
-//	@GetMapping("${delete}")
-//	public ModelAndView deleteEntity() {
-//		ModelAndView modelAndView = new ModelAndView("account/delete");
-//		List<Account> accounts = accountService.getAll();
-//		modelAndView.addObject("accounts", accounts);
-//		userService.addUsernameToModelAndView(modelAndView);
-//		
-//		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
-//		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
-//		return modelAndView;
-//	}
-//
-//	@PostMapping("${delete}")
-//	public String deletePost(@RequestParam Long id) {
-//		accountService.deleteById(id);
-//		return "redirect:/account/delete";
-//	}
-
 }
