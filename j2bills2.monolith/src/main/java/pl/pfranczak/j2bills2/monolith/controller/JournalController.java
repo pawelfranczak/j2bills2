@@ -7,7 +7,6 @@ import javax.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.jdbc.config.SortedResourcesFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +20,14 @@ import pl.pfranczak.j2bills2.monolith.entity.Account;
 import pl.pfranczak.j2bills2.monolith.entity.Journal;
 import pl.pfranczak.j2bills2.monolith.entity.Movement;
 import pl.pfranczak.j2bills2.monolith.entity.User;
-import pl.pfranczak.j2bills2.monolith.entity.UserSettings;
+import pl.pfranczak.j2bills2.monolith.entity.category.Category;
+import pl.pfranczak.j2bills2.monolith.entity.category.SubCategory;
 import pl.pfranczak.j2bills2.monolith.service.AccountService;
 import pl.pfranczak.j2bills2.monolith.service.JournalService;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
 import pl.pfranczak.j2bills2.monolith.service.UserSettingsService;
+import pl.pfranczak.j2bills2.monolith.service.category.CategoryService;
+import pl.pfranczak.j2bills2.monolith.service.category.SubCategoryService;
 
 @AllArgsConstructor
 @Controller
@@ -35,7 +37,9 @@ public class JournalController {
 	private JournalService journalService;
 	private UserService userService;
 	private AccountService accountService;
-	private UserSettingsService userSettingsService; 
+	private UserSettingsService userSettingsService;
+	private CategoryService	categoryService;
+	private SubCategoryService subCategoryService;
 	
 	@GetMapping("${all}")	
 	public ModelAndView showAll() {
@@ -113,6 +117,7 @@ public class JournalController {
 			}
 			return modelAndView;
 		}
+		
 		journalService.create(journalEntry);
 		return new ModelAndView("redirect:/journal/new");
 	}
@@ -164,6 +169,10 @@ public class JournalController {
 		if (defaultUser != null) {
 			modelAndView.addObject("userID", defaultUser.getId());
 		}
+		List<Category> categories = categoryService.getAllActive();
+		modelAndView.addObject("categories", categories);
+		List<SubCategory> subCategories = subCategoryService.getAllWithActiveCategory();
+		modelAndView.addObject("subCategories", subCategories);
 		return modelAndView;
 	}
 

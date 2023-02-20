@@ -42,7 +42,8 @@
 											<th>Wartość</th>
 											<th>Balans na koncie przed wpisem</th>
 											<th>Data</th>
-											<th>#</th>
+											<th>Kategoria</th>
+											<th>Podkategoria</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -56,7 +57,8 @@
 												<td><p th:text="${journalEntry.value}"></p></td>
 												<td><p th:text="${journalEntry.balanceOfAccountBeforeChange}"></p></td>
 												<td><p th:text="${journalEntry.date}"></p></td>
-												<td><a th:href="@{${journalEntry.id}}">Details</a></td>
+												<td><p th:text="${journalEntry.category?.name}"></p></td>
+												<td><p th:text="${journalEntry.subCategory?.name}"></p></td>
 											</tr>
 										</th:block>
 									</tbody>

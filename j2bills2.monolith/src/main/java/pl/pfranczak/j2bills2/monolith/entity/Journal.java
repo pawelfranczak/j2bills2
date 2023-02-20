@@ -19,6 +19,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.pfranczak.j2bills2.monolith.authentication.UserAccount;
+import pl.pfranczak.j2bills2.monolith.entity.category.Category;
+import pl.pfranczak.j2bills2.monolith.entity.category.SubCategory;
 
 @Entity
 @NoArgsConstructor
@@ -57,5 +59,11 @@ public class Journal {
 	private Timestamp date;
 	
 	private Long sequence;
+	
+	@OneToOne(targetEntity = Category.class, fetch = FetchType.EAGER)
+	private Category category;
+	
+	@OneToOne(targetEntity = SubCategory.class, fetch = FetchType.EAGER)
+	private SubCategory subCategory;
 	
 }
