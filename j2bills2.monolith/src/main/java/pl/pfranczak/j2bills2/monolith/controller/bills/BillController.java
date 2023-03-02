@@ -23,10 +23,14 @@ import pl.pfranczak.j2bills2.monolith.entity.Account;
 import pl.pfranczak.j2bills2.monolith.entity.bills.Bill;
 import pl.pfranczak.j2bills2.monolith.entity.bills.BillsOfMonth;
 import pl.pfranczak.j2bills2.monolith.entity.bills.CopyMonth;
+import pl.pfranczak.j2bills2.monolith.entity.category.Category;
+import pl.pfranczak.j2bills2.monolith.entity.category.SubCategory;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
 import pl.pfranczak.j2bills2.monolith.service.UserSettingsService;
 import pl.pfranczak.j2bills2.monolith.service.bills.BillService;
 import pl.pfranczak.j2bills2.monolith.service.bills.BillsOfMonthService;
+import pl.pfranczak.j2bills2.monolith.service.category.CategoryService;
+import pl.pfranczak.j2bills2.monolith.service.category.SubCategoryService;
 import pl.pfranczak.j2bills2.monolith.service.notification.NotificationService;
 
 @AllArgsConstructor
@@ -39,6 +43,8 @@ public class BillController {
 	private BillsOfMonthService billsOfMonthService;
 	private UserSettingsService userSettingsService;
 	private NotificationService notificationService;
+	private CategoryService categoryService;
+	private SubCategoryService subCategoryService;
 	
 	@GetMapping("${all}")	
 	public ModelAndView showAll() {
@@ -104,6 +110,11 @@ public class BillController {
 		modelAndView.addObject("defaultDueDays", defaultDueDays);
 		modelAndView.addObject("defaultNames", defaultNames);
 		modelAndView.addObject("defaultDescriptions", defaultDescriptions);
+		
+		List<Category> categories = categoryService.getAllActive();
+		modelAndView.addObject("categories", categories);
+		List<SubCategory> subCategories = subCategoryService.getAllWithActiveCategory();
+		modelAndView.addObject("subCategories", subCategories);
 		
 		userService.addUsernameToModelAndView(modelAndView);
 		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
@@ -272,6 +283,17 @@ public class BillController {
 		modelAndView.addObject("billsOfMonth", billsOfMonth);
 		modelAndView.addObject("accountID", billsAccount.getId());
 		modelAndView.addObject("monthSelected", billsOfMonth.getMonth());
+		if (billsOfMonth.getCategory() != null) {
+			modelAndView.addObject("categoryID", billsOfMonth.getCategory().getId());
+		}
+		if (billsOfMonth.getSubCategory() != null) {
+			modelAndView.addObject("subCategoryID", billsOfMonth.getSubCategory().getId());
+		}
+		
+		List<Category> categories = categoryService.getAllActive();
+		modelAndView.addObject("categories", categories);
+		List<SubCategory> subCategories = subCategoryService.getAllWithActiveCategory();
+		modelAndView.addObject("subCategories", subCategories);
 		
 		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
 		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
@@ -315,6 +337,17 @@ public class BillController {
 		modelAndView.addObject("billsOfMonth", billsOfMonth);
 		modelAndView.addObject("accountID", billsAccount.getId());
 		modelAndView.addObject("monthSelected", billsOfMonth.getMonth());
+		if (billsOfMonth.getCategory() != null) {
+			modelAndView.addObject("categoryID", billsOfMonth.getCategory().getId());
+		}
+		if (billsOfMonth.getSubCategory() != null) {
+			modelAndView.addObject("subCategoryID", billsOfMonth.getSubCategory().getId());
+		}
+		
+		List<Category> categories = categoryService.getAllActive();
+		modelAndView.addObject("categories", categories);
+		List<SubCategory> subCategories = subCategoryService.getAllWithActiveCategory();
+		modelAndView.addObject("subCategories", subCategories);
 		
 		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
 		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");

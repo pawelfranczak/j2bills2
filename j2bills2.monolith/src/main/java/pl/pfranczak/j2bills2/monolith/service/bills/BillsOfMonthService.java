@@ -72,6 +72,8 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 			journal.setDescription(billsOfMonth.getName());
 			journal.setValue(originalBillValue.negate());
 			journal.setUser(userService.getAll().get(0));
+			journal.setCategory(billsOfMonth.getCategory());
+			journal.setSubCategory(billsOfMonth.getSubCategory());
 			journalService.create(journal);
 			
 			BigDecimal difference = newBillValue.subtract(originalBillValue);
@@ -81,6 +83,8 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 				journalDifference.setDescription(billsOfMonth.getName());
 				journalDifference.setValue(difference.negate());
 				journalDifference.setUser(userService.getAll().get(0));
+				journalDifference.setCategory(billsOfMonth.getCategory());
+				journalDifference.setSubCategory(billsOfMonth.getSubCategory());
 				journalService.create(journalDifference);
 			}
 		} else {
@@ -89,6 +93,8 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 			journal.setDescription(billsOfMonth.getName());
 			journal.setValue(billsOfMonth.getAmount().negate());
 			journal.setUser(userService.getAll().get(0));
+			journal.setCategory(billsOfMonth.getCategory());
+			journal.setSubCategory(billsOfMonth.getSubCategory());
 			journalService.create(journal);
 		}
 		

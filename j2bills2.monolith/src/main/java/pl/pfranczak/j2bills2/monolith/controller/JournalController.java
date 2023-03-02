@@ -117,7 +117,6 @@ public class JournalController {
 			}
 			return modelAndView;
 		}
-		
 		journalService.create(journalEntry);
 		return new ModelAndView("redirect:/journal/new");
 	}
@@ -134,6 +133,10 @@ public class JournalController {
 		List<Account> accounts = accountService.getAllActive();
 		modelAndView.addObject("accounts", accounts);
 		userService.addUsernameToModelAndView(modelAndView);
+		List<Category> categories = categoryService.getAllActive();
+		modelAndView.addObject("categories", categories);
+		List<SubCategory> subCategories = subCategoryService.getAllWithActiveCategory();
+		modelAndView.addObject("subCategories", subCategories);
 		return modelAndView;
 	}
 

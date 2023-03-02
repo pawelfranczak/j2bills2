@@ -21,6 +21,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.pfranczak.j2bills2.monolith.authentication.UserAccount;
+import pl.pfranczak.j2bills2.monolith.entity.category.Category;
+import pl.pfranczak.j2bills2.monolith.entity.category.SubCategory;
 
 @Entity
 @NoArgsConstructor
@@ -62,5 +64,11 @@ public class BillsOfMonth {
 	
 	@Column(nullable=false, columnDefinition = "bool DEFAULT false")
 	private Boolean automaticRepayment;
+	
+	@OneToOne(targetEntity = Category.class, fetch = FetchType.EAGER)
+	private Category category;
+	
+	@OneToOne(targetEntity = SubCategory.class, fetch = FetchType.EAGER)
+	private SubCategory subCategory;
 	
 }

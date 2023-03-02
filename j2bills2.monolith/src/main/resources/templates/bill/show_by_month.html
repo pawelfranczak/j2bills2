@@ -45,6 +45,7 @@
                       <th>Płatne do</th>
                       <th>Zapłacone</th>
                       <th>Automatyczna spłata</th>
+                      <th>Kategoria</th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -60,6 +61,7 @@
 							<td><p th:text="${billsOfMonth.dueDay}"></p></td>
 							<td><input type="checkbox" th:checked="${billsOfMonth.paid}" disabled></input></td>
 							<td><input type="checkbox" th:checked="${billsOfMonth.automaticRepayment}" disabled></input></td>
+							<td><p th:text="${billsOfMonth.category?.name}"></p><p th:text="${billsOfMonth.subCategory?.name}"></p></td>
 							<td th:if="${billsOfMonth.paid == false}" >
 							<a th:href="@{/bill/pay/{id}/(id=${billsOfMonth.id})}">Zapłać</a><br>
 							<a th:href="@{/bill/edit_and_pay/{id}/(id=${billsOfMonth.id})}">Edytuj i zapłać</a><br>

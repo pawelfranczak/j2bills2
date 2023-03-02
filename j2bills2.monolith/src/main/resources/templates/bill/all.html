@@ -36,6 +36,7 @@
                       <th>Opis</th>
                       <th>Wartość domyślna</th>
                       <th>Płatne do</th>
+                      <th>Kategoria</th>
                       <th>#</th>
                     </tr>
                   </thead>
@@ -46,6 +47,7 @@
 							<td><p th:text="${bill.description}"></p></td>
 							<td><p th:text="${bill.defaultAmount}"></p></td>
 							<td><p th:text="${bill.defaultDueDay}"></p></td>
+							<td><p th:text="${bill.category?.name}"></p><p th:text="${bill.subCategory?.name}"></p></td>
 							<td><a th:href="@{modify/{id}/(id=${bill.id})}">Edytuj</a></td>
 						</tr>
 					</th:block>

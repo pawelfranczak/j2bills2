@@ -7,6 +7,30 @@
 
 <body id="page-top">
 
+	<script>
+		function toggle(categoryOption) {
+		
+			let subCategoryOptions = document.getElementById("subCategory")
+			
+			for(i = 1; i < subCategoryOptions.length; i++) {
+		       	subCategoryOption = subCategoryOptions[i];
+		       	subCategoryOption.selected = false
+				let hidden = subCategoryOption.getAttribute('hidden') !== null
+				let parentCategory = subCategoryOption.getAttribute("parent-category")
+				
+				if (categoryOption.value == parentCategory) {
+					if (hidden) {
+						subCategoryOption.removeAttribute("hidden");
+					}
+				} else {
+					if (!hidden) {
+						subCategoryOption.setAttribute("hidden", "hidden");
+					}
+				}
+			}
+		}
+	</script>
+
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
@@ -82,6 +106,38 @@
 							Automatyczna spłata
 							<div class="input-group">
 								<input type="checkbox" id="automaticRepayment" name="automaticRepayment" th:field="*{automaticRepayment}" class="form-control"> 
+							</div>
+							
+							
+							<BR>
+
+							<div class="input-group">
+								<select id="category" name="category" class="form-control" onchange="toggle(this)">
+									<option value="">Select Category</option>
+									<option th:each="category : ${categories}"
+										th:value="${category.id}"
+										th:text="${category.name}"
+										th:selected="(${categoryID} == ${category.id})"
+										></option>
+								</select>
+								<p th:if="${#fields.hasErrors('category')}"
+									th:errors="*{category}">Category Error</p>
+							</div>
+
+							<BR>
+
+							<div class="input-group">
+								<select id="subCategory" name="subCategory" class="form-control">
+									<option value="">Select SubCategory</option>
+									<option th:each="subCategory : ${subCategories}"
+										th:value="${subCategory.id}"
+										th:text="${subCategory.name}"
+										th:attr="parent-category=${subCategory.category.id}"
+										th:selected="(${subCategoryID} == ${subCategory.id})" 
+										hidden="hidden"></option>
+								</select>
+								<p th:if="${#fields.hasErrors('subCategory')}"
+									th:errors="*{subCategory}">SubCategory Error</p>
 							</div>
 							
 							<input type="hidden" id="paid" name="paid" th:field="*{paid}" class="form-control" onclick='return false;'/> 

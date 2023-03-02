@@ -34,7 +34,7 @@ public class SubCategoryController {
 	@GetMapping("${all}")	
 	public ModelAndView showAll() {
 		ModelAndView modelAndView = new ModelAndView("category/sub_all");
-		List<SubCategory> subCategories = subCategoryService.getAllWithActiveCategory();
+		List<SubCategory> subCategories = subCategoryService.getAll();
 		modelAndView.addObject("subCategories", subCategories);
 		userService.addUsernameToModelAndView(modelAndView);
 		

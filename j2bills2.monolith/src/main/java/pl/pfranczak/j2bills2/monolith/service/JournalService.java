@@ -43,6 +43,12 @@ public class JournalService extends CrudServiceImpl<Journal, Long>{
 		journalSource.setDescription(movement.getDescription());
 		journalSource.setUser(movement.getUser());
 		journalSource.setSequence(getHighestSequence()+1L);
+		if (movement.getCategory() != null) {
+			journalSource.setCategory(movement.getCategory());
+		}
+		if (movement.getSubCategory() != null) {
+			journalSource.setSubCategory(movement.getSubCategory());
+		}
 		create(journalSource);
 		
 		Journal journalTarget = new Journal();
@@ -51,6 +57,12 @@ public class JournalService extends CrudServiceImpl<Journal, Long>{
 		journalTarget.setDescription(movement.getDescription());
 		journalTarget.setUser(movement.getUser());
 		journalTarget.setSequence(getHighestSequence()+1L);
+		if (movement.getCategory() != null) {
+			journalTarget.setCategory(movement.getCategory());
+		}
+		if (movement.getSubCategory() != null) {
+			journalTarget.setSubCategory(movement.getSubCategory());
+		}
 		create(journalTarget);
 	}
 	

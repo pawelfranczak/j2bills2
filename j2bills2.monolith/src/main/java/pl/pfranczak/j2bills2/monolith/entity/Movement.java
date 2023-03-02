@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.pfranczak.j2bills2.monolith.authentication.UserAccount;
+import pl.pfranczak.j2bills2.monolith.entity.category.Category;
+import pl.pfranczak.j2bills2.monolith.entity.category.SubCategory;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,5 +38,7 @@ public class Movement {
 	@NotNull
 	private BigDecimal value;
 	
+	private Category category;
 	
+	private SubCategory subCategory;
 }

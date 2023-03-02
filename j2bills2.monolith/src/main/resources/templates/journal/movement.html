@@ -86,6 +86,34 @@
 								</select>
 								<p th:if="${#fields.hasErrors('targetAccount')}" th:errors="*{targetAccount}">Account Error</p>
 							</div>
+							
+							<BR>
+
+							<div class="input-group">
+								<select id="category" name="category" class="form-control">
+									<option value="">Select Category</option>
+									<option th:each="category : ${categories}"
+										th:value="${category.id}"
+										th:text="${category.name}"
+										th:selected="(${categoryID} == ${category.id})"></option>
+								</select>
+								<p th:if="${#fields.hasErrors('category')}"
+									th:errors="*{category}">Category Error</p>
+							</div>
+
+							<BR>
+
+							<div class="input-group">
+								<select id="subCategory" name="subCategory" class="form-control">
+									<option value="">Select SubCategory</option>
+									<option th:each="subCategory : ${subCategories}"
+										th:value="${subCategory.id}"
+										th:text="${subCategory.name}"
+										th:selected="(${subCategoryID} == ${subCategory.id})"></option>
+								</select>
+								<p th:if="${#fields.hasErrors('subCategory')}"
+									th:errors="*{subCategory}">SubCategory Error</p>
+							</div>
 
 							<BR> <input type="submit" class="btn btn-primary"> <BR>
 							<BR>

@@ -13,5 +13,6 @@ import pl.pfranczak.j2bills2.monolith.entity.category.SubCategory;
 public interface SubCategoryRepository extends CrudRepository<SubCategory, Long>{
 	List<SubCategory> findByOwnerOrderByCategory(UserAccount owner);
 	List<SubCategory> findByOwnerAndCategoryOrderByCategory(UserAccount owner, Category category);
+	List<SubCategory> findByOwnerAndActiveTrueOrderByCategory(UserAccount owner);
 	SubCategory findByIdAndOwner(Long id, UserAccount owner);
 }
