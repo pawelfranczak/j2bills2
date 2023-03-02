@@ -119,6 +119,8 @@ public class BillsOfMonthService extends CrudServiceImpl<BillsOfMonth, Long>{
 			newBillsOfMonth.setDueDay(oldBillsOfMonth.getDueDay());
 			newBillsOfMonth.setPaid(Boolean.FALSE);
 			newBillsOfMonth.setAutomaticRepayment(oldBillsOfMonth.getAutomaticRepayment());
+			newBillsOfMonth.setCategory(oldBillsOfMonth.getCategory());
+			newBillsOfMonth.setSubCategory(oldBillsOfMonth.getSubCategory());
 			create(newBillsOfMonth);
 		}
 		
