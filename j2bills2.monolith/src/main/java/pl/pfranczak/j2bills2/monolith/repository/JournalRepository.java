@@ -1,5 +1,6 @@
 package pl.pfranczak.j2bills2.monolith.repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ public interface JournalRepository extends CrudRepository<Journal, Long>{
 	List<Journal> findByOwner(UserAccount owner, Pageable pageable);
 	List<Journal> findByOwnerAndAccount(UserAccount owner, Account account);
 	List<Journal> findByOwnerAndAccountOrderByIdDesc(UserAccount owner, Account account);
+	List<Journal> findByOwnerAndDateBetween(UserAccount owner, Timestamp dateFrom, Timestamp dateTo);
 	Journal findByIdAndOwner(Long id, UserAccount owner);
 	Long countByOwner(UserAccount owner);
 	Journal findTopByOwnerOrderBySequenceDesc(UserAccount owner);

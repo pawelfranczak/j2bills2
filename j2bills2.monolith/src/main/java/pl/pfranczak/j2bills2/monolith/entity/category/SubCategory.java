@@ -43,5 +43,20 @@ public class SubCategory {
 	private String name;
 	
 	private boolean active;
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		if (obj instanceof SubCategory) {
+			SubCategory other = (SubCategory) obj;
+			return this.id.equals(other.getId());
+		}
+		return false;
+	}
 
 }

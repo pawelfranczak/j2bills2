@@ -1,6 +1,14 @@
 package pl.pfranczak.j2bills2.monolith.service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.Year;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -9,7 +17,6 @@ import org.springframework.stereotype.Service;
 import pl.pfranczak.j2bills2.monolith.entity.Account;
 import pl.pfranczak.j2bills2.monolith.entity.Journal;
 import pl.pfranczak.j2bills2.monolith.entity.Movement;
-import pl.pfranczak.j2bills2.monolith.entity.User;
 import pl.pfranczak.j2bills2.monolith.repository.JournalRepository;
 
 @Service
@@ -65,6 +72,31 @@ public class JournalService extends CrudServiceImpl<Journal, Long>{
 		}
 		create(journalTarget);
 	}
+	
+	public List<Journal> getAllForYearMonth(Long year, Long month) {
+		
+		Year localYear = Year.of(year.intValue());
+		Month localMonth = Month.of(month.intValue());
+
+		long millisFrom = 
+				localYear.atMonth(localMonth)
+	            .atDay(1)
+	            .atStartOfDay()
+	            .atZone(ZoneId.systemDefault())
+	            .toInstant()
+	            .toEpochMilli();
+		
+		long millisTo = localYear
+				.atMonth(localMonth)
+	            .atEndOfMonth()
+	            .atTime(LocalTime.MAX)
+	            .atZone(ZoneId.systemDefault())
+	            .toInstant()
+	            .toEpochMilli()+1;
+				
+		return journalRepository.findByOwnerAndDateBetween(getOwner(), new Timestamp(millisFrom), new Timestamp(millisTo) );
+	}
+	
 	
 	@Override
 	public List<Journal> getAll() {
