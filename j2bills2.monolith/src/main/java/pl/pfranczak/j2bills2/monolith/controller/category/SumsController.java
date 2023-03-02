@@ -76,6 +76,8 @@ public class SumsController {
 			}
 		}
 		
+		BigDecimal totalSumLine = BigDecimal.ZERO;
+		
 		for (Entry<Category, Map<SubCategory, BigDecimal>> mapEntrySet : map.entrySet()) {
 			for (Entry<SubCategory, BigDecimal> subMapEntrySet : mapEntrySet.getValue().entrySet()) {
 				SumByCategoryAndSubCategory sumByCategoryAndSubCategory = new SumByCategoryAndSubCategory();
@@ -83,6 +85,7 @@ public class SumsController {
 				sumByCategoryAndSubCategory.setSubCategory(subMapEntrySet.getKey());
 				sumByCategoryAndSubCategory.setValue(subMapEntrySet.getValue());
 				sumByCategoryAndSubCategories.add(sumByCategoryAndSubCategory);
+				totalSumLine = totalSumLine.add(sumByCategoryAndSubCategory.getValue());
 			}
 		}
 		
@@ -91,16 +94,57 @@ public class SumsController {
 			sumByCategoryAndSubCategory.setCategory(mapEntrySet.getKey());
 			sumByCategoryAndSubCategory.setValue(mapEntrySet.getValue());
 			sumByCategoryAndSubCategories.add(sumByCategoryAndSubCategory);
+			totalSumLine = totalSumLine.add(sumByCategoryAndSubCategory.getValue());
 		}
 		
 		SumByCategoryAndSubCategory sumByCategoryAndSubCategory = new SumByCategoryAndSubCategory();
 		sumByCategoryAndSubCategory.setValue(sumWithoutCategory);
 		sumByCategoryAndSubCategories.add(sumByCategoryAndSubCategory);
+		totalSumLine = totalSumLine.add(sumByCategoryAndSubCategory.getValue());
 		
 		modelAndView.addObject("sumByCategoryAndSubCategories", sumByCategoryAndSubCategories);
+		modelAndView.addObject("totalSumLine", totalSumLine);
 		long countOfActiveNotification = notificationService.getCountOfActiveNotification();
 		modelAndView.addObject("countOfActiveNotification", countOfActiveNotification+"");
+		
+		modelAndView.addObject("nextMonth", generateNextMonthLink(month, year));
+		modelAndView.addObject("previousMonth", generatePreviousMonthLink(month, year));
+		
 		return modelAndView;
+	}
+	
+	private String generateNextMonthLink(Long month, Long year) {
+		
+		Long nextMonth;
+		Long nextYear;
+		
+		if (month == 12) {
+			nextMonth = 1L;
+			nextYear = year + 1L;
+		} else {
+			nextMonth = month + 1L;
+			nextYear = year;
+		}
+		
+		return "/" + nextYear + "/" + nextMonth;
+		
+	}
+	
+	private String generatePreviousMonthLink(Long month, Long year) {
+		
+		Long previousMonth;
+		Long previousYear;
+		
+		if (month == 1) {
+			previousMonth = 12L;
+			previousYear = year - 1L;
+		} else {
+			previousMonth = month - 1L;
+			previousYear = year;
+		}
+		
+		return "/" + previousYear + "/" + previousMonth;
+		
 	}
 
 }

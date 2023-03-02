@@ -28,6 +28,10 @@
               <h6 class="m-0 font-weight-bold text-primary">Statystyki na miesiąc</h6>
             </div>
             <div class="card-body">
+              <a th:href="@{/category/sum_by_category_and_sub_category{previousMonthLink}/(previousMonthLink=${previousMonth})}">Poprzedni miesiąc</a>
+              -
+              <a th:href="@{/category/sum_by_category_and_sub_category{nextMonthLink}/(nextMonthLink=${nextMonth})}">Następny miesiąc</a>
+              <BR><BR>
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
@@ -45,6 +49,11 @@
 							<td><p th:text="${sum.value}"></p></td>
 						</tr>
 					</th:block>
+					<tr>
+						<td></td>
+						<td>TOTAL</td>
+						<td><p th:text="${totalSumLine}"></p></td>
+					</tr>
                   </tbody>
                 </table>
               </div>
