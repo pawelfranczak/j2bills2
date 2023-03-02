@@ -1,4 +1,4 @@
-package pl.pfranczak.j2bills2.monolith.controller.category;
+package pl.pfranczak.j2bills2.monolith.controller.statistics;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,21 +17,21 @@ import lombok.AllArgsConstructor;
 import pl.pfranczak.j2bills2.monolith.entity.Journal;
 import pl.pfranczak.j2bills2.monolith.entity.category.Category;
 import pl.pfranczak.j2bills2.monolith.entity.category.SubCategory;
-import pl.pfranczak.j2bills2.monolith.entity.category.SumByCategoryAndSubCategory;
+import pl.pfranczak.j2bills2.monolith.entity.statistics.SumByCategoryAndSubCategory;
 import pl.pfranczak.j2bills2.monolith.service.JournalService;
 import pl.pfranczak.j2bills2.monolith.service.notification.NotificationService;
 
 @AllArgsConstructor
 @Controller
-@RequestMapping("${category}")
-public class SumsController {
+@RequestMapping("${statistics}")
+public class StatisticsController {
 	
 	private NotificationService notificationService;
 	private JournalService journalService;
 
 	@GetMapping("${sum_by_category_and_sub_category}/{year}/{month}")	
 	public ModelAndView showAll(@PathVariable("year") Long year, @PathVariable("month") Long month) {
-		ModelAndView modelAndView = new ModelAndView("category/sum_by_category_and_sub_category");
+		ModelAndView modelAndView = new ModelAndView("statistics/sum_by_category_and_sub_category");
 		List<Journal> journalsEntries = journalService.getAllForYearMonth(year, month);
 		
 		LinkedHashMap<Category, Map<SubCategory, BigDecimal>> map = new LinkedHashMap<>();
