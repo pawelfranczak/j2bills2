@@ -1,9 +1,7 @@
 package pl.pfranczak.j2bills2.monolith.controller.category;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -17,9 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lombok.AllArgsConstructor;
 import pl.pfranczak.j2bills2.monolith.entity.User;
+import pl.pfranczak.j2bills2.monolith.entity.UserSettings;
 import pl.pfranczak.j2bills2.monolith.entity.category.Category;
 import pl.pfranczak.j2bills2.monolith.entity.category.SubCategory;
 import pl.pfranczak.j2bills2.monolith.service.UserService;
+import pl.pfranczak.j2bills2.monolith.service.UserSettingsService;
 import pl.pfranczak.j2bills2.monolith.service.category.CategoryService;
 import pl.pfranczak.j2bills2.monolith.service.category.SubCategoryService;
 import pl.pfranczak.j2bills2.monolith.service.notification.NotificationService;
@@ -33,6 +33,7 @@ public class CategoryController {
 	private SubCategoryService subCategoryService;
 	private UserService userService;
 	private NotificationService notificationService;
+	private UserSettingsService userSettingsService;
 
 	@GetMapping("${all}")	
 	public ModelAndView showAll() {
@@ -83,6 +84,14 @@ public class CategoryController {
 	
 	@GetMapping("${install}")
 	public ModelAndView installCategories() {
+		
+		if (userSettingsService.get().isCategoryInstaled()) {
+			return new ModelAndView("redirect:/sub_category/all");
+		} else {
+			UserSettings userSettings = userSettingsService.get();
+			userSettings.setCategoryInstaled(true);
+			userSettingsService.update(userSettings);
+		}
 
 		String category = "Dzieci";
 		List<String> subCategories = Arrays.asList("Zajęcia dodatkowe", "Kieszonkowe", "Opieka zdrowotna",
