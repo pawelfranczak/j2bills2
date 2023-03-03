@@ -1,6 +1,8 @@
 package pl.pfranczak.j2bills2.monolith.controller.statistics;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -111,6 +113,14 @@ public class StatisticsController {
 		modelAndView.addObject("previousMonth", generatePreviousMonthLink(month, year));
 		
 		return modelAndView;
+	}
+	
+	@GetMapping("${sum_by_category_and_sub_category}")	
+	public ModelAndView showAllByMonth() {
+		LocalDate currentdate = LocalDate.now();
+		Month currentMonth = currentdate.getMonth();
+		int currentYear = currentdate.getYear();
+		return new ModelAndView("redirect:/statistics/sum_by_category_and_sub_category/" + currentYear + "/" + currentMonth.getValue());
 	}
 	
 	private String generateNextMonthLink(Long month, Long year) {
