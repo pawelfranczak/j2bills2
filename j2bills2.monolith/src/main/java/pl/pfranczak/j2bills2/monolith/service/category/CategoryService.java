@@ -36,10 +36,20 @@ public class CategoryService extends CrudServiceImpl<Category, Long>{
 	
 	@Override
 	public void create(Category category) {
+		boolean categoryExist = categoryRepository.findByOwnerAndName(getOwner(), category.getName()) != null;
+		
+		if (categoryExist) {
+			return;
+		}
+		
 		category.setOwner(getOwner());
 		category.setActive(true);
 		super.create(category);
 	}
+	
+	public Category getByName(String name) {
+		return categoryRepository.findByOwnerAndName(getOwner(), name);
+	}	
 	
 	@Override
 	public void update(Category categor) {

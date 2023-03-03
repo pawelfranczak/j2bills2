@@ -43,10 +43,16 @@ public class SubCategoryService extends CrudServiceImpl<SubCategory, Long>{
 	}	
 	
 	@Override
-	public void create(SubCategory category) {
-		category.setOwner(getOwner());
-		category.setActive(true);
-		super.create(category);
+	public void create(SubCategory subCategory) {
+		SubCategory subCategoryExist = subCategoryRepository.findByOwnerAndNameAndCategory(getOwner(), subCategory.getName(), subCategory.getCategory());
+		
+		if (subCategoryExist != null && subCategoryExist.getCategory().getId() == subCategory.getCategory().getId()) {
+			return;
+		}
+		
+		subCategory.setOwner(getOwner());
+		subCategory.setActive(true);
+		super.create(subCategory);
 	}
 	
 	@Override

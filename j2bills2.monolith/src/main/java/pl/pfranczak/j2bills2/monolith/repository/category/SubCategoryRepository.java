@@ -15,4 +15,6 @@ public interface SubCategoryRepository extends CrudRepository<SubCategory, Long>
 	List<SubCategory> findByOwnerAndCategoryOrderByCategory(UserAccount owner, Category category);
 	List<SubCategory> findByOwnerAndActiveTrueOrderByCategory(UserAccount owner);
 	SubCategory findByIdAndOwner(Long id, UserAccount owner);
+	SubCategory findByOwnerAndName(UserAccount owner, String name);
+	SubCategory findByOwnerAndNameAndCategory(UserAccount owner, String name, Category category);
 }

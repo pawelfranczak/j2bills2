@@ -39,7 +39,7 @@ public class SubCategory {
 	
 	@NotNull
 	@NotBlank
-	@Column(unique=true)
+	@Column(unique=false)
 	private String name;
 	
 	private boolean active;

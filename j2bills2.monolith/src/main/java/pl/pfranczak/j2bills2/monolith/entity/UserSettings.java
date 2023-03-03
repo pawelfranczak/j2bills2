@@ -53,4 +53,7 @@ public class UserSettings {
 	@JoinColumn(nullable = true, name = "default_user_id")
 	private User defaultUser;
 	
+	@Column(nullable=false, columnDefinition = "bool DEFAULT false")
+	private boolean categoryInstaled;
+	
 }
