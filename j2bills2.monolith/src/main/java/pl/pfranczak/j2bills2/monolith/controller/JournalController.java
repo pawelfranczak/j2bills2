@@ -178,5 +178,36 @@ public class JournalController {
 		modelAndView.addObject("subCategories", subCategories);
 		return modelAndView;
 	}
-
+	
+	
+	@GetMapping("${category}/{id}")	
+	public ModelAndView modifyCategoryGet(@PathVariable("id") Long id) {
+		ModelAndView modelAndView = new ModelAndView("journal/category");
+		Journal journalEntry = journalService.get(id);
+		modelAndView.addObject("journalEntry", journalEntry);
+		if (journalEntry.getCategory() != null) {
+			modelAndView.addObject("categoryID", journalEntry.getCategory().getId());
+		}
+		if (journalEntry.getSubCategory() != null) {
+			modelAndView.addObject("subCategoryID", journalEntry.getSubCategory().getId());
+		}
+		userService.addUsernameToModelAndView(modelAndView);
+		
+		List<Category> categories = categoryService.getAllActive();
+		modelAndView.addObject("categories", categories);
+		List<SubCategory> subCategories = subCategoryService.getAllWithActiveCategory();
+		modelAndView.addObject("subCategories", subCategories);
+		
+		return modelAndView;
+	}
+	
+	@PostMapping("${category}")
+	public ModelAndView modifyCategoryPost(Journal journalEntry) {
+		Journal journal = journalService.get(journalEntry.getId());
+		journal.setCategory(journalEntry.getCategory());
+		journal.setSubCategory(journalEntry.getSubCategory());
+		journalService.update(journal);
+		
+		return new ModelAndView("redirect:/journal/all");
+	}
 }

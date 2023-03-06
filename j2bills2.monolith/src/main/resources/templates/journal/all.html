@@ -44,6 +44,7 @@
 											<th>Data</th>
 											<th>Kategoria</th>
 											<th>Podkategoria</th>
+											<th>#</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -59,6 +60,7 @@
 												<td><p th:text="${journalEntry.date}"></p></td>
 												<td><p th:text="${journalEntry.category?.name}"></p></td>
 												<td><p th:text="${journalEntry.subCategory?.name}"></p></td>
+												<td><a th:href="'/journal/category/' + @{${journalEntry.id}}">Modyfikuj kategorię</a></td>
 											</tr>
 										</th:block>
 									</tbody>
